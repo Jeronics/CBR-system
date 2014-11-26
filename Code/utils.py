@@ -20,6 +20,7 @@ def date_to_python_date(date):
 
 def int_to_weekday(day):
     '''
+
     Returns day of the week from an integer
     :param day:
     :return:
