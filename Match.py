@@ -3,7 +3,7 @@ __author__ = 'Iosu'
 
 
 class Match(object):
-    id = 0
+    data = 0
     local = ""
     foreign = ""
     # HERE WE HAVE TO DISCUSS THE ATTRIBUTES OF THE MATCH TO RETRIEVE SIMILAR MATCHES.
@@ -14,11 +14,22 @@ class Match(object):
     #
 
     # The class "constructor" - It's actually an initializer
-    def __init__(self, id, local, foreign):
-        self.id = id
+    def __init__(self, data, local, foreign):
+        self.data = data
         self.local = local
         self.foreign = foreign
 
-def make_match(id, local, foreign):
-    match = Match(id, local, foreign)
+def make_match(data, local, foreign):
+    match = Match(data, local, foreign)
     return match
+
+def read_match_dataset(dataset):
+    # Read TweetLID dataset
+    matchList = []
+    with open(dataset) as file:
+        for l in file.readlines():
+            line = l.strip().split(";")
+            match = make_match(line[1], line[2], line[3])
+            matchList.append(match)
+        file.close()
+    return matchList
