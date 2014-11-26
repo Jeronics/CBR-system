@@ -45,8 +45,8 @@ def make_match(id, data, local, foreign, lGoals, fGoals, result):
     return match
 
 def read_match_dataset(dataset):
-    DATA = pd.io.parsers.read_csv(dataset, ',')
-    for line in DATA.iterrows():
+    data = pd.io.parsers.read_csv(dataset, ',')
+    for line in data.iterrows():
         match = make_match(line[0], ut.date_to_python_date(line[1][1]), line[1][2], line[1][3], line[1][4], line[1][5], line[1][6])
         matchList.append(match)
     return matchList

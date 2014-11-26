@@ -10,12 +10,14 @@ def main(local, foreigner):
     # LOAD DATA
     dataset = []
 
-    for files in glob.glob("../Data/*.csv"):
-        dataset.append(files)
+    # for files in glob.glob("../Data/*.csv"):
+    #     dataset.append(files)
 
     # READ DATASET
-    for data in dataset:
-        matches_data = read.read_match_dataset(data)
+    # for data in dataset:
+    #     matches_data = read.read_match_dataset(data)
+    # matches_data = read.read_match_dataset('../Data/LaLiga2003-04.csv')error
+    matches_data = read.read_match_dataset('../Data/LaLiga2004-05.csv')
 
     # PREPROCESS DATASET RETRIEVE SIMILAR MATCHES
     matches_preprocessdata = ppm.preprocess(matches_data)
