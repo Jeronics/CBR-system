@@ -18,7 +18,6 @@ def date_to_python_date(date):
     print date
     return datetime.datetime.strptime(date, "%d/%m/%y")
 
-
 def int_to_weekday(day):
     '''
     Returns day of the week from an integer
