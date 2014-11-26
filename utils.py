@@ -8,10 +8,10 @@ def date_to_day_of_week(date):
     takes a date and returns day of the week
     :return:
     '''
-    print date
-    date = datetime.datetime.strptime(date, "%d/%M/%y")
     return date.weekday()
 
+def date_to_python_date(date):
+   return datetime.datetime.strptime(date, "%d/%M/%y")
 
 def int_to_weekday(day):
     '''

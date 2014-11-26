@@ -5,10 +5,11 @@ import Match as m
 
 def main(matchList):
     matchListPreprocessed = []
-    matchPreprocessed = ""
 
     for match in matchList:
-        matchPre = m.make_match(match.data, match.local, match.foreign)
-        matchListPreprocessed.append(matchPre)
+
+        # MAKE THE PREPROCESS WITH OF ALL THE DATA....
+
+        matchListPreprocessed.append(match)
 
     return matchListPreprocessed

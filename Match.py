@@ -1,9 +1,12 @@
 __author__ = 'Iosu'
 
-
+import pandas as pd
+import datetime as dt
+import utils as ut
 
 class Match(object):
-    data = 0
+    id = 0
+    data = dt.datetime.now()
     local = ""
     foreign = ""
     # HERE WE HAVE TO DISCUSS THE ATTRIBUTES OF THE MATCH TO RETRIEVE SIMILAR MATCHES.
@@ -14,22 +17,20 @@ class Match(object):
     #
 
     # The class "constructor" - It's actually an initializer
-    def __init__(self, data, local, foreign):
+    def __init__(self, id, data, local, foreign):
+        self.id = id
         self.data = data
         self.local = local
         self.foreign = foreign
 
-def make_match(data, local, foreign):
-    match = Match(data, local, foreign)
+def make_match(id, data, local, foreign):
+    match = Match(id, data, local, foreign)
     return match
 
 def read_match_dataset(dataset):
-    # Read TweetLID dataset
     matchList = []
-    with open(dataset) as file:
-        for l in file.readlines():
-            line = l.strip().split(";")
-            match = make_match(line[1], line[2], line[3])
-            matchList.append(match)
-        file.close()
+    data_2013_2014 = pd.io.parsers.read_csv(dataset, ';')
+    for line in data_2013_2014.iterrows():
+        match = make_match(line[0], ut.date_to_python_date(line[1][1]), line[1][2], line[1][3])
+        matchList.append(match)
     return matchList
