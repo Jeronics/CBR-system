@@ -3,16 +3,19 @@ import sys
 import preprocessMatches as ppm
 import utils as ut
 import match as read
+import glob
 
 def main(local, foreigner):
 
     # LOAD DATA
-    dataset = "../Data/Example2012-13.csv"
-    dataset2 = "../Data/Example2013-14.csv"
+    dataset = []
+
+    for files in glob.glob("../Data/*.csv"):
+        dataset.append(files)
 
     # READ DATASET
-    matches_data = read.read_match_dataset(dataset)
-    matches_data = read.read_match_dataset(dataset2)
+    for data in dataset:
+        matches_data = read.read_match_dataset(data)
 
     # PREPROCESS DATASET RETRIEVE SIMILAR MATCHES
     matches_preprocessdata = ppm.preprocess(matches_data)
