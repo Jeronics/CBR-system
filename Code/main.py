@@ -19,7 +19,7 @@ def main(local, foreigner):
     for match in matches_preprocessdata:
         # print match.local
         if str(match.local).__eq__(local) & str(match.foreign).__eq__(foreigner) :
-            print "Match "+str(match.local)+" vs "+str(match.foreign)+" on "+str(match.data)
+            print "Match "+str(match.local)+" vs "+str(match.foreign)+" on "+str(match.data)+" RESULT "+str(match.lGoals) +"-"+str(match.fGoals)
 
         # To know the week day
         # print ut.int_to_weekday(ut.date_to_day_of_week(match.data))
