@@ -5,7 +5,7 @@ import datetime
 
 def date_to_day_of_week(date):
     '''
-    takes a date and returns day of the week 
+    takes a date and returns day of the week
     :return:
     '''
     print date
