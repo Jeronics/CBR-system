@@ -22,6 +22,7 @@ def int_to_weekday(day):
     week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     return week[day]
 
+
 # TEST
 # date = "3/2/08"
 # print int_to_weekday(date_to_day_of_week(date))
