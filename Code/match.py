@@ -5,7 +5,7 @@ import datetime as dt
 # HERE WE HAVE TO DISCUSS THE ATTRIBUTES OF THE MATCH TO RETRIEVE SIMILAR MATCHES.
 # For example:
 # + referee.
-#         + local team quality.
+# + local team quality.
 #         + foreign team quality.
 #
 
