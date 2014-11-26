@@ -8,7 +8,6 @@ def preprocess(matchList):
 
     for match in matchList:
         # MAKE THE PREPROCESS WITH OF ALL THE DATA....
-
         matchListPreprocessed.append(match)
 
     return matchListPreprocessed

@@ -51,8 +51,8 @@ def read_match_dataset(dataset):
         if ut.isNaN(line[1][1]):
             print 'AQUI HAY UN NAN: ' + str(line[1][2])
         else:
-            match = make_match(line[0], ut.date_to_python_date(line[1][1]), line[1][2], line[1][3], line[1][4],
-                               line[1][5],
+            match = make_match(line[0], ut.date_to_python_date(line[1][1]), line[1][2], line[1][3], int(line[1][4]),
+                               int(line[1][5]),
                                line[1][6])
             matchList.append(match)
     return matchList
