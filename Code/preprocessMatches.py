@@ -1,9 +1,10 @@
-__author__ = 'Iosu'
 
-import Match as m
+# PREPROCESS THE MATCH LIST OBTAINED:
+#
+#   + Erasing invalid values : NaN and so on
+#   + Erasing columns we don't need
 
-
-def main(matchList):
+def preprocess(matchList):
     matchListPreprocessed = []
 
     for match in matchList:

@@ -1,20 +1,21 @@
-__author__ = 'Iosu'
-
+import utils as ut
 import pandas as pd
 import datetime as dt
-import utils as ut
+
+# HERE WE HAVE TO DISCUSS THE ATTRIBUTES OF THE MATCH TO RETRIEVE SIMILAR MATCHES.
+#     For example:
+#         + referee.
+#         + local team quality.
+#         + foreign team quality.
+#
 
 class Match(object):
     id = 0
     data = dt.datetime.now()
     local = ""
     foreign = ""
-    # HERE WE HAVE TO DISCUSS THE ATTRIBUTES OF THE MATCH TO RETRIEVE SIMILAR MATCHES.
-    #     For example:
-    #         + referee.
-    #         + local team quality.
-    #         + foreign team quality.
-    #
+
+
 
     # The class "constructor" - It's actually an initializer
     def __init__(self, id, data, local, foreign):
