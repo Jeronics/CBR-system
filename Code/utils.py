@@ -15,7 +15,7 @@ def date_to_day_of_week(date):
 
 
 def date_to_python_date(date):
-    print date
+    # print date
     return datetime.datetime.strptime(date, "%d/%m/%y")
 
 def int_to_weekday(day):

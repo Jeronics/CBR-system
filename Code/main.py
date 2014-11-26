@@ -26,7 +26,6 @@ def main(local, foreigner):
     matches_preprocessdata = ppm.preprocess(matches_data)
 
     for match in matches_preprocessdata:
-        # print match.local
         if str(match.local).__eq__(local) & str(match.foreign).__eq__(foreigner):
             print "Match " + str(match.local) + " vs " + str(match.foreign) + " on " + str(
                 match.data) + " RESULT " + str(match.lGoals) + "-" + str(match.fGoals)
