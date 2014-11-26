@@ -5,7 +5,7 @@ import datetime as dt
 # HERE WE HAVE TO DISCUSS THE ATTRIBUTES OF THE MATCH TO RETRIEVE SIMILAR MATCHES.
 # For example:
 # + referee.
-#         + local team quality.
+# + local team quality.
 #         + foreign team quality.
 #
 
@@ -46,7 +46,7 @@ def make_match(id, data, local, foreign, lGoals, fGoals, result):
 
 
 def read_match_dataset(dataset):
-    data = pd.io.parsers.read_csv(dataset, ',')
+    data = pd.read_csv(dataset, error_bad_lines=False)
     for line in data.iterrows():
         if ut.isNaN(line[1][1]):
             print dataset
