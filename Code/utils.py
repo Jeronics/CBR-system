@@ -1,5 +1,10 @@
 import datetime
 
+def isNaN(x):
+    if x != x:
+        return True
+    else:
+        return False
 
 def date_to_day_of_week(date):
     '''
@@ -8,8 +13,11 @@ def date_to_day_of_week(date):
     '''
     return date.weekday()
 
+
 def date_to_python_date(date):
-   return datetime.datetime.strptime(date, "%d/%m/%y")
+    print date
+    return datetime.datetime.strptime(date, "%d/%m/%y")
+
 
 def int_to_weekday(day):
     '''

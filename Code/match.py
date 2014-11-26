@@ -3,8 +3,8 @@ import pandas as pd
 import datetime as dt
 
 # HERE WE HAVE TO DISCUSS THE ATTRIBUTES OF THE MATCH TO RETRIEVE SIMILAR MATCHES.
-#     For example:
-#         + referee.
+# For example:
+# + referee.
 #         + local team quality.
 #         + foreign team quality.
 #
@@ -20,9 +20,9 @@ class Match(object):
     lGoals = 0
     fGoals = 0
     # RESULT OF MATCH
-        # L = Local wins.
-        # D = Draw
-        # F = Foreign wins.
+    # L = Local wins.
+    # D = Draw
+    # F = Foreign wins.
     result = "D"
 
 
@@ -44,9 +44,16 @@ def make_match(id, data, local, foreign, lGoals, fGoals, result):
     match = Match(id, data, local, foreign, lGoals, fGoals, result)
     return match
 
+
 def read_match_dataset(dataset):
     data = pd.io.parsers.read_csv(dataset, ',')
     for line in data.iterrows():
-        match = make_match(line[0], ut.date_to_python_date(line[1][1]), line[1][2], line[1][3], line[1][4], line[1][5], line[1][6])
-        matchList.append(match)
+        if ut.isNaN(line[1][1]):
+            print 'AQUI HAY UN NAN: ' + str(line[1][2])
+            break
+        else:
+            match = make_match(line[0], ut.date_to_python_date(line[1][1]), line[1][2], line[1][3], line[1][4],
+                               line[1][5],
+                               line[1][6])
+            matchList.append(match)
     return matchList
