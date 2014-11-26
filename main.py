@@ -19,6 +19,7 @@ def main():
 
     data_2013_2014 = pd.io.parsers.read_csv(filename_red, ';')
     print data_2013_2014
+
     #   1. FILTER DATA
     #   2. RETRIEVE
     #   3. REUSE
