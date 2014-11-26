@@ -9,7 +9,7 @@ def date_to_day_of_week(date):
     return date.weekday()
 
 def date_to_python_date(date):
-   return datetime.datetime.strptime(date, "%d/%M/%y")
+   return datetime.datetime.strptime(date, "%d/%m/%y")
 
 def int_to_weekday(day):
     '''
