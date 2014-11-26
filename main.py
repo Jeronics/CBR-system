@@ -11,6 +11,7 @@ def main():
     #   3. REUSE
     #   4. REVISE
     #   5. RETAIN
+    pass
 
 if __name__ == '__main__':
     main()
