@@ -59,22 +59,18 @@ def reuse(matchList, actualMatch):
 
     for idx, match in enumerate(matchList):
         # H = Home team wins.
-        # D = Draw
-        # A = Away team wins.
-        # print str(match.result)
-        # print str(match.local)
-
         if (str(match.result) == str("H")):
             if (str(actualMatch.local) == str(match.local)):
                 winProb = winProb + (1 * newTP[idx]);
             else:
                 loseProb = loseProb + (1 * newTP[idx]);
-
+        # A = Away team wins.
         elif (str(match.result) == str("A")):
             if (str(actualMatch.foreign) == str(match.foreign)):
                 loseProb = loseProb + (1 * newTP[idx]);
             else:
                 winProb = winProb + (1 * newTP[idx]);
+        # D = Draw
         else:
             drawProb = drawProb + (1 * newTP[idx]);
 
@@ -84,9 +80,9 @@ def reuse(matchList, actualMatch):
     print "lose = " + str(loseProb/total)
     print "draw = " + str(drawProb/total)
 
-    probabilities = {'W':winProb/total, 'L':loseProb/total, 'D':drawProb/total}
+    probabilities = {'W': winProb/total, 'L': loseProb/total, 'D': drawProb/total}
 
-    probability = max(winProb/total,loseProb/total,drawProb/total)
+    probability = max(winProb/total, loseProb/total, drawProb/total)
     result = max(probabilities, key=probabilities.get)
 
     actualMatch.result = result
