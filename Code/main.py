@@ -5,6 +5,18 @@ import match as read
 import glob
 
 
+
+ # ______________________________________________________________________
+ #
+ #
+ #
+ #       How to execute: e.g.
+ #                  python main.py "Real Madrid" Barcelona
+ #
+ #
+ # ______________________________________________________________________
+
+
 def main(local, foreigner):
     # LOAD DATA
     dataset = []
