@@ -20,9 +20,9 @@ class Match(object):
     lGoals = 0
     fGoals = 0
     # RESULT OF MATCH
-    # L = Local wins.
+    # H = Local wins.
     # D = Draw
-    # F = Foreign wins.
+    # A = Foreign wins.
     result = "D"
 
     # The class "constructor" - It's actually an initializer
