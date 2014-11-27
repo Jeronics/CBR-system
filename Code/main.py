@@ -29,12 +29,6 @@ def main(local, foreigner):
         # print data
         matches_data = read.read_match_dataset(data)
 
-    # RESULTS OF 2003-04 AND 04-05 ARE GOING BAD
-    # THE CSV IS NOT WELL OR THE PANDA IS NOT DOING IT WELL
-    #
-    # matches_data = read.read_match_dataset('../Data/LaLiga2003-04.csv')
-    # matches_data = read.read_match_dataset('../Data/LaLiga2004-05.csv')
-
     # PREPROCESS DATASET RETRIEVE SIMILAR MATCHES
     matches_preprocessdata = ppm.preprocess(matches_data)
 
