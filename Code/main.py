@@ -33,7 +33,9 @@ def main(local, foreigner):
                 match.data) + " RESULT " + str(match.lGoals) + "-" + str(match.fGoals)
             # To know the week day
             # print ut.int_to_weekday(ut.date_to_day_of_week(match.data))
-
+        if str(match.local).__eq__(foreigner) & str(match.foreign).__eq__(local):
+            print "Match " + str(match.local) + " vs " + str(match.foreign) + " on " + str(
+                match.data) + " RESULT " + str(match.lGoals) + "-" + str(match.fGoals)
 
 if __name__ == '__main__':
     main(sys.argv[1], sys.argv[2])
