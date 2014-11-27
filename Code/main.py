@@ -26,8 +26,12 @@ def main(local, foreigner):
 
     # READ DATASET
     for data in dataset:
+<<<<<<< HEAD
         # print data
 
+=======
+        print data
+>>>>>>> FETCH_HEAD
         matches_data = read.read_match_dataset(data)
 
     # RESULTS OF 2003-04 AND 04-05 ARE GOING BAD
