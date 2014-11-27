@@ -29,6 +29,10 @@ def int_to_weekday(day):
     return week[day]
 
 
+def printMatches(matches):
+    for match in matches:
+        print "Match " + str(match.local) + " vs " + str(match.foreign) + " on " + str(
+               match.data) + " RESULT " + str(match.lGoals) + "-" + str(match.fGoals)
 # TEST
 # date = "3/2/08"
 # print int_to_weekday(date_to_day_of_week(date))
