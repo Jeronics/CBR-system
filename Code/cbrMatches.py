@@ -32,7 +32,7 @@ def retrieve(matchList, actualMatch, grade):
                 similarMatchList.append(match)
     return similarMatchList
 
-
+# Reuses the results of the retrieved matches having into account the time (days) that have passed from those matches.
 def reuse(matchList, actualMatch):
     winProb = 0
     drawProb = 0
