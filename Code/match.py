@@ -46,7 +46,7 @@ def make_match(id, data, local, foreign, lGoals, fGoals, result):
 
 
 def read_match_dataset(dataset):
-    data = pd.read_csv(dataset)
+    data = pd.read_csv(dataset, error_bad_lines=False)
     for line in data.iterrows():
         if ut.isNaN(line[1][1]):
             # print dataset
