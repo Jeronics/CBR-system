@@ -1,16 +1,29 @@
-
-class CBRclass():
+class CBRclass(object):
     """
-    The class Case defines in a general way the cases of the CBR.
+    The class CBRclass defines in a general way the cases of the CBR.
 
     """
-    def __init__(self, name):
+
+    def __init__(self, name, **kwargs):
         self.attributes = {}
+        self.classes = {}
         self.name = name
-        pass
 
-    def add_class(self, name):
-        pass
+        for kw in kwargs.keys():
+            if type(kwargs[kw]) is CBRclass:
+                self.classes[kw] = kwargs[kw]
+            elif type(kwargs[kw]) is list or type(kwargs[kw]) is dict:
+                self.attributes[kw] = kwargs[kw]
+
+    def add_class(self, name, **kwargs):
+        """
+        Adds a class to the classes dictionary.
+
+        :param name: name of the class
+        :type  name: str
+        :param kwargs: optional attributes ('attributes' or classes)
+        """
+        self.classes[name] = CBRclass(name=name, **kwargs)
 
     def add_feature(self, name, values):
         """
@@ -24,7 +37,7 @@ class CBRclass():
         if name not in self.attributes:
             self.attributes[name] = values
         else:
-            raise NameError('The attribute {0} already exists, to update its values use set_feature.'.format(name))
+            raise NameError("The attribute '{0}' already exists, to update its values use set_feature.".format(name))
 
     def set_feature(self, name, values):
         """
@@ -37,19 +50,26 @@ class CBRclass():
         """
         if name in self.attributes:
             if not type(self.attributes[name]) is type(values):
-                raise NameError('The attribute {0} is type {1} not {2}.'.format(name,
-                                                                                type(self.attributes[name]),
-                                                                                type(values)))
+                raise NameError("The attribute '{0}' is type {1} not {2}.".format(name,
+                                                                                  type(self.attributes[name]),
+                                                                                  type(values)))
             self.attributes[name] = values
         else:
-            raise NameError('The attribute {0} doesn\'t exists, to add a new attribute use add_feature.'.format(name))
+            raise NameError("The attribute '{0}' doesn't exists, to add a new attribute use add_feature.".format(name))
 
 
-if __name__=='__main__':
-    # Test
+if __name__ == '__main__':
+    # ----------
+    # -- Test --
+    # ----------
 
-    team1 = CBRclass(name='Messi')
+    player1 = CBRclass(name='Messi')
 
-    team1.add_feature(name='Skills', values=[1, 2, 3, 4])
-    team1.add_feature(name='Skills', values=[4, 3, 2, 1])
-    team1.set_feature(name='Skills', values={'A': 4})
+    # player1.add_feature(name='Skills', values=[1, 2, 3, 4])
+    # player1.add_feature(name='Skills', values=[4, 3, 2, 1])
+    # player1.set_feature(name='Skills', values={'A': 4})
+
+    team1 = CBRclass(name='FCB', **{'Messi': player1})
+    print team1
+    print team1.classes
+    print team1.attributes
