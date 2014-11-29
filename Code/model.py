@@ -75,12 +75,38 @@ class CBRclass(object):
         return self.attributes.pop(name)
 
 
-class Case(CBRclass):
+class Case(object):
     """
-    Case is a subclass of the CBRclass class.
+    Case is the main class in the CBR.
+    Contains a problem (CBRclass) and a solution (default empty string).
     """
-    pass
+    def __init__(self, name, problem, **kwargs):
+        assert type(name) is str, 'The name of the Case must be a string.'
+        self.name = name
 
+        if type(problem) is CBRclass:
+            self.problem = problem
+        else:
+            raise NameError("The problem must be an instance of CBRclass object.")
+
+        self.solution = kwargs['solution'] if 'solution' in kwargs else ''
+
+    def set_solution(self, solution):
+        """
+        :param solution: solution of the case.
+        :type  solution: str
+        """
+        self.solution = solution
+
+    def set_problem(self, problem):
+        """
+        :param problem: CBRclass containing the description of the problem.
+        :type  problem: CBRclass
+        """
+        if type(problem) is CBRclass:
+            self.problem = problem
+        else:
+            raise NameError("The problem must be an instance of CBRclass object.")
 
 if __name__ == '__main__':
     # ----------
