@@ -41,7 +41,7 @@ class CBRclass(object):
         :param name: name of the new attribute.
         :type  name: str
         :param values: list of features if is flat or dictionary if is hierarchical.
-        :type  values: list of int or dict
+        :type  values: int | list of int | dict
         """
         if name not in self.attributes:
             self.attributes[name] = values
@@ -55,7 +55,7 @@ class CBRclass(object):
         :param name: name of the attribute to update.
         :type  name: str
         :param values: list of features if is flat or dictionary if is hierarchical.
-        :type  values: list of int or dict
+        :type  values: int | list of int | dict
         """
         if name in self.attributes:
             if not type(self.attributes[name]) is type(values):
@@ -88,12 +88,14 @@ if __name__ == '__main__':
     # ----------
 
     player1 = CBRclass(name='Messi')
-
-    # player1.add_feature(name='Skills', values=[1, 2, 3, 4])
-    # player1.add_feature(name='Skills', values=[4, 3, 2, 1])
-    # player1.set_feature(name='Skills', values={'A': 4})
+    player1.add_feature(name='Skills', values={'speed': 4})
 
     team1 = CBRclass(name='FCB', **{'Messi': player1})
-    print team1
+    team1.add_feature(name='members', values=100000)
+
+    print team1.name
     print team1.classes
     print team1.attributes
+
+    print player1.name
+    print team1.classes[player1.name].attributes
