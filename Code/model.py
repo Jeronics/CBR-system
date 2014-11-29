@@ -74,6 +74,9 @@ class CBRclass(object):
         """
         return self.attributes.pop(name)
 
+    def __str__(self):
+        return "CBRclass " + self.name + ": Attr=" + str(self.attributes) + " | Classes=" + str(self.classes)
+
 
 class Case(object):
     """
@@ -108,6 +111,9 @@ class Case(object):
         else:
             raise NameError("The problem must be an instance of CBRclass object.")
 
+    def __str__(self):
+        return "Case " + self.name + ":\n\t-Problem: " + str(self.problem) + "\n\t-Solution: " + self.solution
+
 if __name__ == '__main__':
     # ----------
     # -- Test --
@@ -119,9 +125,17 @@ if __name__ == '__main__':
     team1 = CBRclass(name='FCB', **{'Messi': player1})
     team1.add_feature(name='members', values=100000)
 
+    team2 = CBRclass(name='RMD')
+
+    match1 = CBRclass(name='2014-15.j2.FBC-RMD', **{'FCB': team1, 'RMD': team2})
+    result = '1'
+    case1 = Case(name='2014-15.j2.FBC-RMD', problem=match1, **{'solution': result})
+
     print team1.name
     print team1.classes
     print team1.attributes
 
     print player1.name
     print team1.classes[player1.name].attributes
+
+    print case1
