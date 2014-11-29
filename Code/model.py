@@ -25,6 +25,15 @@ class CBRclass(object):
         """
         self.classes[name] = CBRclass(name=name, **kwargs)
 
+    def pop_class(self, name):
+        """
+        Removes the class 'name' from the dictionary of classes and returns it.
+        :param name: name of the class to pop
+        :type  name: str
+        :return: class popped
+        """
+        return self.classes.pop(name)
+
     def add_feature(self, name, values):
         """
         These method adds a new attribute to the CBRclass.
@@ -56,6 +65,21 @@ class CBRclass(object):
             self.attributes[name] = values
         else:
             raise NameError("The attribute '{0}' doesn't exists, to add a new attribute use add_feature.".format(name))
+
+    def pop_feature(self, name):
+        """
+        Removes and returns the element 'name' from the dictionary of attributes.
+        :param name: 'name' of the attribute to pop
+        :return: popped element from the dictionary of attributes
+        """
+        return self.attributes.pop(name)
+
+
+class Case(CBRclass):
+    """
+    Case is a subclass of the CBRclass class.
+    """
+    pass
 
 
 if __name__ == '__main__':
