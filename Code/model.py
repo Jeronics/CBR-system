@@ -12,7 +12,7 @@ class CBRclass(object):
         for kw in kwargs.keys():
             if type(kwargs[kw]) is CBRclass:
                 self.classes[kw] = kwargs[kw]
-            elif type(kwargs[kw]) is list or type(kwargs[kw]) is dict:
+            else:
                 self.attributes[kw] = kwargs[kw]
 
     def add_class(self, name, **kwargs):
@@ -41,7 +41,7 @@ class CBRclass(object):
         :param name: name of the new attribute.
         :type  name: str
         :param values: list of features if is flat or dictionary if is hierarchical.
-        :type  values: int | list of int | dict
+        :type  values: int | list of int | float | lost of float | dict
         """
         if name not in self.attributes:
             self.attributes[name] = values
@@ -55,7 +55,7 @@ class CBRclass(object):
         :param name: name of the attribute to update.
         :type  name: str
         :param values: list of features if is flat or dictionary if is hierarchical.
-        :type  values: int | list of int | dict
+        :type  values: int | list of int | float | lost of float | dict
         """
         if name in self.attributes:
             if not type(self.attributes[name]) is type(values):
