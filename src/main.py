@@ -23,7 +23,7 @@ def main(actualMatch):
     # 1-. LOAD DATA
     dataset = []
 
-    for files in glob.glob("../Data/*.csv"):
+    for files in glob.glob("../data/*.csv"):
         dataset.append(files)
 
     # 2-. READ DATASET
