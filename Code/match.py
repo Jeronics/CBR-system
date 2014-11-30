@@ -20,14 +20,10 @@ class Match(object):
     lGoals = 0
     fGoals = 0
     # RESULT OF MATCH
-    # L = Local wins.
+    # H = Local wins.
     # D = Draw
-    # F = Foreign wins.
+    # A = Foreign wins.
     result = "D"
-
-
-
-
 
     # The class "constructor" - It's actually an initializer
     def __init__(self, id, data, local, foreign, lGoals, fGoals, result):
@@ -39,7 +35,6 @@ class Match(object):
         self.fGoals = fGoals
         self.result = result
 
-
 def make_match(id, data, local, foreign, lGoals, fGoals, result):
     match = Match(id, data, local, foreign, lGoals, fGoals, result)
     return match
@@ -49,12 +44,7 @@ def read_match_dataset(dataset):
     data = pd.read_csv(dataset, sep=',')
     print data
     for line in data.iterrows():
-        if ut.isNaN(line[1][1]):
-            # print dataset
-            print 'AQUI HAY UN NAN: ' + str(line[1][2])
-        else:
-            match = make_match(line[0], ut.date_to_python_date(line[1][1]), line[1][2], line[1][3], int(line[1][4]),
-                               int(line[1][5]),
-                               line[1][6])
-            matchList.append(match)
+        match = make_match(line[0], ut.date_to_python_date(line[1][1]), str(line[1][2]), str(line[1][3]), int(line[1][4]),
+                            int(line[1][5]), str(line[1][6]))
+        matchList.append(match)
     return matchList

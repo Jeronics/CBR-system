@@ -1,8 +1,9 @@
 import sys
-import preprocessMatches as ppm
+import cbrMatches as cbrm
 import utils as ut
 import match as read
 import glob
+import datetime as dt
 
 
 
@@ -17,30 +18,54 @@ import glob
  # ______________________________________________________________________
 
 
-def main(local, foreigner):
-    # LOAD DATA
+def main(actualMatch):
+
+    # 1-. LOAD DATA
     dataset = []
 
     for files in glob.glob("../Data/*.csv"):
         dataset.append(files)
 
-    # READ DATASET
+    # 2-. READ DATASET
     for data in dataset:
-        # print data
         matches_data = read.read_match_dataset(data)
 
-    # PREPROCESS DATASET RETRIEVE SIMILAR MATCHES
-    matches_preprocessdata = ppm.preprocess(matches_data)
+    # TODO: 3-. PREPROCESS DATASET
 
-    for match in matches_preprocessdata:
-        if str(match.local).__eq__(local) & str(match.foreign).__eq__(foreigner):
-            print "Match " + str(match.local) + " vs " + str(match.foreign) + " on " + str(
-                match.data) + " RESULT " + str(match.lGoals) + "-" + str(match.fGoals)
-            # To know the week day
-            # print ut.int_to_weekday(ut.date_to_day_of_week(match.data))
-        if str(match.local).__eq__(foreigner) & str(match.foreign).__eq__(local):
-            print "Match " + str(match.local) + " vs " + str(match.foreign) + " on " + str(
-                match.data) + " RESULT " + str(match.lGoals) + "-" + str(match.fGoals)
+
+
+    # 4-. RETRIEVE SIMILAR MATCHES
+
+    # Grade of similarity:
+    #   When grade higher less similarity.
+    #   e.g:
+    #         grade = 1  --> highest similarity, return only matches of local as local.
+    #         grade = 2  --> less similarity, return matches of locals as local and foreign.
+
+    grade = 1
+    matches_retrieved = cbrm.retrieve(matches_data, actualMatch, grade)
+
+    # TODO 5-. REUSE
+    # REUSE the information retrieved from the archieves and predict a result and a score
+    actualMatch, probability = cbrm.reuse(matches_retrieved, actualMatch)
+
+    # TODO 6-. REVISE
+
+    # TODO 7-. RETAIN
+
+    # Print matches
+    # ut.printMatches(matches_retrieved)
+
+    # Print result
+    ut.printResult(actualMatch, probability * 100)
+
 
 if __name__ == '__main__':
-    main(sys.argv[1], sys.argv[2])
+    date = dt.datetime.now()
+
+    localTeam = sys.argv[1]
+    foreignTeam = sys.argv[2]
+    actualMatch = read.make_match(0, date, localTeam, foreignTeam, 0, 0, "D")
+
+
+    main(actualMatch)
