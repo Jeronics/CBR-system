@@ -114,6 +114,41 @@ class Case(object):
     def __str__(self):
         return "Case " + self.name + ":\n\t-Problem: " + str(self.problem) + "\n\t-Solution: " + self.solution
 
+
+class CaseBase(object):
+    """
+    Repository of Cases a the CBR.
+    """
+    def __init__(self):
+        self.cases = {}
+
+    def add_case(self, case):
+        if type(case) is Case:
+            self.cases[case.name] = case
+        else:
+            raise NameError("The case must be an instance of Case object.")
+
+    def pop_case(self, case):
+        self.cases.pop(case.name)
+
+    def get_case_keys(self):
+        return self.cases.keys()
+
+    def get_case_values(self):
+        return self.cases.values()
+
+    def get_case(self, case):
+        if case in self.cases.keys():
+            return self.cases[case]
+        elif case in self.cases.values():
+            return self.cases[case.name]
+        else:
+            if type(case) is Case:
+                raise NameError("The case is not stored in the CaseBase")
+            else:
+                raise NameError("The case must be an instance of Case object.")
+
+
 if __name__ == '__main__':
     # ----------
     # -- Test --

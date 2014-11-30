@@ -1,4 +1,5 @@
 from internal_repr.model import CBRclass, Case
+import utils
 
 
 class Match(Case):
@@ -6,7 +7,7 @@ class Match(Case):
         problem = CBRclass(name=name)
         Case.__init__(self, name, problem)
 
-    def create_match(self, date, home_team, away_team, overcome, **kwargs):
+    def create_match(self, date, home_team, away_team, result, **kwargs):
         """
         :param date: Date of the match
         :param ht: Home Team
@@ -125,8 +126,14 @@ class Match(Case):
                         'BbMx<2.5', 'BbAv<2.5', 'GB>2.5', 'GB<2.5', 'B365>2.5', 'B365<2.5', 'BbAH', 'BbAHh', 'BbMxAHH',
                         'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
                         'B365AHA', 'B365AH']
-        self.problem.add_feature(name='date', values=date)
-        self.problem.add_feature(name='home', values=home_team)
-        self.problem.add_feature(name='away', values=away_team)
-        self.set_solution(overcome)
+        self.problem.add_feature(name='date', values=utils.date_to_python_date(date))
+        self.problem.add_class(name='home', values=home_team)
+        self.problem.add_class(name='away', values=away_team)
+        self.set_solution(result)
         self.problem.add_feature(name='params', values={p: kwargs[p] for p in params_names if p in kwargs})
+
+
+if __name__ == '__main__':
+    match = Match(name='match1')
+    match.create_match(date='04/05/14', home_team='FCB', away_team='RMD', result='1')
+    print match
