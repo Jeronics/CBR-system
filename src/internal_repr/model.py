@@ -149,7 +149,7 @@ class CaseBase(object):
         self.cases = {}
 
     def add_case(self, case):
-        if type(case) is Case:
+        if type(case) is Case or issubclass(type(case), Case):
             self.cases[case.name] = case
         else:
             raise NameError("The case must be an instance of Case object.")
