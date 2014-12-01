@@ -25,6 +25,16 @@ class CBRclass(object):
         """
         self.classes[name] = CBRclass(name=name, **kwargs)
 
+    def get_class(self, name):
+        """
+        Gets a class from the classes dictionary.
+
+        :param name: name of the class
+        :type  name: str
+        :return CBRclass
+        """
+        return self.classes[name]
+
     def pop_class(self, name):
         """
         Removes the class 'name' from the dictionary of classes and returns it.
@@ -47,6 +57,16 @@ class CBRclass(object):
             self.attributes[name] = values
         else:
             raise NameError("The attribute '{0}' already exists, to update its values use set_feature.".format(name))
+
+    def get_feature(self, name):
+        """
+        Gets a feature from the attributes dictionary.
+
+        :param name: name of the class
+        :type  name: str
+        :return int | list of int | float | list of float | dict
+        """
+        return self.attributes[name]
 
     def set_feature(self, name, values):
         """
@@ -94,12 +114,18 @@ class Case(object):
 
         self.solution = kwargs['solution'] if 'solution' in kwargs else ''
 
+    def get_solution(self):
+        return self.solution
+
     def set_solution(self, solution):
         """
         :param solution: solution of the case.
         :type  solution: str
         """
         self.solution = solution
+
+    def get_problem(self):
+        return self.problem
 
     def set_problem(self, problem):
         """
