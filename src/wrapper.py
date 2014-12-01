@@ -1,14 +1,12 @@
-from internal_repr.model import CBRclass, Case
+import operator
+from internal_repr.model import CBRclass, Case, CaseBase
 import utils
 
 
 class Match(Case):
-    def __init__(self, name):
-        problem = CBRclass(name=name)
-        Case.__init__(self, name, problem)
-
-    def create_match(self, date, home_team, away_team, result, **kwargs):
+    def __init__(self, name, date, home_team, away_team, result, **kwargs):
         """
+        :param name: Name of the match (id)
         :param date: Date of the match
         :param ht: Home Team
         :param at: Away Team
@@ -117,6 +115,9 @@ class Match(Case):
                         - B365AH = Bet365 size of handicap (home team)
         :return:
         """
+        problem = CBRclass(name=name)
+        Case.__init__(self, name, problem)
+
         params_names = ['FTHG', 'FTAG', 'HTHG', 'HTAG', 'HTR', 'Attendance', 'Referee', 'HS', 'AS', 'HST', 'AST', 'HHW',
                         'AHW', 'HC', 'AC', 'HF', 'AF', 'HO', 'AO', 'HY', 'AY', 'HR', 'AR', 'HBP', 'ABP', 'B365H',
                         'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
@@ -127,13 +128,82 @@ class Match(Case):
                         'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
                         'B365AHA', 'B365AH']
         self.problem.add_feature(name='date', values=utils.date_to_python_date(date))
-        self.problem.add_class(name='home', values=home_team)
-        self.problem.add_class(name='away', values=away_team)
+        self.problem.add_feature(name='home', values=home_team)
+        self.problem.add_feature(name='away', values=away_team)
         self.set_solution(result)
         self.problem.add_feature(name='params', values={p: kwargs[p] for p in params_names if p in kwargs})
 
+    def get_date(self):
+        return self.problem.get_feature('date')
+
+    def get_home(self):
+        return self.problem.get_feature('home')
+
+    def get_away(self):
+        return self.problem.get_feature('away')
+
+    def get_params(self):
+        return self.problem.get_feature('params')
+
+
+class MatchesCaseBase(CaseBase):
+    def add_match(self, match):
+        self.add_case(match)
+
+    def create_match(self, name, date, home_team, away_team, result, **kwargs):
+        """
+        Creates a match calling the 'create_match' method of the class Match.
+        And adds the match to the MatchesCaseBase.
+        """
+        m = Match(name, date, home_team, away_team, result, **kwargs)
+        self.add_case(m)
+        return m
+
+    def get_case_team(self, team, where, **kwargs):
+        """
+        Get the matches a team has played.
+        :param team: Name of the team
+        :param where: 'home' or 'away'
+        :param kwargs: num: Number of matches to retrieve,
+                       date: Time from where to retrieve matches
+        :return:
+        """
+        all_matches = {i.name: i for i in self.cases.values() if i.problem.get_feature(where) == team}
+        if 'num' in kwargs and 'date' in kwargs:
+            sorted_matches = sorted(all_matches.values(), key=operator.methodcaller('get_date'))
+            count = 0
+            matches = {}
+            for m in sorted_matches:
+                if m.problem.get_feature('date') < kwargs['date']:
+                    count += 1
+                    matches[m.name] = m
+                    if count >= kwargs['num']:
+                        break
+            return matches
+        else:
+            return all_matches
+
+    def get_hist(self,  match, n):
+        """
+        Get the nth recent history of matches of both teams playing in the match.
+        :type match: Match
+        :param match: The reference match from where to extract the history.
+        :type n: int
+        :param n: Number of matches to be returned.
+        :return: Both list of past matches of home and away teams.
+                [{home_hist}, {ayaw_hist}]
+        """
+        home = match.get_home()
+        away = match.get_away()
+        date = match.get_date()
+        return (self.get_case_team(home, 'home', **{'date': date, 'num': n}),
+                self.get_case_team(away, 'away', **{'date': date, 'num': n}))
 
 if __name__ == '__main__':
-    match = Match(name='match1')
-    match.create_match(date='04/05/14', home_team='FCB', away_team='RMD', result='1')
-    print match
+    match = Match(name='match1', date='04/05/14', home_team='FCB', away_team='RMD', result='1')
+    mcb = MatchesCaseBase()
+    mcb.add_match(match)
+    mcb.create_match(name='match2', date='01/05/14', home_team='FCB', away_team='AAA', result='X')
+    mcb.create_match(name='match3', date='01/06/14', home_team='FCB', away_team='BBB', result='2')
+    print mcb.get_hist(match, 2)
+    # print match
