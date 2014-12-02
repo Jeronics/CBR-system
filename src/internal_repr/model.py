@@ -15,15 +15,17 @@ class CBRclass(object):
             else:
                 self.attributes[kw] = kwargs[kw]
 
-    def add_class(self, name, **kwargs):
+    def add_class(self, name, *args, **kwargs):
         """
         Adds a class to the classes dictionary.
 
-        :param name: name of the class
+        :param name: name of the class in the dictionary of classes.
         :type  name: str
         :param kwargs: optional attributes ('attributes' or classes)
+        :param args: optional inside name of the inner-class
         """
-        self.classes[name] = CBRclass(name=name, **kwargs)
+        inname = args[0] if args else name
+        self.classes[name] = CBRclass(name=inname, **kwargs)
 
     def get_class(self, name):
         """

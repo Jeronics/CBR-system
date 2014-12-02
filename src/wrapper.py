@@ -128,8 +128,8 @@ class Match(Case):
                         'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
                         'B365AHA', 'B365AH']
         self.problem.add_feature(name='date', values=utils.date_to_python_date(date))
-        self.problem.add_feature(name='home', values=home_team)
-        self.problem.add_feature(name='away', values=away_team)
+        self.problem.add_class('home', home_team)
+        self.problem.add_class('away', away_team)
         self.set_solution(result)
         self.problem.add_feature(name='params', values={p: kwargs[p] for p in params_names if p in kwargs})
 
@@ -146,19 +146,35 @@ class Match(Case):
         """
         Returns the name of the home team in the match.
         """
-        return self.problem.get_feature('home')
+        return self.problem.get_class('home').name
 
     def get_away(self):
         """
         Returns the name of the away team in the match.
         """
-        return self.problem.get_feature('away')
+        return self.problem.get_class('away').name
 
     def get_params(self):
         """
         Returns a dictionary with the parameters of the match.
         """
         return self.problem.get_feature('params')
+
+    def get_home_or_away(self, team):
+        """
+        Returns 'home' or 'away' depending on the position the team is playing in the match.
+        :param team: Team in the match
+        :return: 'home' or 'away'
+        """
+        return 'home' if self.problem.get_class('home') == team else 'away'
+
+    def get_team(self, where):
+        """
+        Returns the team playing in the position 'where'.
+        :param where: 'home' or 'away'
+        :return: Team's name playing 'where'
+        """
+        return self.get_home() if where == 'home' else self.get_away()
 
 
 class MatchesCaseBase(CaseBase):
@@ -186,13 +202,13 @@ class MatchesCaseBase(CaseBase):
                        date: Time from where to retrieve matches
         :return:
         """
-        all_matches = {i.name: i for i in self.cases.values() if i.problem.get_feature(where) == team}
+        all_matches = {i.name: i for i in self.cases.values() if i.get_team(where) == team}
         if 'num' in kwargs and 'date' in kwargs:
             sorted_matches = sorted(all_matches.values(), key=operator.methodcaller('get_date'))
             count = 0
             matches = {}
             for m in sorted_matches:
-                if m.problem.get_feature('date') < kwargs['date']:
+                if m.get_date() < kwargs['date']:
                     count += 1
                     matches[m.name] = m
                     if count >= kwargs['num']:
