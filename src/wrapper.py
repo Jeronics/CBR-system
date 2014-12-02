@@ -232,8 +232,8 @@ class MatchesCaseBase(CaseBase):
         away_matches = self.get_case_team(away, 'away', **{'date': date, 'num': n})
         away_opponent = [h.name for h in away_matches.values()]
 
-        return ([m for m in home_matches.values() if m.get_away().name in away_opponent],
-                [m for m in away_matches.values() if m.get_home().name in home_opponent])
+        return ({m.name: m for m in home_matches.values() if m.get_away().name in away_opponent},
+                {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
 
 if __name__ == '__main__':
     match = Match(name='match1', date='04/05/14', home_team='FCB', away_team='RMD', result='1')
