@@ -133,6 +133,9 @@ class Match(Case):
         self.set_solution(result)
         self.problem.add_feature(name='params', values={p: kwargs[p] for p in params_names if p in kwargs})
 
+    def __str__(self):
+        return str(self.get_date()) + ': ' + self.get_home() + ' vs ' + self.get_away() + ' --> ' + self.get_solution()
+
     def get_date(self):
         """
         Returns the date the match was played.
@@ -242,4 +245,4 @@ if __name__ == '__main__':
     mcb.create_match(name='match2', date='01/05/14', home_team='FCB', away_team='AAA', result='X')
     mcb.create_match(name='match3', date='01/06/14', home_team='FCB', away_team='BBB', result='2')
     print mcb.get_hist(match, 2)
-    # print match
+    print match
