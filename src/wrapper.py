@@ -134,20 +134,35 @@ class Match(Case):
         self.problem.add_feature(name='params', values={p: kwargs[p] for p in params_names if p in kwargs})
 
     def get_date(self):
+        """
+        Returns the date the match was played.
+        """
         return self.problem.get_feature('date')
 
     def get_home(self):
+        """
+        Returns the name of the home team in the match.
+        """
         return self.problem.get_feature('home')
 
     def get_away(self):
+        """
+        Returns the name of the away team in the match.
+        """
         return self.problem.get_feature('away')
 
     def get_params(self):
+        """
+        Returns a dictionary with the parameters of the match.
+        """
         return self.problem.get_feature('params')
 
 
 class MatchesCaseBase(CaseBase):
     def add_match(self, match):
+        """
+        Add an already created match to the MatchCaseBase.
+        """
         self.add_case(match)
 
     def create_match(self, name, date, home_team, away_team, result, **kwargs):
@@ -183,7 +198,7 @@ class MatchesCaseBase(CaseBase):
         else:
             return all_matches
 
-    def get_hist(self,  match, n):
+    def get_hist(self, m, n):
         """
         Get the nth recent history of matches of both teams playing in the match.
         :type match: Match
@@ -193,11 +208,32 @@ class MatchesCaseBase(CaseBase):
         :return: Both list of past matches of home and away teams.
                 ({home_hist}, {ayaw_hist})
         """
-        home = match.get_home()
-        away = match.get_away()
-        date = match.get_date()
+        home = m.get_home()
+        away = m.get_away()
+        date = m.get_date()
         return (self.get_case_team(home, 'home', **{'date': date, 'num': n}),
                 self.get_case_team(away, 'away', **{'date': date, 'num': n}))
+
+    def get_common_matches(self, m, n):
+        """
+        Get the 'common' matches between two teams, meaning the matches that share
+        the same opponent between the home and away teams, i.e. home_team vs team1
+        and team1 vs away_team.
+        :param m: Match
+        :param n: maximum number of matches retrieved
+        :return: Tuple containing the home common matches and the away common matches.
+        """
+        home = m.get_home()
+        away = m.get_away()
+        date = m.get_date()
+
+        home_matches = self.get_case_team(home, 'home', **{'date': date, 'num': n})
+        home_opponent = [a.name for a in home_matches.values()]
+        away_matches = self.get_case_team(away, 'away', **{'date': date, 'num': n})
+        away_opponent = [h.name for h in away_matches.values()]
+
+        return ([m for m in home_matches.values() if m.get_away().name in away_opponent],
+                [m for m in away_matches.values() if m.get_home().name in home_opponent])
 
 if __name__ == '__main__':
     match = Match(name='match1', date='04/05/14', home_team='FCB', away_team='RMD', result='1')
