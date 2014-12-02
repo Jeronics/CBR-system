@@ -201,8 +201,8 @@ class MatchesCaseBase(CaseBase):
     def get_hist(self, m, n):
         """
         Get the nth recent history of matches of both teams playing in the match.
-        :type match: Match
-        :param match: The reference match from where to extract the history.
+        :type m: Match
+        :param m: The reference match from where to extract the history.
         :type n: int
         :param n: Number of matches to be returned.
         :return: Both list of past matches of home and away teams.
