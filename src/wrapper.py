@@ -191,7 +191,7 @@ class MatchesCaseBase(CaseBase):
         :type n: int
         :param n: Number of matches to be returned.
         :return: Both list of past matches of home and away teams.
-                [{home_hist}, {ayaw_hist}]
+                ({home_hist}, {ayaw_hist})
         """
         home = match.get_home()
         away = match.get_away()
