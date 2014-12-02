@@ -17,9 +17,9 @@ CBR-system
 Consists in three classes:
 
 ### CBRclass:
-    ```python
-     def __init__(self, name, **kwargs):
-    ```
+```python
+ def __init__(self, name, **kwargs):
+```
 
 ### Case:
 
