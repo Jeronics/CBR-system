@@ -14,6 +14,16 @@ CBR-system
 
 1. Data Structure
 -----------------
+Consists in three classes:
+
+### CBRclass:
+    ```python
+     def __init__(self, name, **kwargs):
+    ```
+
+### Case:
+
+### CaseBase:
 
 2. Retrieve
 -----------
