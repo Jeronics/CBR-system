@@ -3,7 +3,7 @@ CBR-system
 
 0. Data
 -------
-   - We have csv-s of first and second division of spain from 1996/97 til now. And lot of information else.
+   - We have csv-s of first and second division of spain from 1996/97 til now. And lot of more information.
                         http://www.football-data.co.uk/spainm.php
 
    - Here we have history of 'quinielas': http://www.resultados-futbol.com/quiniela/historico/18
