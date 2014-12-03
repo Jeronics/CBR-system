@@ -274,5 +274,6 @@ if __name__ == '__main__':
     for files in glob.glob("../data/*.csv"):
         dataset.append(files)
 
+
     for data in dataset:
         matches_data = read_match_dataset(data)
