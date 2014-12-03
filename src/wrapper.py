@@ -1,10 +1,12 @@
+import glob
 import operator
-from internal_repr.model import CBRclass, Case, CaseBase
 import utils
+import pandas as pd
+from internal_repr.model import CBRclass, Case, CaseBase
 
 
 class Match(Case):
-    def __init__(self, name, date, home_team, away_team, result, **kwargs):
+    def __init__(self, params):
         """
         :param name: Name of the match (id)
         :param date: Date of the match
@@ -115,11 +117,15 @@ class Match(Case):
                         - B365AH = Bet365 size of handicap (home team)
         :return:
         """
+        date = params['Date']
+        home = params['HomeTeam']
+        away = params['AwayTeam']
+        name = date + home + away
         problem = CBRclass(name=name)
         Case.__init__(self, name, problem)
 
-        params_names = ['FTHG', 'FTAG', 'HTHG', 'HTAG', 'HTR', 'Attendance', 'Referee', 'HS', 'AS', 'HST', 'AST', 'HHW',
-                        'AHW', 'HC', 'AC', 'HF', 'AF', 'HO', 'AO', 'HY', 'AY', 'HR', 'AR', 'HBP', 'ABP', 'B365H',
+        params_names = ['Div', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HTR', 'Attendance', 'Referee', 'HS', 'AS', 'HST', 'AST',
+                        'HHW', 'AHW', 'HC', 'AC', 'HF', 'AF', 'HO', 'AO', 'HY', 'AY', 'HR', 'AR', 'HBP', 'ABP', 'B365H',
                         'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
                         'IWA', 'LBH', 'LBD', 'LBA', 'PSH', 'PSD', 'PSA', 'SOH', 'SOD', 'SOA', 'SBH', 'SBD', 'SBA',
                         'SJH', 'SJD', 'SJA', 'SYH', 'SYD', 'SYA', 'VCH', 'VCD', 'VCA', 'WHH', 'WHD', 'WHA', 'Bb1X2',
@@ -128,10 +134,10 @@ class Match(Case):
                         'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
                         'B365AHA', 'B365AH']
         self.problem.add_feature(name='date', values=utils.date_to_python_date(date))
-        self.problem.add_class('home', home_team)
-        self.problem.add_class('away', away_team)
-        self.set_solution(result)
-        self.problem.add_feature(name='params', values={p: kwargs[p] for p in params_names if p in kwargs})
+        self.problem.add_class('home', home)
+        self.problem.add_class('away', away)
+        self.set_solution(params['FTR'])
+        self.problem.add_feature(name='params', values={p: params[p] for p in params_names if p in params})
 
     def __str__(self):
         return str(self.get_date()) + ': ' + self.get_home() + ' vs ' + self.get_away() + ' --> ' + self.get_solution()
@@ -184,12 +190,12 @@ class MatchesCaseBase(CaseBase):
         """
         self.add_case(match)
 
-    def create_match(self, name, date, home_team, away_team, result, **kwargs):
+    def create_match(self, params):
         """
         Creates a match calling the 'create_match' method of the class Match.
         And adds the match to the MatchesCaseBase.
         """
-        m = Match(name, date, home_team, away_team, result, **kwargs)
+        m = Match(params)
         self.add_case(m)
         return m
 
@@ -254,11 +260,19 @@ class MatchesCaseBase(CaseBase):
         return ({m.name: m for m in home_matches.values() if m.get_away().name in away_opponent},
                 {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
 
-if __name__ == '__main__':
-    match = Match(name='match1', date='04/05/14', home_team='FCB', away_team='RMD', result='1')
+
+def read_match_dataset(dataset):
+    data = pd.read_csv(dataset, sep=',', header=0)
     mcb = MatchesCaseBase()
-    mcb.add_match(match)
-    mcb.create_match(name='match2', date='01/05/14', home_team='FCB', away_team='AAA', result='X')
-    mcb.create_match(name='match3', date='01/06/14', home_team='FCB', away_team='BBB', result='2')
-    print mcb.get_hist(match, 2)
-    print match
+    for i in data.index:
+        params = {c: data.irow(i)[c] for c in data.columns}
+        mcb.create_match(params)
+    return mcb
+
+if __name__ == '__main__':
+    dataset = []
+    for files in glob.glob("../data/*.csv"):
+        dataset.append(files)
+
+    for data in dataset:
+        matches_data = read_match_dataset(data)
