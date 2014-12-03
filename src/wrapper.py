@@ -2,6 +2,7 @@ import glob
 import operator
 import utils
 import pandas as pd
+import cPickle as cpi
 from internal_repr.model import CBRclass, Case, CaseBase
 
 
@@ -269,11 +270,24 @@ def read_match_dataset(dataset):
         mcb.create_match(params)
     return mcb
 
+
+def read_datasets(dataset):
+    save_file = open(dataset, 'rb')
+    matches_data = MatchesCaseBase()
+    matches_data = cpi.load(save_file)
+    save_file.close()
+    return matches_data
+
 if __name__ == '__main__':
     dataset = []
-    for files in glob.glob("../data/*.csv"):
+    for files in glob.glob("../data/train/*.csv"):
         dataset.append(files)
 
 
     for data in dataset:
         matches_data = read_match_dataset(data)
+
+    save_file = open('../data/train/train.pkl', 'wb')
+    cpi.dump(matches_data, save_file, -1)
+    save_file.close()
+
