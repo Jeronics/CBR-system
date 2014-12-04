@@ -6,7 +6,7 @@ from internal_repr.model import CBRclass, Case, CaseBase
 
 
 class Match(Case):
-    def __init__(self, params):
+    def     __init__(self, params):
         """
         :param name: Name of the match (id)
         :param date: Date of the match
@@ -273,7 +273,6 @@ if __name__ == '__main__':
     dataset = []
     for files in glob.glob("../data/*.csv"):
         dataset.append(files)
-
 
     for data in dataset:
         matches_data = read_match_dataset(data)
