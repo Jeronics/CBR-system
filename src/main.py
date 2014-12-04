@@ -4,7 +4,7 @@ import utils as ut
 import match as read
 import glob
 import datetime as dt
-
+import wrapper as w
 
 
  # ______________________________________________________________________
@@ -21,14 +21,18 @@ import datetime as dt
 def main(actualMatch):
 
     # 1-. LOAD DATA
-    dataset = []
+    # dataset = []
+    #
+    # for files in glob.glob("../data/*.csv"):
+    #     dataset.append(files)
 
-    for files in glob.glob("../data/*.csv"):
-        dataset.append(files)
+    dataset = '../data/train/train.pkl'
+    a = w.read_datasets(dataset)
 
+    print a
     # 2-. READ DATASET
-    for data in dataset:
-        matches_data = read.read_match_dataset(data)
+    # for data in dataset:
+    #     matches_data = read.read_match_dataset(data)
 
     # TODO: 3-. PREPROCESS DATASET
 
