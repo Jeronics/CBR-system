@@ -1,7 +1,8 @@
 CBR-system
 ==========
-TODO:
-----
+
+Task List
+---------
 - [ ] Read fast the data.
 - [ ] **Retrieve**
  - [ ] Create abstract Retrieve.
