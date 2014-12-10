@@ -278,8 +278,8 @@ def save_case_base(case_base, filename):
     f.close()
 
 
-def read_datasets(dataset):
-    f = open(dataset, 'rb')
+def read_case_base(filename):
+    f = open(filename, 'rb')
     matches_base = pk.load(f)
     f.close()
     return matches_base
@@ -295,5 +295,5 @@ if __name__ == '__main__':
 
     save_case_base(matches_data, '../data/Train/train.pkl')
 
-    matches = read_datasets('../data/Train/train.pkl')
+    matches = read_case_base('../data/Train/train.pkl')
 
