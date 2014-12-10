@@ -264,6 +264,12 @@ class MatchesCaseBase(CaseBase):
 
 
 def read_match_dataset(dataset):
+    """
+    Read a csv document and save all the matches (lines) in a MatchesCaseBase class
+    and return it.
+    :param dataset: Name of the file.
+    :return:
+    """
     data = pd.read_csv(dataset, sep=',', header=0)
     mcb = MatchesCaseBase()
     for i in data.index:
@@ -273,12 +279,22 @@ def read_match_dataset(dataset):
 
 
 def save_case_base(case_base, filename):
+    """
+    Save the MatchesCaseBase class into a pickle file.
+    :param case_base: Object class to save.
+    :param filename: name of the file.
+    """
     f = open(filename, 'wb')
     pk.dump(case_base, f, -1)
     f.close()
 
 
 def read_case_base(filename):
+    """
+    Read a pickle file.
+    :param filename: Name of the file to unpickle.
+    :return: Return the unpickled object.
+    """
     f = open(filename, 'rb')
     matches_base = pk.load(f)
     f.close()
