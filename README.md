@@ -4,11 +4,17 @@ TODO:
 ----
 - [ ] Read fast the data.
 - [ ] Retrieve
+ - [ ] Create abstract Retrieve.
  - [ ] Match Iosu's implementation with the abstract case.
 - [ ] Reuse
+ - [ ] Create abstract Reuse.
  - [ ] Match Iosu's implementation with the abstract case.
 - [ ] Revise
+ - [ ] Create abstract Revise.
+ - [ ] Adapt the abstract case to our problem.
 - [ ] Retain
+ - [ ] Create abstract Retain.
+ - [ ] Adapt the abstract case to our problem.
 
 0. Data
 -------
