@@ -3,7 +3,7 @@ CBR-system
 
 Task List
 ---------
-- [ ] Read fast the data.
+- [x] Read fast the data.
 - [ ] **Retrieve**
  - [ ] Create abstract Retrieve.
  - [ ] Match Iosu's implementation with the abstract case.

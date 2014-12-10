@@ -2,7 +2,8 @@ import glob
 import operator
 import utils
 import pandas as pd
-import cPickle as cpi
+import cPickle as cpk
+import pickle as pk
 from internal_repr.model import CBRclass, Case, CaseBase
 
 
@@ -271,22 +272,28 @@ def read_match_dataset(dataset):
     return mcb
 
 
+def save_case_base(case_base, filename):
+    f = open(filename, 'wb')
+    pk.dump(case_base, f, -1)
+    f.close()
+
+
 def read_datasets(dataset):
-    save_file = open(dataset, 'rb')
-    matches_data = MatchesCaseBase()
-    matches_data = cpi.load(save_file)
-    save_file.close()
-    return matches_data
+    f = open(dataset, 'rb')
+    matches_base = pk.load(f)
+    f.close()
+    return matches_base
 
 if __name__ == '__main__':
     dataset = []
-    for files in glob.glob("../data/train/*.csv"):
+    for files in glob.glob("../data/Train/*.csv"):
         dataset.append(files)
 
     for data in dataset:
         matches_data = read_match_dataset(data)
 
-    save_file = open('../data/train/train.pkl', 'wb')
-    cpi.dump(matches_data, save_file, -1)
-    save_file.close()
+
+    save_case_base(matches_data, '../data/Train/train.pkl')
+
+    matches = read_datasets('../data/Train/train.pkl')
 
