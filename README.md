@@ -1,5 +1,14 @@
 CBR-system
 ==========
+TODO:
+----
+[] Read fast the data.
+[] Retrieve
+    [] Match Iosu's implementation with the abstract case.
+[] Reuse
+    [] Match Iosu's implementation with the abstract case.
+[] Revise
+[] Retain
 
 0. Data
 -------
