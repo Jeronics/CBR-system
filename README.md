@@ -3,16 +3,16 @@ CBR-system
 TODO:
 ----
 - [ ] Read fast the data.
-- [ ] Retrieve
+- [ ] **Retrieve**
  - [ ] Create abstract Retrieve.
  - [ ] Match Iosu's implementation with the abstract case.
-- [ ] Reuse
+- [ ] **Reuse**
  - [ ] Create abstract Reuse.
  - [ ] Match Iosu's implementation with the abstract case.
-- [ ] Revise
+- [ ] **Revise**
  - [ ] Create abstract Revise.
  - [ ] Adapt the abstract case to our problem.
-- [ ] Retain
+- [ ] **Retain**
  - [ ] Create abstract Retain.
  - [ ] Adapt the abstract case to our problem.
 
