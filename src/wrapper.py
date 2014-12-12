@@ -2,25 +2,25 @@ import glob
 import operator
 import utils
 import pandas as pd
-import cPickle as cpk
 import pickle as pk
 from internal_repr.model import CBRclass, Case, CaseBase
 
 
 class Match(Case):
-    def     __init__(self, params):
+    def __init__(self, params):
         """
-        :param name: Name of the match (id)
-        :param date: Date of the match
-        :param ht: Home Team
-        :param at: Away Team
-        :param fthg: Full Time Home Goals
-        :param ftag: Full Time Away Goals
-        :param ftr: Full Time Result
-        :param hthg: Half Time Home Goals
-        :param htag: Half Time Away Goals
-        :param htr: Half Time Result
-        :param kwargs: Optional match parameters:
+        :type  params: dict
+        :param params: parameters of the match:
+                        - Date = Date of the match
+                        - Div = Division of the match
+                        - HomeTeam = Home Team
+                        - AwayTeam = Away Team
+                        - FTHG = Full Time Home Goals
+                        - FTAG = Full Time Away Goals
+                        - FTR = Full Time Result
+                        - HTHG = Half Time Home Goals
+                        - HTAG = Half Time Away Goals
+                        - HTR = Half Time Result
                         - Attendance = Crowd Attendance
                         - Referee = Match Referee
                         - HS = Home Team Shots
@@ -117,7 +117,6 @@ class Match(Case):
                         - B365AHH = Bet365 Asian handicap home team odds
                         - B365AHA = Bet365 Asian handicap away team odds
                         - B365AH = Bet365 size of handicap (home team)
-        :return:
         """
         date = params['Date']
         home = params['HomeTeam']
