@@ -5,7 +5,7 @@ Task List
 ---------
 - [x] Read fast the data.
 - [ ] **Retrieve**
- - [ ] Create abstract Retrieve.
+ - [x] Create abstract Retrieve.
  - [ ] Match Iosu's implementation with the abstract case.
 - [ ] **Reuse**
  - [ ] Create abstract Reuse.
