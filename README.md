@@ -3,7 +3,8 @@ CBR-system
 
 Task List
 ---------
-- [x] Read fast the data.
+- [x] **Data Structure**
+- [x] **Read fast the data**
 - [ ] **Retrieve**
  - [x] Create abstract Retrieve.
  - [ ] Match Iosu's implementation with the abstract case.
@@ -33,13 +34,28 @@ Task List
 Consists in three classes:
 
 ### CBRclass:
+Is an abstraction of an object class, which can contain other instances of CBRclass 
+in a dictionary of classes and can also contain other data structures in the attributes 
+dictionary.
+
 ```python
  def __init__(self, name, **kwargs):
 ```
 
 ### Case:
+The Case class is a subclass of the CBRclass with an attribute called solution and a CBRclass
+called problem.
+
+```python
+def __init__(self, name, problem, **kwargs):
+```
 
 ### CaseBase:
+This class contains basically a dictionary with all the cases in our Case Base. 
+
+```python
+def __init__(self):
+```
 
 2. Retrieve
 -----------
