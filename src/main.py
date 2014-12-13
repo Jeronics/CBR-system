@@ -27,7 +27,7 @@ def main(actualMatch):
     # for files in glob.glob("../data/*.csv"):
     #     dataset.append(files)
 
-    dataset = '../data/Train/train.pkl'
+    dataset = '../data/Train/train.jpkl'
     matches = w.read_case_base(dataset)
 
     print matches.get_case_values()[0].get_home()
