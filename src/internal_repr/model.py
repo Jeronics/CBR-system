@@ -179,7 +179,7 @@ class CaseBase(object):
 
 if __name__ == '__main__':
     # ----------
-    # -- test --
+    # -- Test --
     # ----------
 
     player1 = CBRclass(name='Messi')

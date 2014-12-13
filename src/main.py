@@ -26,10 +26,11 @@ def main(actualMatch):
     # for files in glob.glob("../data/*.csv"):
     #     dataset.append(files)
 
-    dataset = '../data/train/train.pkl'
-    a = w.read_datasets(dataset)
+    dataset = '../data/Train/train.pkl'
+    matches = w.read_case_base(dataset)
 
-    print a
+    print matches.get_case_values()[0].get_home()
+
     # 2-. READ DATASET
     # for data in dataset:
     #     matches_data = read.read_match_dataset(data)

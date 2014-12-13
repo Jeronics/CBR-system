@@ -60,7 +60,7 @@ def revise(case, expert):
     :type  expert: callable
     :param expert: A callable function which evaluates the proposed solution,
                    this 'expert' could be a real expert, a simulation or a
-                   real world test. The function should a return a list with
+                   real world Test. The function should a return a list with
                    the first element being a confidence measure and the second
                    element an improved solution if there is.
 

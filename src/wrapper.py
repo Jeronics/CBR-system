@@ -301,14 +301,15 @@ def read_case_base(filename):
 
 if __name__ == '__main__':
     dataset = []
-    for files in glob.glob("../data/Train/*.csv"):
-        dataset.append(files)
+    # for files in glob.glob("../data/Train/*.csv"):
+    #     dataset.append(files)
 
-    for data in dataset:
-        matches_data = read_match_dataset(data)
+    # for data in dataset:
+    #     matches_data = read_match_dataset(data)
 
 
-    save_case_base(matches_data, '../data/Train/train.pkl')
+    # save_case_base(matches_data, '../data/Train/Train.pkl')
 
-    matches = read_case_base('../data/Train/train.pkl')
+    matches = read_case_base('../data/Train/Train.pkl')
 
+    print matches.get_case_values()[0].get_home()
