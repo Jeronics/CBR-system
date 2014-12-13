@@ -1,8 +1,8 @@
-import glob
+import jsonpickle
 import operator
 import utils
 import pandas as pd
-import pickle as pk
+import glob
 from internal_repr.model import CBRclass, Case, CaseBase
 
 
@@ -284,7 +284,8 @@ def save_case_base(case_base, filename):
     :param filename: name of the file.
     """
     f = open(filename, 'wb')
-    pk.dump(case_base, f, -1)
+    json = jsonpickle.encode(case_base)
+    f.write(json)
     f.close()
 
 
@@ -295,21 +296,25 @@ def read_case_base(filename):
     :return: Return the unpickled object.
     """
     f = open(filename, 'rb')
-    matches_base = pk.load(f)
+    matches_base = jsonpickle.decode(f.read())
     f.close()
     return matches_base
 
 if __name__ == '__main__':
+    # Create Train Data set
     dataset = []
-    # for files in glob.glob("../data/Train/*.csv"):
-    #     dataset.append(files)
+    for files in glob.glob("../data/Train/*.csv"):
+        dataset.append(files)
 
-    # for data in dataset:
-    #     matches_data = read_match_dataset(data)
+    for data in dataset:
+        matches_data = read_match_dataset(data)
 
+    save_case_base(matches_data, '../data/Train/train.jpkl')
 
-    # save_case_base(matches_data, '../data/Train/Train.pkl')
+    # Create Test Data set
+    test_matches = read_match_dataset('../data/Test/LaLiga2013-14.csv')
+    save_case_base(test_matches, '../data/Test/test.jpkl')
 
-    matches = read_case_base('../data/Train/Train.pkl')
+    matches = read_case_base('../data/Test/test.jpkl')
 
     print matches.get_case_values()[0].get_home()

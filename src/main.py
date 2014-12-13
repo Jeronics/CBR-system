@@ -5,6 +5,7 @@ import match as read
 import glob
 import datetime as dt
 import wrapper as w
+from wrapper import MatchesCaseBase, Match
 
 
  # ______________________________________________________________________
@@ -47,12 +48,12 @@ def main(actualMatch):
     #         grade = 1  --> highest similarity, return only matches of local as local.
     #         grade = 2  --> less similarity, return matches of locals as local and foreign.
 
-    grade = 1
-    matches_retrieved = cbrm.retrieve(matches_data, actualMatch, grade)
+    # grade = 1
+    # matches_retrieved = cbrm.retrieve(matches_data, actualMatch, grade)
 
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
-    actualMatch, probability = cbrm.reuse(matches_retrieved, actualMatch)
+    # actualMatch, probability = cbrm.reuse(matches_retrieved, actualMatch)
 
     # TODO 6-. REVISE
 
@@ -62,15 +63,12 @@ def main(actualMatch):
     # ut.printMatches(matches_retrieved)
 
     # Print result
-    ut.printResult(actualMatch, probability * 100)
+    # ut.printResult(actualMatch, probability * 100)
 
 
 if __name__ == '__main__':
-    date = dt.datetime.now()
 
-    localTeam = sys.argv[1]
-    foreignTeam = sys.argv[2]
-    actualMatch = read.make_match(0, date, localTeam, foreignTeam, 0, 0, "D")
+    test_matches = w.read_case_base('../data/Test/test.jpkl')
 
-
-    main(actualMatch)
+    for match in test_matches.get_case_values():
+        main(match)
