@@ -28,15 +28,55 @@ def retrieve(casebase, case, sim, thr, max_cases):
 
     :return: List of similar cases.
     """
-    similar_cases = []
-    for c in casebase.get_case_values():
-        similarity = sim(c, case)
-        if similarity > thr:
-            if len(similar_cases) < max_cases:
-                similar_cases.append(c)
-                similar_cases.sort(key=lambda x: sim(x, case))
-            elif similarity > sim(similar_cases[-1], case):
-                similar_cases[-1] = case
-                similar_cases.sort(key=lambda x: sim(x, case))
+    if hasattr(sim, '__call__'):
+        similar_cases = []
+        for c in casebase.get_case_values():
+            similarity = sim(c, case)
+            if similarity > thr:
+                if len(similar_cases) < max_cases:
+                    similar_cases.append(c)
+                    similar_cases.sort(key=lambda x: sim(x, case))
+                elif similarity > sim(similar_cases[-1], case):
+                    similar_cases[-1] = case
+                    similar_cases.sort(key=lambda x: sim(x, case))
 
-    return similar_cases
+        return similar_cases
+    else:
+        raise NameError('The argument "sim" should be callable.')
+
+
+def reuse():
+    pass
+
+
+def revise(case, expert):
+    """
+    In the Revise Phase, a proposed solution for a given case is evaluated
+    and a confidence probability is returned.
+
+    :type  case: Case
+    :param case: It is a Case with a proposed solution by the Reuse Phase.
+
+    :type  expert: callable
+    :param expert: A callable function which evaluates the proposed solution,
+                   this 'expert' could be a real expert, a simulation or a
+                   real world test. The function should a return a list with
+                   the first element being a confidence measure and the second
+                   element an improved solution if there is.
+
+    :return: confidence measure of the proposed solution to be positive.
+    """
+    if hasattr(expert, '__call__'):
+        v = expert(case)
+        confidence = v[0]
+        if len(v) > 1:
+            improved_sol = v[1]
+            case.set_solution(improved_sol)
+
+        return [confidence, case]
+    else:
+        raise NameError('The argument "expert" should be callable.')
+
+
+def retain():
+    pass

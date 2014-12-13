@@ -12,7 +12,7 @@ Task List
  - [ ] Create abstract Reuse.
  - [ ] Match Iosu's implementation with the abstract case.
 - [ ] **Revise**
- - [ ] Create abstract Revise.
+ - [x] Create abstract Revise.
  - [ ] Adapt the abstract case to our problem.
 - [ ] **Retain**
  - [ ] Create abstract Retain.
