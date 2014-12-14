@@ -170,7 +170,10 @@ class Match(Case):
     def get_home_or_away(self, team):
         """
         Returns 'home' or 'away' depending on the position the team is playing in the match.
+
+        :type  team: str
         :param team: Team in the match
+
         :return: 'home' or 'away'
         """
         return 'home' if self.problem.get_class('home') == team else 'away'
@@ -178,7 +181,10 @@ class Match(Case):
     def get_team(self, where):
         """
         Returns the team playing in the position 'where'.
+
+        :type  where: str
         :param where: 'home' or 'away'
+
         :return: Team's name playing 'where'
         """
         return self.get_home() if where == 'home' else self.get_away()
@@ -203,8 +209,13 @@ class MatchesCaseBase(CaseBase):
     def get_case_team(self, team, where, **kwargs):
         """
         Get the matches a team has played.
+
+        :type  team: str
         :param team: Name of the team
+
+        :type  where: str
         :param where: 'home' or 'away'
+
         :param kwargs: num: Number of matches to retrieve,
                        date: Time from where to retrieve matches
         :return:
@@ -227,10 +238,13 @@ class MatchesCaseBase(CaseBase):
     def get_hist(self, m, n):
         """
         Get the nth recent history of matches of both teams playing in the match.
-        :type m: Match
+
+        :type  m: Match
         :param m: The reference match from where to extract the history.
-        :type n: int
+
+        :type  n: int
         :param n: Number of matches to be returned.
+
         :return: Both list of past matches of home and away teams.
                 ({home_hist}, {ayaw_hist})
         """
@@ -245,8 +259,13 @@ class MatchesCaseBase(CaseBase):
         Get the 'common' matches between two teams, meaning the matches that share
         the same opponent between the home and away teams, i.e. home_team vs team1
         and team1 vs away_team.
+
+        :type  m: Match
         :param m: Match
+
+        :type  n: int
         :param n: maximum number of matches retrieved
+
         :return: Tuple containing the home common matches and the away common matches.
         """
         home = m.get_home()
@@ -281,6 +300,7 @@ def read_match_dataset(dataset):
     """
     Read a csv document and save all the matches (lines) in a MatchesCaseBase class
     and return it.
+
     :param dataset: Name of the file.
     :return:
     """
@@ -295,7 +315,11 @@ def read_match_dataset(dataset):
 def save_case_base(case_base, filename):
     """
     Save the MatchesCaseBase class into a pickle file.
+
+    :type  case_base: CaseBase
     :param case_base: Object class to save.
+
+    :type  filename: str
     :param filename: name of the file.
     """
     f = open(filename, 'wb')
@@ -307,7 +331,10 @@ def save_case_base(case_base, filename):
 def read_case_base(filename):
     """
     Read a pickle file.
+
+    :type  filename: str
     :param filename: Name of the file to unpickle.
+
     :return: Return the unpickled object.
     """
     f = open(filename, 'rb')
