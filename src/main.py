@@ -5,6 +5,7 @@ import match as read
 import glob
 import datetime as dt
 import wrapper as w
+import internal_repr.phases as cbr
 from wrapper import MatchesCaseBase, Match
 
 
@@ -22,34 +23,20 @@ from wrapper import MatchesCaseBase, Match
 def main(actualMatch):
 
     # 1-. LOAD DATA
-    # dataset = []
-    #
-    # for files in glob.glob("../data/*.csv"):
-    #     dataset.append(files)
 
     dataset = '../data/Train/train.jpkl'
     matches = w.read_case_base(dataset)
 
-    print matches.get_case_values()[0].get_home()
-
-    # 2-. READ DATASET
-    # for data in dataset:
-    #     matches_data = read.read_match_dataset(data)
-
-    # TODO: 3-. PREPROCESS DATASET
-
-
-
-    # 4-. RETRIEVE SIMILAR MATCHES
+    # 2-. RETRIEVE SIMILAR MATCHES
 
     # Grade of similarity:
     #   When grade higher less similarity.
     #   e.g:
     #         grade = 1  --> highest similarity, return only matches of local as local.
     #         grade = 2  --> less similarity, return matches of locals as local and foreign.
-
-    # grade = 1
-    # matches_retrieved = cbrm.retrieve(matches_data, actualMatch, grade)
+    threshold = 0.5
+    max_matches = 5
+    retrieved_matches = cbr.retrieve(matches, actualMatch, w.similarity, threshold, max_matches)
 
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score

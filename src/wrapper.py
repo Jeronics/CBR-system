@@ -153,13 +153,13 @@ class Match(Case):
         """
         Returns the name of the home team in the match.
         """
-        return self.problem.get_class('home').name
+        return str(self.problem.get_class('home').name)
 
     def get_away(self):
         """
         Returns the name of the away team in the match.
         """
-        return self.problem.get_class('away').name
+        return str(self.problem.get_class('away').name)
 
     def get_params(self):
         """
@@ -260,6 +260,21 @@ class MatchesCaseBase(CaseBase):
 
         return ({m.name: m for m in home_matches.values() if m.get_away().name in away_opponent},
                 {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
+
+
+def similarity(match1, match2):
+    """
+    Calculate the similarity between the two matches.
+
+    :type match1: Match
+    :type match2: Match
+    :return: Similarity between match1 and match2 (0 - 1)
+    """
+    if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
+        return 1
+    if match1.get_home() == match2.get_away() and match1.get_away() == match2.get_home():
+        return 0.7
+    return 0
 
 
 def read_match_dataset(dataset):
