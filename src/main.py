@@ -38,6 +38,10 @@ def main(actualMatch):
     max_matches = 5
     retrieved_matches = cbr.retrieve(matches, actualMatch, w.similarity, threshold, max_matches)
 
+    for match in retrieved_matches:
+        print match.name
+        
+
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
     # actualMatch, probability = cbrm.reuse(matches_retrieved, actualMatch)
@@ -59,3 +63,4 @@ if __name__ == '__main__':
 
     for match in test_matches.get_case_values():
         main(match)
+        break
