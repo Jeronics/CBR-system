@@ -40,6 +40,7 @@ def main(actualMatch):
 
     for match in retrieved_matches:
         print match.name
+        
 
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
