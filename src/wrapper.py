@@ -296,16 +296,20 @@ def similarity(match1, match2):
     return 0
 
 
-def read_match_dataset(dataset):
+def read_match_dataset(dataset, mcb):
     """
     Read a csv document and save all the matches (lines) in a MatchesCaseBase class
     and return it.
 
+    :type  mcb: MatchesCaseBase
+    :param mcb: Match Case Base where to store the data from the dataset.
+
+    :type  dataset:str
     :param dataset: Name of the file.
-    :return:
+
+    :return: MatchCaseBase
     """
     data = pd.read_csv(dataset, sep=',', header=0)
-    mcb = MatchesCaseBase()
     for i in data.index:
         params = {c: data.irow(i)[c] for c in data.columns}
         mcb.create_match(params)
@@ -348,13 +352,15 @@ if __name__ == '__main__':
     for files in glob.glob("../data/Train/*.csv"):
         dataset.append(files)
 
+    matches_data = MatchesCaseBase()
     for data in dataset:
-        matches_data = read_match_dataset(data)
+        matches_data = read_match_dataset(data, matches_data)
 
     save_case_base(matches_data, '../data/Train/train.jpkl')
 
     # Create Test Data set
-    test_matches = read_match_dataset('../data/Test/LaLiga2013-14.csv')
+    test_matches = MatchesCaseBase()
+    test_matches = read_match_dataset('../data/Test/LaLiga2013-14.csv', test_matches)
     save_case_base(test_matches, '../data/Test/test.jpkl')
 
     matches = read_case_base('../data/Test/test.jpkl')
