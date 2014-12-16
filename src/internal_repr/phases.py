@@ -35,10 +35,10 @@ def retrieve(casebase, case, sim, thr, max_cases):
             if similarity > thr:
                 if len(similar_cases) < max_cases:
                     similar_cases.append(c)
-                    similar_cases.sort(key=lambda x: sim(x, case))
+                    similar_cases.sort(key=lambda x: sim(x, case), reverse=True)
                 elif similarity > sim(similar_cases[-1], case):
                     similar_cases[-1] = case
-                    similar_cases.sort(key=lambda x: sim(x, case))
+                    similar_cases.sort(key=lambda x: sim(x, case), reverse=True)
 
         return similar_cases
     else:

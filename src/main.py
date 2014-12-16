@@ -39,7 +39,7 @@ def main(actualMatch):
     retrieved_matches = cbr.retrieve(matches, actualMatch, w.similarity, threshold, max_matches)
 
     for match in retrieved_matches:
-        print match.name
+        print str(match.name) + ' | sim: ' + str(w.similarity(actualMatch, match))
         
 
     # TODO 5-. REUSE
