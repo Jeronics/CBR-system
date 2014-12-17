@@ -1,5 +1,5 @@
 from model import CaseBase, Case
-
+import random
 
 def retrieve(casebase, case, sim, thr, max_cases):
     """
@@ -66,36 +66,42 @@ def reuse(similar_cases, actual_case, similarities):
 
     :return: String with the result of the case
     """
-    winProb = 0
-    drawProb = 0
-    loseProb = 0
-    for idx, case in enumerate(similar_cases):
-        # H = Home team wins.
-        if (str(case.get_solution()) == str("H")):
-            if (str(actual_case.get_home()) == str(case.get_home())):
-                winProb = winProb + (1 * similarities[idx]);
+
+    try:
+        winProb = 0
+        drawProb = 0
+        loseProb = 0
+        for idx, case in enumerate(similar_cases):
+            # H = Home team wins.
+            if (str(case.get_solution()) == str("H")):
+                if (str(actual_case.get_home()) == str(case.get_home())):
+                    winProb = winProb + (1 * similarities[idx]);
+                else:
+                    loseProb = loseProb + (1 * similarities[idx]);
+            # A = Away team wins.
+            elif (str(case.get_solution()) == str("A")):
+                if (str(actual_case.get_away()) == str(case.get_away())):
+                    loseProb = loseProb + (1 * similarities[idx]);
+                else:
+                    winProb = winProb + (1 * similarities[idx]);
+            # D = Draw
             else:
-                loseProb = loseProb + (1 * similarities[idx]);
-        # A = Away team wins.
-        elif (str(case.get_solution()) == str("A")):
-            if (str(actual_case.get_away()) == str(case.get_away())):
-                loseProb = loseProb + (1 * similarities[idx]);
-            else:
-                winProb = winProb + (1 * similarities[idx]);
-        # D = Draw
-        else:
-            drawProb = drawProb + (1 * similarities[idx]);
+                drawProb = drawProb + (1 * similarities[idx]);
 
-    total = winProb+loseProb+drawProb
+        total = winProb+loseProb+drawProb
 
-    print "win = " + str(winProb/total)
-    print "lose = " + str(loseProb/total)
-    print "draw = " + str(drawProb/total)
+        print "win = " + str(winProb/total)
+        print "lose = " + str(loseProb/total)
+        print "draw = " + str(drawProb/total)
 
-    probabilities = {'H': winProb/total, 'A': loseProb/total, 'D': drawProb/total}
+        probabilities = {'H': winProb/total, 'A': loseProb/total, 'D': drawProb/total}
 
-    probability = max(winProb/total, loseProb/total, drawProb/total)
-    result = max(probabilities, key=probabilities.get)
+        probability = max(winProb/total, loseProb/total, drawProb/total)
+        result = max(probabilities, key=probabilities.get)
+    except Exception as e:
+        print e.message
+        print 'no similar cases in the history'
+        result = random.choice(['H', 'A', 'D'])
     return result
 
 
@@ -152,8 +158,8 @@ def retain(case, retain, casebase, save_case_base, filename):
     """
     if retain:
         casebase.add_case(case)
-        save_case_base(casebase, filename)
-        print 'save match in cbr'
+        # save_case_base(casebase, filename)
+        print 'we should save match in cbr--- not saving for now'
         return True
     else:
         print 'expert advise not to save match'
