@@ -11,9 +11,9 @@ Task List
 - [ ] **Reuse**
  - [ ] Create abstract Reuse.
  - [ ] Match Iosu's implementation with the abstract case.
-- [ ] **Revise**
+- [x] **Revise**
  - [x] Create abstract Revise.
- - [ ] Adapt the abstract case to our problem.
+ - [x] Adapt the abstract case to our problem.
 - [ ] **Retain**
  - [ ] Create abstract Retain.
  - [ ] Adapt the abstract case to our problem.

@@ -51,18 +51,20 @@ def retrieve(casebase, case, sim, thr, max_cases):
 
 
 def reuse(similar_cases, actual_case, similarities):
-    '''
+    """
     In the Reuse Phase we will observe the retrieved solutions and we will try to adapt them to our new case with
     the implementation of an heuristic.
 
-    :type matches: Case
-    :param matches:
+    :type similar_cases: Case
+    :param similar_cases:
 
     :type actual_case: Case
     :param actual_case:
+
     :param similarities:
+
     :return:
-    '''
+    """
     winProb = 0
     drawProb = 0
     loseProb = 0
@@ -114,22 +116,19 @@ def revise(case, expert, predicted_result):
     :return: confidence measure of the proposed solution to be positive.
     """
     if hasattr(expert, '__call__'):
-        solution = expert(case, predicted_result)
-        if solution:
-            case.set_solution(predicted_result)
-        # confidence = v[0]
-        # if len(v) > 1:
-        #     improved_sol = v[1]
-        #     case.set_solution(improved_sol)
+        v = expert(case, predicted_result)
+        confidence = v[0]
+        if len(v) > 1:
+            improved_sol = v[1]
+            case.set_solution(improved_sol)
 
-        # return [confidence, case]
-        return solution
+        return [confidence, case]
     else:
         raise NameError('The argument "expert" should be callable.')
 
 
 def retain(case, retain, casebase, save_case_base, filename):
-    '''
+    """
     In the Retain Phase, the proposed solution will be consider to be saved
     in the repository of the case base or not.
 
@@ -149,7 +148,7 @@ def retain(case, retain, casebase, save_case_base, filename):
     :param filename: Name of the path where the case base is saved.
 
     :return: Boolean
-    '''
+    """
     if retain:
         casebase.add_case(case)
         save_case_base(casebase, filename)
