@@ -50,10 +50,38 @@ def retrieve(casebase, case, sim, thr, max_cases):
         raise NameError('The argument "sim" should be callable.')
 
 
-def reuse(matches):
+def reuse(matches, actualMatch, similarities):
+    winProb = 0
+    drawProb = 0
+    loseProb = 0
+    for idx, match in enumerate(matches):
+        # H = Home team wins.
+        if (str(match.get_solution()) == str("H")):
+            if (str(actualMatch.get_home()) == str(match.get_home())):
+                winProb = winProb + (1 * similarities[idx]);
+            else:
+                loseProb = loseProb + (1 * similarities[idx]);
+        # A = Away team wins.
+        elif (str(match.get_solution()) == str("A")):
+            if (str(actualMatch.get_away()) == str(match.get_away())):
+                loseProb = loseProb + (1 * similarities[idx]);
+            else:
+                winProb = winProb + (1 * similarities[idx]);
+        # D = Draw
+        else:
+            drawProb = drawProb + (1 * similarities[idx]);
 
+    total = winProb+loseProb+drawProb
 
-    pass
+    print "win = " + str(winProb/total)
+    print "lose = " + str(loseProb/total)
+    print "draw = " + str(drawProb/total)
+
+    probabilities = {'W': winProb/total, 'L': loseProb/total, 'D': drawProb/total}
+
+    probability = max(winProb/total, loseProb/total, drawProb/total)
+    result = max(probabilities, key=probabilities.get)
+    return result
 
 
 def revise(case, expert):
