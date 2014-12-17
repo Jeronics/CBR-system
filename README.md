@@ -18,6 +18,13 @@ Task List
  - [ ] Create abstract Retain.
  - [ ] Adapt the abstract case to our problem.
 
+
+Deadlines
+----------
+
+- 19/01/2015 Delivery 2: Project Documentation and software code.
+
+- 22/01/2015 Delivery 3: Project work presentation and public exposition.
 0. Data
 -------
    - We have csv-s of first and second division of spain from 1996/97 til now. And lot of more information.
