@@ -48,12 +48,13 @@ def main(actualMatch):
     # TODO 6-. REVISE
     actualMatch.get_solution()
 
-    solution = cbr.revise(actualMatch, w.expert, predicted_result)
+    conf = cbr.revise(actualMatch, w.expert, predicted_result)
 
     # TODO 7-. RETAIN
+    thr = 0.5
+    saved = cbr.retain(actualMatch, matches, conf, thr)
 
-    saved = cbr.retain(actualMatch, solution, matches, w.save_case_base, filename='../data/Train/train.jpkl')
-
+    w.save_case_base(matches, '../data/Train/train.jpkl')
     print 'saved in cbr new case = ' + str(saved)
 
 
@@ -63,4 +64,3 @@ if __name__ == '__main__':
 
     for match in test_matches.get_case_values():
         main(match)
-        break

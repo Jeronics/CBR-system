@@ -86,14 +86,23 @@ def reuse(similar_cases, actual_case, similarities):
                     winProb = winProb + (1 * similarities[idx]);
             # D = Draw
             else:
-                drawProb = drawProb + (1 * similarities[idx]);
+                loseProb = loseProb + (1 * similarities[idx]);
+        # A = Away team wins.
+        elif (str(case.get_solution()) == str("A")):
+            if (str(actual_case.get_away()) == str(case.get_away())):
+                loseProb = loseProb + (1 * similarities[idx]);
+            else:
+                winProb = winProb + (1 * similarities[idx]);
+        # D = Draw
+        else:
+            drawProb = drawProb + (1 * similarities[idx]);
 
         total = winProb+loseProb+drawProb
 
         print "win = " + str(winProb/total)
         print "lose = " + str(loseProb/total)
         print "draw = " + str(drawProb/total)
-
+    
         probabilities = {'H': winProb/total, 'A': loseProb/total, 'D': drawProb/total}
 
         probability = max(winProb/total, loseProb/total, drawProb/total)
@@ -134,33 +143,32 @@ def revise(case, expert, predicted_result):
         raise NameError('The argument "expert" should be callable.')
 
 
-def retain(case, retain, casebase, save_case_base, filename):
+def retain(case, casebase, confidence, thr):
     """
     In the Retain Phase, the proposed solution will be consider to be saved
     in the repository of the case base or not.
 
     :type  case: Case
-    :param case: It is a case with the proposed solution to be saved or not in the retain phase.
-
-    :type retain: Boolean
-    :param retain: It is the boolean of the reuse phase to know if the expert advice us to retain or not the Case.
+    :param case: It is a case with the proposed solution to be saved or not
+                 in the retain phase.
 
     :type  casebase: CaseBase
     :param casebase: CaseBase storing Cases with its solutions.
 
-    :type save_case_base: callable
-    :param save_case_base: Function to save the case in the casebase and create the .jpkl
+    :type  confidence: float
+    :param confidence: Confidence given by the expert.
 
-    :type filename: String
-    :param filename: Name of the path where the case base is saved.
+    :type  thr: float
+    :param thr: Threshold to decide whether to add a case to the case library
+                given a certain confidence.
 
     :return: Boolean
     """
-    if retain:
+    if confidence > thr:
         casebase.add_case(case)
         # save_case_base(casebase, filename)
         print 'we should save match in cbr--- not saving for now'
-        return True
     else:
         print 'expert advise not to save match'
-        return False
+
+    return casebase
