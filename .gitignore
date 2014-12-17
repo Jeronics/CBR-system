@@ -3,3 +3,4 @@ CBR-system/.idea/
 .idea/
 *.pyc
 *.iml
+__init__.py
