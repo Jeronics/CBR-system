@@ -62,9 +62,10 @@ def main(actualMatch):
     print solution
     # TODO 7-. RETAIN
 
-    saved = cbr.retain(actualMatch, solution, w.CaseBase, w.save_case_base(), filename='../data/Train/train.jpkl')
+    saved = cbr.retain(actualMatch, solution, w.CaseBase, w.save_case_base, filename='../data/Train/train.jpkl')
 
-    print 'saved in cbr new case = '+saved
+    print 'saved in cbr new case = '+ str(saved)
+
 
 if __name__ == '__main__':
 

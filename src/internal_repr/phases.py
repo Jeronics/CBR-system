@@ -117,7 +117,7 @@ def revise(case, expert, predicted_result):
 
 
 def retain(match, retain, caseBase, save_case_base, filename):
-    if(retain):
+    if retain:
         caseBase.add_case(match)
         save_case_base(caseBase, filename)
         print 'save match in cbr'
