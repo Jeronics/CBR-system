@@ -102,14 +102,13 @@ def revise(case, expert, predicted_result):
     :return: confidence measure of the proposed solution to be positive.
     """
     if hasattr(expert, '__call__'):
-        solution = expert(case, predicted_result)
-        # confidence = v[0]
-        # if len(v) > 1:
-        #     improved_sol = v[1]
-        #     case.set_solution(improved_sol)
+        v = expert(case, predicted_result)
+        confidence = v[0]
+        if len(v) > 1:
+            improved_sol = v[1]
+            case.set_solution(improved_sol)
 
-        # return [confidence, case]
-        return solution
+        return [confidence, case]
     else:
         raise NameError('The argument "expert" should be callable.')
 

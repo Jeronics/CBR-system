@@ -302,14 +302,25 @@ def similarity(match1, match2):
         return similarity
     return 0
 
-def expert(match, predicted_result):
-    print 'get solution '+match.get_solution()
-    print 'our result '+str(predicted_result)
 
-    if (match.get_solution() == predicted_result):
-        return True
+def expert(match, predicted_result):
+    """
+    Check whether the proposed solution is correct, returns 1
+    if so and 0 otherwise.
+
+    :type  match: Match
+    :param match: Current Case
+
+    :type predicted_result: str
+    :param predicted_result: Proposed Result of the match.
+
+    :return: Confidence of the proposed solution being certain.
+    """
+    if match.get_solution() == predicted_result:
+        return 1
     else:
-        return False
+        return 0
+
 
 def read_match_dataset(dataset, mcb):
     """
