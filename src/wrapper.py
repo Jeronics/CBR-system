@@ -317,9 +317,9 @@ def expert(match, predicted_result):
     :return: Confidence of the proposed solution being certain.
     """
     if match.get_solution() == predicted_result:
-        return 1
+        return [1]
     else:
-        return 0
+        return [0]
 
 
 def read_match_dataset(dataset, mcb):
