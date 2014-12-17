@@ -1,13 +1,5 @@
-import sys
-import cbrMatches as cbrm
-import utils as ut
-import match as read
-import glob
-import datetime as dt
 import wrapper as w
 import internal_repr.phases as cbr
-from wrapper import MatchesCaseBase, Match
-
 
  # ______________________________________________________________________
  #
@@ -35,7 +27,7 @@ def main(actualMatch):
     #         grade = 1  --> highest similarity, return only matches of local as local.
     #         grade = 2  --> less similarity, return matches of locals as local and foreign.
     threshold = 0.01
-    max_matches = 5
+    max_matches = 10
     retrieved_matches, similarities = cbr.retrieve(matches, actualMatch, w.similarity, threshold, max_matches)
 
     print len(retrieved_matches)
@@ -50,21 +42,19 @@ def main(actualMatch):
     # REUSE the information retrieved from the archieves and predict a result and a score
 
     predicted_result = cbr.reuse(retrieved_matches, actualMatch, similarities)
-
-    # actualMatch, probability = cbrm.reuse(matches_retrieved, actualMatch)
+    print "predicted result = " + predicted_result
+    print "real result = " + actualMatch.get_solution()
 
     # TODO 6-. REVISE
-    expert = actualMatch.get_solution()
+    actualMatch.get_solution()
 
     solution = cbr.revise(actualMatch, w.expert, predicted_result)
 
-
-    print solution
     # TODO 7-. RETAIN
 
-    saved = cbr.retain(actualMatch, solution, w.CaseBase, w.save_case_base, filename='../data/Train/train.jpkl')
+    saved = cbr.retain(actualMatch, solution, matches, w.save_case_base, filename='../data/Train/train.jpkl')
 
-    print 'saved in cbr new case = '+ str(saved)
+    print 'saved in cbr new case = ' + str(saved)
 
 
 if __name__ == '__main__':
