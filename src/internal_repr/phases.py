@@ -30,22 +30,29 @@ def retrieve(casebase, case, sim, thr, max_cases):
     """
     if hasattr(sim, '__call__'):
         similar_cases = []
+        similarities = []
         for c in casebase.get_case_values():
             similarity = sim(c, case)
             if similarity > thr:
                 if len(similar_cases) < max_cases:
                     similar_cases.append(c)
+                    similarities.append(similarity)
                     similar_cases.sort(key=lambda x: sim(x, case), reverse=True)
+                    similarities.sort(reverse=True)
                 elif similarity > sim(similar_cases[-1], case):
                     similar_cases[-1] = case
+                    similarities[-1] = similarity
                     similar_cases.sort(key=lambda x: sim(x, case), reverse=True)
+                    similarities.sort(reverse=True)
 
-        return similar_cases
+        return similar_cases, similarities
     else:
         raise NameError('The argument "sim" should be callable.')
 
 
-def reuse():
+def reuse(matches):
+
+
     pass
 
 

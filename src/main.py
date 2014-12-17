@@ -34,16 +34,22 @@ def main(actualMatch):
     #   e.g:
     #         grade = 1  --> highest similarity, return only matches of local as local.
     #         grade = 2  --> less similarity, return matches of locals as local and foreign.
-    threshold = 0.5
+    threshold = 0.01
     max_matches = 5
-    retrieved_matches = cbr.retrieve(matches, actualMatch, w.similarity, threshold, max_matches)
+    retrieved_matches, similarities = cbr.retrieve(matches, actualMatch, w.similarity, threshold, max_matches)
 
-    for match in retrieved_matches:
-        print str(match.name) + ' | sim: ' + str(w.similarity(actualMatch, match))
-        
+    print len(retrieved_matches)
+    print 'home '+actualMatch.get_home() + '  away '+actualMatch.get_away()
+
+    print similarities
+    # for match in retrieved_matches:
+        # print str(match.name) + ' | sim: ' + str(w.similarity(match, actualMatch))
+
 
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
+
+    result = cbr.reuse(retrieved_matches, similarities)
     # actualMatch, probability = cbrm.reuse(matches_retrieved, actualMatch)
 
     # TODO 6-. REVISE
@@ -63,4 +69,3 @@ if __name__ == '__main__':
 
     for match in test_matches.get_case_values():
         main(match)
-        break
