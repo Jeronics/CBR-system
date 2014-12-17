@@ -117,20 +117,34 @@ class Case(object):
         self.solution = kwargs['solution'] if 'solution' in kwargs else ''
 
     def get_solution(self):
+        """
+        Gets the solution of the case.
+
+        :return: Returns the solution of the case.
+        """
         return self.solution
 
     def set_solution(self, solution):
         """
+        Sets the current solution to a given one.
+
         :param solution: solution of the case.
         :type  solution: str
         """
         self.solution = solution
 
     def get_problem(self):
+        """
+        Gets the problem of the case.
+
+        :return: Returns the problem.
+        """
         return self.problem
 
     def set_problem(self, problem):
         """
+        Set the problem of the case to a given problem.
+
         :param problem: CBRclass containing the description of the problem.
         :type  problem: CBRclass
         """
@@ -151,21 +165,50 @@ class CaseBase(object):
         self.cases = {}
 
     def add_case(self, case):
+        """
+        Add a new case to de Case Base.
+
+        :type  case: Case
+        :param case: New case to add.
+        """
         if type(case) is Case or issubclass(type(case), Case):
             self.cases[case.name] = case
         else:
             raise NameError("The case must be an instance of Case object.")
 
     def pop_case(self, case):
+        """
+        Pops a case from the CaseBase.
+
+        :type  case: Case
+        :param case: Case from the Case Base to pop.
+
+        :return: Popped case.
+        """
         self.cases.pop(case.name)
 
     def get_case_keys(self):
+        """
+        :return: Returns the keys of the cases dictionary.
+        """
         return self.cases.keys()
 
     def get_case_values(self):
+        """
+        :return: Return the values of the cases dictionary.
+        """
         return self.cases.values()
 
     def get_case(self, case):
+        """
+        Gets a case from the Case Base given a value or a key of
+        the cases dictionary.
+
+        :type case: Case | str
+        :param case: Value or key of the cases dictionary.
+
+        :return: Case
+        """
         if case in self.cases.keys():
             return self.cases[case]
         elif case in self.cases.values():
