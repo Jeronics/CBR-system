@@ -75,3 +75,12 @@ def __init__(self):
 
 5. Retain
 ---------
+
+
+
+GLOBAL GOALS: OPTIMAL CBR SYSTEM(Case base maintenence especially affects space and time)
+
+1.  Maximum Competence: to maximize the # of target problems it can satisfactorily solve
+2.  Optimal Efficiency:
+    a)  Time: minimize time
+    b)  Space: Smaller CL
