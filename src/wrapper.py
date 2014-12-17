@@ -1,6 +1,5 @@
 import jsonpickle
 import operator
-import utils
 import pandas as pd
 import glob
 import utils as ut
@@ -135,7 +134,7 @@ class Match(Case):
                         'BbMx<2.5', 'BbAv<2.5', 'GB>2.5', 'GB<2.5', 'B365>2.5', 'B365<2.5', 'BbAH', 'BbAHh', 'BbMxAHH',
                         'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
                         'B365AHA', 'B365AH']
-        self.problem.add_feature(name='date', values=utils.date_to_python_date(date))
+        self.problem.add_feature(name='date', values=ut.date_to_python_date(date))
         self.problem.add_class('home', home)
         self.problem.add_class('away', away)
         self.set_solution(params['FTR'])
@@ -290,7 +289,7 @@ def similarity(match1, match2):
     :type match2: Test Match: Actual MATCH
     :return: Similarity between match1 and match2 (0 - 1)
     """
-
+    # leagueYearsSinceGame = match2.get_date().year - match1.get_date().year
     leagueYearsSinceGame = ut.diff_in_league_years(match2.get_date(), match1.get_date())
 
 
