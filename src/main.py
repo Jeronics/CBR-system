@@ -1,4 +1,5 @@
 import wrapper as w
+from wrapper import MatchesCaseBase, Match
 import internal_repr.phases as cbr
 
  # ______________________________________________________________________
