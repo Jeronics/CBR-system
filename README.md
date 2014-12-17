@@ -88,8 +88,20 @@ class Case(object):
 This class contains basically a dictionary with all the cases in our Case Base. 
 
 ```python
-def __init__(self):
+class CaseBase(object):
+    """
+    Repository of Cases a the CBR.
+    """
+    def __init__(self):
 ```
+
+| Method | Description |
+| ------ | ----------- |
+| ```add_case``` | Add a new case to de Case Base. |
+| ```pop_case``` | Pops a case from the CaseBase. |
+| ```get_case_keys``` | Returns the keys of the cases dictionary. |
+| ```get_case_values``` | Return the values of the cases dictionary. |
+| ```get_case``` | Gets a case from the Case Base given a value or a key of the cases dictionary. |
 
 2. Retrieve
 -----------
