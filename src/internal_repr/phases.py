@@ -52,8 +52,13 @@ def retrieve(casebase, case, sim, thr, max_cases):
 
 def reuse(matches, actualMatch, similarities):
     '''
+    In the Reuse Phase we will observe the retrieved solutions and we will try to adapt them to our new case with
+    the implementation of an heuristic.
 
+    :type matches: Case
     :param matches:
+
+    :type actualMatch: Case
     :param actualMatch:
     :param similarities:
     :return:
@@ -109,24 +114,27 @@ def revise(case, expert, predicted_result):
     :return: confidence measure of the proposed solution to be positive.
     """
     if hasattr(expert, '__call__'):
-        v = expert(case, predicted_result)
-        confidence = v[0]
-        if len(v) > 1:
-            improved_sol = v[1]
-            case.set_solution(improved_sol)
+        solution = expert(case, predicted_result)
+        if solution:
+            case.set_solution(predicted_result)
+        # confidence = v[0]
+        # if len(v) > 1:
+        #     improved_sol = v[1]
+        #     case.set_solution(improved_sol)
 
-        return [confidence, case]
+        # return [confidence, case]
+        return solution
     else:
         raise NameError('The argument "expert" should be callable.')
 
 
-def retain(match, retain, casebase, save_case_base, filename):
+def retain(case, retain, casebase, save_case_base, filename):
     '''
     In the Retain Phase, the proposed solution will be consider to be saved
     in the repository of the case base or not.
 
-    :type  match: Case
-    :param match: It is a case with the proposed solution to be saved or not in the retain phase.
+    :type  case: Case
+    :param case: It is a case with the proposed solution to be saved or not in the retain phase.
 
     :type retain: Boolean
     :param retain: It is the boolean of the reuse phase to know if the expert advice us to retain or not the Case.
@@ -143,7 +151,7 @@ def retain(match, retain, casebase, save_case_base, filename):
     :return: Boolean
     '''
     if retain:
-        casebase.add_case(match)
+        casebase.add_case(case)
         save_case_base(casebase, filename)
         print 'save match in cbr'
         return True
