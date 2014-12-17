@@ -55,15 +55,16 @@ def reuse(similar_cases, actual_case, similarities):
     In the Reuse Phase we will observe the retrieved solutions and we will try to adapt them to our new case with
     the implementation of an heuristic.
 
-    :type similar_cases: Case
-    :param similar_cases:
+    :type similar_cases: Case array
+    :param similar_cases: Array of cases similar to the actual case.
 
     :type actual_case: Case
-    :param actual_case:
+    :param actual_case: Actual case to solve
 
-    :param similarities:
+    :type similarities: Vector
+    :param similarities: Vector with the similarity values of the similar cases.
 
-    :return:
+    :return: String with the result of the case
     """
     winProb = 0
     drawProb = 0

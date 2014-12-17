@@ -1,13 +1,5 @@
-import sys
-import cbrMatches as cbrm
-import utils as ut
-import match as read
-import glob
-import datetime as dt
 import wrapper as w
 import internal_repr.phases as cbr
-from wrapper import MatchesCaseBase, Match
-
 
  # ______________________________________________________________________
  #
@@ -50,16 +42,14 @@ def main(actualMatch):
     # REUSE the information retrieved from the archieves and predict a result and a score
 
     predicted_result = cbr.reuse(retrieved_matches, actualMatch, similarities)
-
-    # actualMatch, probability = cbrm.reuse(matches_retrieved, actualMatch)
+    print "predicted result = " + predicted_result
+    print "real result = " + actualMatch.get_solution()
 
     # TODO 6-. REVISE
-    expert = actualMatch.get_solution()
+    actualMatch.get_solution()
 
     solution = cbr.revise(actualMatch, w.expert, predicted_result)
 
-
-    print solution
     # TODO 7-. RETAIN
 
     saved = cbr.retain(actualMatch, solution, matches)
