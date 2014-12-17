@@ -77,14 +77,14 @@ def reuse(matches, actualMatch, similarities):
     print "lose = " + str(loseProb/total)
     print "draw = " + str(drawProb/total)
 
-    probabilities = {'W': winProb/total, 'L': loseProb/total, 'D': drawProb/total}
+    probabilities = {'H': winProb/total, 'A': loseProb/total, 'D': drawProb/total}
 
     probability = max(winProb/total, loseProb/total, drawProb/total)
     result = max(probabilities, key=probabilities.get)
     return result
 
 
-def revise(case, expert):
+def revise(case, expert, predicted_result):
     """
     In the Revise Phase, a proposed solution for a given case is evaluated
     and a confidence probability is returned.
@@ -102,16 +102,21 @@ def revise(case, expert):
     :return: confidence measure of the proposed solution to be positive.
     """
     if hasattr(expert, '__call__'):
-        v = expert(case)
-        confidence = v[0]
-        if len(v) > 1:
-            improved_sol = v[1]
-            case.set_solution(improved_sol)
+        solution = expert(case, predicted_result)
+        # confidence = v[0]
+        # if len(v) > 1:
+        #     improved_sol = v[1]
+        #     case.set_solution(improved_sol)
 
-        return [confidence, case]
+        # return [confidence, case]
+        return solution
     else:
         raise NameError('The argument "expert" should be callable.')
 
 
-def retain():
+def retain(match, retain):
+    if(retain):
+        print 'save match'
+    else:
+        print 'expert advise not to save match'
     pass
