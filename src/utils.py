@@ -21,7 +21,7 @@ def diff_in_league_years(last_date, earlier_date):
 
     :return: league year differences: 0 if in the same league year etc.
     '''
-    return subtract_months(last_date).year-subtract_months(earlier_date).year
+    return subtract_months(last_date,6).year-subtract_months(earlier_date,6).year
 
 def subtract_months(date, months):
     '''

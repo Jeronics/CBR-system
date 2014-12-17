@@ -47,11 +47,9 @@ def main(actualMatch):
     # TODO 7-. RETAIN
 
     thr = 0.5
-    print matches.get_case_values()[-1].__str__()
     saved = cbr.retain(actualMatch, matches, conf, thr)
 
     # w.save_case_base(matches, '../data/Train/train.jpkl')
-    print 'saved in cbr new case = ' + saved.get_case_values()[-1].__str__()
 
 
 if __name__ == '__main__':
