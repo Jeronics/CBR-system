@@ -48,14 +48,14 @@ def main(actualMatch):
     # TODO 6-. REVISE
     actualMatch.get_solution()
 
-    solution = cbr.revise(actualMatch, w.expert, predicted_result)
+    conf = cbr.revise(actualMatch, w.expert, predicted_result)
 
     # TODO 7-. RETAIN
-
-    saved = cbr.retain(actualMatch, solution, matches)
+    thr = 0.5
+    saved = cbr.retain(actualMatch, matches, conf, thr)
 
     w.save_case_base(matches, '../data/Train/train.jpkl')
-    print 'saved in cbr new case = '+ str(saved)
+    print 'saved in cbr new case = ' + str(saved)
 
 
 if __name__ == '__main__':
