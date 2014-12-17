@@ -35,7 +35,7 @@ def main(actualMatch):
     #         grade = 1  --> highest similarity, return only matches of local as local.
     #         grade = 2  --> less similarity, return matches of locals as local and foreign.
     threshold = 0.01
-    max_matches = 5
+    max_matches = 10
     retrieved_matches, similarities = cbr.retrieve(matches, actualMatch, w.similarity, threshold, max_matches)
 
     print len(retrieved_matches)
@@ -62,8 +62,9 @@ def main(actualMatch):
     print solution
     # TODO 7-. RETAIN
 
-    saved = cbr.retain(actualMatch, solution, w.CaseBase, w.save_case_base, filename='../data/Train/train.jpkl')
+    saved = cbr.retain(actualMatch, solution, matches)
 
+    w.save_case_base(matches, '../data/Train/train.jpkl')
     print 'saved in cbr new case = '+ str(saved)
 
 
@@ -73,4 +74,3 @@ if __name__ == '__main__':
 
     for match in test_matches.get_case_values():
         main(match)
-        break
