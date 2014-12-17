@@ -51,6 +51,13 @@ def retrieve(casebase, case, sim, thr, max_cases):
 
 
 def reuse(matches, actualMatch, similarities):
+    '''
+
+    :param matches:
+    :param actualMatch:
+    :param similarities:
+    :return:
+    '''
     winProb = 0
     drawProb = 0
     loseProb = 0
@@ -113,10 +120,31 @@ def revise(case, expert, predicted_result):
         raise NameError('The argument "expert" should be callable.')
 
 
-def retain(match, retain, caseBase, save_case_base, filename):
+def retain(match, retain, casebase, save_case_base, filename):
+    '''
+    In the Retain Phase, the proposed solution will be consider to be saved
+    in the repository of the case base or not.
+
+    :type  match: Case
+    :param match: It is a case with the proposed solution to be saved or not in the retain phase.
+
+    :type retain: Boolean
+    :param retain: It is the boolean of the reuse phase to know if the expert advice us to retain or not the Case.
+
+    :type  casebase: CaseBase
+    :param casebase: CaseBase storing Cases with its solutions.
+
+    :type save_case_base: callable
+    :param save_case_base: Function to save the case in the casebase and create the .jpkl
+
+    :type filename: String
+    :param filename: Name of the path where the case base is saved.
+
+    :return: Boolean
+    '''
     if retain:
-        caseBase.add_case(match)
-        save_case_base(caseBase, filename)
+        casebase.add_case(match)
+        save_case_base(casebase, filename)
         print 'save match in cbr'
         return True
     else:
