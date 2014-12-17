@@ -55,7 +55,7 @@ def main(actualMatch):
     thr = 0.5
     saved = cbr.retain(actualMatch, matches, conf, thr)
 
-    w.save_case_base(matches, '../data/Train/train.jpkl')
+    # w.save_case_base(matches, '../data/Train/train.jpkl')
     print 'saved in cbr new case = ' + str(saved)
 
 
