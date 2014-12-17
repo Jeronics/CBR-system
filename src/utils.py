@@ -47,6 +47,10 @@ def printResult(match, probability):
     else:
         print "draw with a probability of "+str(probability)+"%"
 
+def printMatches(matches, similarity, actualMatch):
+    for match in matches:
+        print str(match.name) + ' | sim: ' + str(similarity(match, actualMatch))
+
 # TEST
 # date = "3/2/08"
 # print int_to_weekday(date_to_day_of_week(date))

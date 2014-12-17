@@ -1,4 +1,5 @@
 import wrapper as w
+import utils as ut
 from wrapper import MatchesCaseBase, Match
 import internal_repr.phases as cbr
 
@@ -22,22 +23,14 @@ def main(actualMatch):
 
     # 2-. RETRIEVE SIMILAR MATCHES
 
-    # Grade of similarity:
-    #   When grade higher less similarity.
-    #   e.g:
-    #         grade = 1  --> highest similarity, return only matches of local as local.
-    #         grade = 2  --> less similarity, return matches of locals as local and foreign.
     threshold = 0.01
     max_matches = 10
     retrieved_matches, similarities = cbr.retrieve(matches, actualMatch, w.similarity, threshold, max_matches)
 
-    print len(retrieved_matches)
     print 'home '+actualMatch.get_home() + '  away '+actualMatch.get_away()
-
     print similarities
-    # for match in retrieved_matches:
-        # print str(match.name) + ' | sim: ' + str(w.similarity(match, actualMatch))
 
+    ut.printMatches(retrieved_matches, w.similarity, actualMatch)
 
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
@@ -47,11 +40,11 @@ def main(actualMatch):
     print "real result = " + actualMatch.get_solution()
 
     # TODO 6-. REVISE
-    actualMatch.get_solution()
 
     conf = cbr.revise(actualMatch, w.expert, predicted_result)
 
     # TODO 7-. RETAIN
+
     thr = 0.5
     saved = cbr.retain(actualMatch, matches, conf, thr)
 
