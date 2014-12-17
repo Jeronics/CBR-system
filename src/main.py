@@ -30,7 +30,8 @@ def main(actualMatch):
     print 'home '+actualMatch.get_home() + '  away '+actualMatch.get_away()
     print similarities
 
-    ut.printMatches(retrieved_matches, w.similarity, actualMatch)
+    # Print retrieved matches from the repository
+    # ut.printMatches(retrieved_matches, w.similarity, actualMatch)
 
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
@@ -46,10 +47,11 @@ def main(actualMatch):
     # TODO 7-. RETAIN
 
     thr = 0.5
+    print matches.get_case_values()[-1].__str__()
     saved = cbr.retain(actualMatch, matches, conf, thr)
 
     # w.save_case_base(matches, '../data/Train/train.jpkl')
-    print 'saved in cbr new case = ' + str(saved)
+    print 'saved in cbr new case = ' + saved.get_case_values()[-1].__str__()
 
 
 if __name__ == '__main__':
@@ -58,3 +60,4 @@ if __name__ == '__main__':
 
     for match in test_matches.get_case_values():
         main(match)
+        break

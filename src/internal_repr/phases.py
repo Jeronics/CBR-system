@@ -157,8 +157,8 @@ def retain(case, casebase, confidence, thr):
     """
     if confidence > thr:
         casebase.add_case(case)
+        print case.__str__()
         # save_case_base(casebase, filename)
-        print 'we should save match in cbr--- not saving for now'
     else:
         print 'expert advise not to save match'
 

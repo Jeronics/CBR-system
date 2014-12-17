@@ -4,3 +4,7 @@ CBR-system/.idea/
 *.pyc
 *.iml
 *.jpkl
+
+data/Train/train.jpkl
+
+*.jpkl
