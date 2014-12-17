@@ -1,5 +1,5 @@
 from model import CaseBase, Case
-
+import random
 
 def retrieve(casebase, case, sim, thr, max_cases):
     """
@@ -50,37 +50,58 @@ def retrieve(casebase, case, sim, thr, max_cases):
         raise NameError('The argument "sim" should be callable.')
 
 
-def reuse(matches, actualMatch, similarities):
-    winProb = 0
-    drawProb = 0
-    loseProb = 0
-    for idx, match in enumerate(matches):
-        # H = Home team wins.
-        if (str(match.get_solution()) == str("H")):
-            if (str(actualMatch.get_home()) == str(match.get_home())):
-                winProb = winProb + (1 * similarities[idx]);
+def reuse(similar_cases, actual_case, similarities):
+    """
+    In the Reuse Phase we will observe the retrieved solutions and we will try to adapt them to our new case with
+    the implementation of an heuristic.
+
+    :type similar_cases: Case array
+    :param similar_cases: Array of cases similar to the actual case.
+
+    :type actual_case: Case
+    :param actual_case: Actual case to solve
+
+    :type similarities: Vector
+    :param similarities: Vector with the similarity values of the similar cases.
+
+    :return: String with the result of the case
+    """
+
+    try:
+        winProb = 0
+        drawProb = 0
+        loseProb = 0
+        for idx, case in enumerate(similar_cases):
+            # H = Home team wins.
+            if (str(case.get_solution()) == str("H")):
+                if (str(actual_case.get_home()) == str(case.get_home())):
+                    winProb = winProb + (1 * similarities[idx]);
+                else:
+                    loseProb = loseProb + (1 * similarities[idx]);
+            # A = Away team wins.
+            elif (str(case.get_solution()) == str("A")):
+                if (str(actual_case.get_away()) == str(case.get_away())):
+                    loseProb = loseProb + (1 * similarities[idx]);
+                else:
+                    winProb = winProb + (1 * similarities[idx]);
+            # D = Draw
             else:
                 loseProb = loseProb + (1 * similarities[idx]);
-        # A = Away team wins.
-        elif (str(match.get_solution()) == str("A")):
-            if (str(actualMatch.get_away()) == str(match.get_away())):
-                loseProb = loseProb + (1 * similarities[idx]);
-            else:
-                winProb = winProb + (1 * similarities[idx]);
-        # D = Draw
-        else:
-            drawProb = drawProb + (1 * similarities[idx]);
 
-    total = winProb+loseProb+drawProb
+        total = winProb+loseProb+drawProb
 
-    print "win = " + str(winProb/total)
-    print "lose = " + str(loseProb/total)
-    print "draw = " + str(drawProb/total)
+        print "win = " + str(winProb/total)
+        print "lose = " + str(loseProb/total)
+        print "draw = " + str(drawProb/total)
+    
+        probabilities = {'H': winProb/total, 'A': loseProb/total, 'D': drawProb/total}
 
-    probabilities = {'H': winProb/total, 'A': loseProb/total, 'D': drawProb/total}
-
-    probability = max(winProb/total, loseProb/total, drawProb/total)
-    result = max(probabilities, key=probabilities.get)
+        probability = max(winProb/total, loseProb/total, drawProb/total)
+        result = max(probabilities, key=probabilities.get)
+    except Exception as e:
+        print e.message
+        print 'no similar cases in the history'
+        result = random.choice(['H', 'A', 'D'])
     return result
 
 
@@ -102,21 +123,43 @@ def revise(case, expert, predicted_result):
     :return: confidence measure of the proposed solution to be positive.
     """
     if hasattr(expert, '__call__'):
-        solution = expert(case, predicted_result)
-        # confidence = v[0]
-        # if len(v) > 1:
-        #     improved_sol = v[1]
-        #     case.set_solution(improved_sol)
+        v = expert(case, predicted_result)
+        confidence = v[0]
+        if len(v) > 1:
+            improved_sol = v[1]
+            case.set_solution(improved_sol)
 
-        # return [confidence, case]
-        return solution
+        return [confidence, case]
     else:
         raise NameError('The argument "expert" should be callable.')
 
 
-def retain(match, retain):
-    if(retain):
-        print 'save match'
+def retain(case, casebase, confidence, thr):
+    """
+    In the Retain Phase, the proposed solution will be consider to be saved
+    in the repository of the case base or not.
+
+    :type  case: Case
+    :param case: It is a case with the proposed solution to be saved or not
+                 in the retain phase.
+
+    :type  casebase: CaseBase
+    :param casebase: CaseBase storing Cases with its solutions.
+
+    :type  confidence: float
+    :param confidence: Confidence given by the expert.
+
+    :type  thr: float
+    :param thr: Threshold to decide whether to add a case to the case library
+                given a certain confidence.
+
+    :return: Boolean
+    """
+    if confidence > thr:
+        casebase.add_case(case)
+        print case.__str__()
+        # save_case_base(casebase, filename)
     else:
         print 'expert advise not to save match'
-    pass
+
+    return casebase

@@ -303,14 +303,25 @@ def similarity(match1, match2):
         return similarity
     return 0
 
-def expert(match, predicted_result):
-    print 'get solution '+match.get_solution()
-    print 'our result '+str(predicted_result)
 
-    if (match.get_solution() == predicted_result):
-        return True
+def expert(match, predicted_result):
+    """
+    Check whether the proposed solution is correct, returns 1
+    if so and 0 otherwise.
+
+    :type  match: Match
+    :param match: Current Case
+
+    :type predicted_result: str
+    :param predicted_result: Proposed Result of the match.
+
+    :return: Confidence of the proposed solution being certain.
+    """
+    if match.get_solution() == predicted_result:
+        return [1]
     else:
-        return False
+        return [0]
+
 
 def read_match_dataset(dataset, mcb):
     """
@@ -374,11 +385,11 @@ if __name__ == '__main__':
 
     save_case_base(matches_data, '../data/Train/train.jpkl')
 
-    # Create Test Data set
-    test_matches = MatchesCaseBase()
-    test_matches = read_match_dataset('../data/Test/LaLiga2013-14.csv', test_matches)
-    save_case_base(test_matches, '../data/Test/test.jpkl')
-
-    matches = read_case_base('../data/Test/test.jpkl')
-
-    print matches.get_case_values()[0].get_home()
+    # # Create Test Data set
+    # test_matches = MatchesCaseBase()
+    # test_matches = read_match_dataset('../data/Test/LaLiga2013-14.csv', test_matches)
+    # save_case_base(test_matches, '../data/Test/test.jpkl')
+    #
+    # matches = read_case_base('../data/Test/test.jpkl')
+    #
+    # print matches.get_case_values()[0].get_home()
