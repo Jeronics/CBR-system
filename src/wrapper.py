@@ -302,6 +302,14 @@ def similarity(match1, match2):
         return similarity
     return 0
 
+def expert(match, predicted_result):
+    print 'get solution '+match.get_solution()
+    print 'our result '+str(predicted_result)
+
+    if (match.get_solution() == predicted_result):
+        return True
+    else:
+        return False
 
 def read_match_dataset(dataset, mcb):
     """

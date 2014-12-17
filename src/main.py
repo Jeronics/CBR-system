@@ -49,13 +49,20 @@ def main(actualMatch):
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
 
-    result = cbr.reuse(retrieved_matches, actualMatch, similarities)
+    predicted_result = cbr.reuse(retrieved_matches, actualMatch, similarities)
+
     # actualMatch, probability = cbrm.reuse(matches_retrieved, actualMatch)
 
     # TODO 6-. REVISE
+    expert = actualMatch.get_solution()
 
+    solution = cbr.revise(actualMatch, w.expert, predicted_result)
+
+
+    print solution
     # TODO 7-. RETAIN
 
+    cbr.retain(actualMatch, solution)
     # Print matches
     # ut.printMatches(matches_retrieved)
 

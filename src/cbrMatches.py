@@ -76,11 +76,11 @@ def reuse(matchList, actualMatch):
 
     total = winProb+loseProb+drawProb
 
-    print "win = " + str(winProb/total)
-    print "lose = " + str(loseProb/total)
+    print "win/home = " + str(winProb/total)
+    print "lose/away = " + str(loseProb/total)
     print "draw = " + str(drawProb/total)
 
-    probabilities = {'W': winProb/total, 'L': loseProb/total, 'D': drawProb/total}
+    probabilities = {'H': winProb/total, 'A': loseProb/total, 'D': drawProb/total}
 
     probability = max(winProb/total, loseProb/total, drawProb/total)
     result = max(probabilities, key=probabilities.get)
