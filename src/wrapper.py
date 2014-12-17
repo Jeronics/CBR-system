@@ -290,7 +290,7 @@ def similarity(match1, match2):
     :type match2: Test Match: Actual MATCH
     :return: Similarity between match1 and match2 (0 - 1)
     """
-    leagueYearsSinceGame = match2.get_date().year - match1.get_date().year
+    # leagueYearsSinceGame = match2.get_date().year - match1.get_date().year
     leagueYearsSinceGame = ut.diff_in_league_years(match2.get_date(), match1.get_date())
 
 
