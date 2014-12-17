@@ -62,13 +62,9 @@ def main(actualMatch):
     print solution
     # TODO 7-. RETAIN
 
-    cbr.retain(actualMatch, solution)
-    # Print matches
-    # ut.printMatches(matches_retrieved)
+    saved = cbr.retain(actualMatch, solution, w.CaseBase, w.save_case_base(), filename='../data/Train/train.jpkl')
 
-    # Print result
-    # ut.printResult(actualMatch, probability * 100)
-
+    print 'saved in cbr new case = '+saved
 
 if __name__ == '__main__':
 

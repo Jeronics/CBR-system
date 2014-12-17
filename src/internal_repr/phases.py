@@ -103,6 +103,8 @@ def revise(case, expert, predicted_result):
     """
     if hasattr(expert, '__call__'):
         solution = expert(case, predicted_result)
+        if solution:
+            case.set_solution(predicted_result)
         # confidence = v[0]
         # if len(v) > 1:
         #     improved_sol = v[1]
@@ -114,9 +116,12 @@ def revise(case, expert, predicted_result):
         raise NameError('The argument "expert" should be callable.')
 
 
-def retain(match, retain):
+def retain(match, retain, caseBase, save_case_base, filename):
     if(retain):
-        print 'save match'
+        caseBase.add_case(match)
+        save_case_base(caseBase, filename)
+        print 'save match in cbr'
+        return True
     else:
         print 'expert advise not to save match'
-    pass
+        return False

@@ -373,11 +373,11 @@ if __name__ == '__main__':
 
     save_case_base(matches_data, '../data/Train/train.jpkl')
 
-    # Create Test Data set
-    test_matches = MatchesCaseBase()
-    test_matches = read_match_dataset('../data/Test/LaLiga2013-14.csv', test_matches)
-    save_case_base(test_matches, '../data/Test/test.jpkl')
-
-    matches = read_case_base('../data/Test/test.jpkl')
-
-    print matches.get_case_values()[0].get_home()
+    # # Create Test Data set
+    # test_matches = MatchesCaseBase()
+    # test_matches = read_match_dataset('../data/Test/LaLiga2013-14.csv', test_matches)
+    # save_case_base(test_matches, '../data/Test/test.jpkl')
+    #
+    # matches = read_case_base('../data/Test/test.jpkl')
+    #
+    # print matches.get_case_values()[0].get_home()
