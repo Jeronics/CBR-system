@@ -50,7 +50,7 @@ def retrieve(casebase, case, sim, thr, max_cases):
         raise NameError('The argument "sim" should be callable.')
 
 
-def reuse(matches, actualMatch, similarities):
+def reuse(similar_cases, actual_case, similarities):
     '''
     In the Reuse Phase we will observe the retrieved solutions and we will try to adapt them to our new case with
     the implementation of an heuristic.
@@ -58,24 +58,24 @@ def reuse(matches, actualMatch, similarities):
     :type matches: Case
     :param matches:
 
-    :type actualMatch: Case
-    :param actualMatch:
+    :type actual_case: Case
+    :param actual_case:
     :param similarities:
     :return:
     '''
     winProb = 0
     drawProb = 0
     loseProb = 0
-    for idx, match in enumerate(matches):
+    for idx, case in enumerate(similar_cases):
         # H = Home team wins.
-        if (str(match.get_solution()) == str("H")):
-            if (str(actualMatch.get_home()) == str(match.get_home())):
+        if (str(case.get_solution()) == str("H")):
+            if (str(actual_case.get_home()) == str(case.get_home())):
                 winProb = winProb + (1 * similarities[idx]);
             else:
                 loseProb = loseProb + (1 * similarities[idx]);
         # A = Away team wins.
-        elif (str(match.get_solution()) == str("A")):
-            if (str(actualMatch.get_away()) == str(match.get_away())):
+        elif (str(case.get_solution()) == str("A")):
+            if (str(actual_case.get_away()) == str(case.get_away())):
                 loseProb = loseProb + (1 * similarities[idx]);
             else:
                 winProb = winProb + (1 * similarities[idx]);
