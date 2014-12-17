@@ -87,15 +87,6 @@ def reuse(similar_cases, actual_case, similarities):
             # D = Draw
             else:
                 loseProb = loseProb + (1 * similarities[idx]);
-        # A = Away team wins.
-        elif (str(case.get_solution()) == str("A")):
-            if (str(actual_case.get_away()) == str(case.get_away())):
-                loseProb = loseProb + (1 * similarities[idx]);
-            else:
-                winProb = winProb + (1 * similarities[idx]);
-        # D = Draw
-        else:
-            drawProb = drawProb + (1 * similarities[idx]);
 
         total = winProb+loseProb+drawProb
 
