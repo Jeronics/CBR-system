@@ -56,21 +56,32 @@ class CBRclass(object):
 
 | Method | Description |
 | ------ | ----------- |
-| add_class | Adds a class to the classes dictionary. |
-| get_class | Gets a class from the classes dictionary. |
-| pop_class | Removes the class 'name' from the dictionary of classes and returns it. |
-| add_feature | These method adds a new attribute to the CBRclass. |
-| get_feature | These method sets the values of an attribute from the CBRclass. |
-| pop_feature | Removes and returns the element 'name' from the dictionary of attributes. |
+| ```add_class``` | Adds a class to the classes dictionary. |
+| ```get_class``` | Gets a class from the classes dictionary. |
+| ```pop_class``` | Removes the class 'name' from the dictionary of classes and returns it. |
+| ```add_feature``` | These method adds a new attribute to the CBRclass. |
+| ```get_feature``` | These method sets the values of an attribute from the CBRclass. |
+| ```pop_feature``` | Removes and returns the element 'name' from the dictionary of attributes. |
 
 ### Case:
 The Case class is a subclass of the CBRclass with an attribute called solution and a CBRclass
 called problem. This class is the base of our CBR system.
 
 ```python
-def __init__(self, name, problem, **kwargs):
+class Case(object):
+    """
+    Case is the main class in the CBR.
+    Contains a problem (CBRclass) and a solution (default empty string).
+    """
+    def __init__(self, name, problem, **kwargs):
 ```
 
+| Method | Description |
+| ------ | ----------- |
+| ```get_solution``` | Returns the solution of the case. |
+| ```set_solution``` | Sets the current solution to a given one. |
+| ```get_problem``` | Gets the problem of the case. |
+| ```set_problem``` | Set the problem of the case to a given problem. |
 
 
 ### CaseBase:
