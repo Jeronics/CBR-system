@@ -113,9 +113,12 @@ def revise(case, expert, predicted_result):
         raise NameError('The argument "expert" should be callable.')
 
 
-def retain(match, retain):
-    if(retain):
-        print 'save match'
+def retain(match, retain, caseBase, save_case_base, filename):
+    if retain:
+        caseBase.add_case(match)
+        save_case_base(caseBase, filename)
+        print 'save match in cbr'
+        return True
     else:
         print 'expert advise not to save match'
-    pass
+        return False
