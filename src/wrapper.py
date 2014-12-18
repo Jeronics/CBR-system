@@ -330,6 +330,7 @@ def similarity(match1, match2):
         return similarity
     return 0
 
+
 def expert(match, predicted_result):
     """
     Check whether the proposed solution is correct, returns 1
