@@ -300,15 +300,16 @@ def similarity(match1, match2):
     #         + different 0.5
     #   2-. Data
     #         + For each year * 0.1
+    #
 
-    wYears = float(leagueYearsSinceGame) * 0.1
-    # print yearsSinceGame
-    if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
-        similarity = max(0.1, float(1 - wYears))
-        return similarity
-    if match1.get_home() == match2.get_away() and match1.get_away() == match2.get_home():
-        similarity = max(0.1, float(0.5 - wYears))
-        return similarity
+    # wYears = float(leagueYearsSinceGame) * 0.1
+    # # print yearsSinceGame
+    # if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
+    #     similarity = max(0.1, float(1 - wYears))
+    #     return similarity
+    # if match1.get_home() == match2.get_away() and match1.get_away() == match2.get_home():
+    #     similarity = max(0.1, float(0.5 - wYears))
+    #     return similarity
 
     # Weighting method 2:
     #
@@ -318,13 +319,16 @@ def similarity(match1, match2):
     # 2-. Data
     #     + 1 / (1 + passed years)
 
-    # wYears = 1 / (1 + float(leagueYearsSinceGame))
-    # # print yearsSinceGame
-    # similarity = wYears*(1 if (match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away()) else 0.8)
-    # return similarity
-
-    # return 0
-
+    wYears = 1 / float(1 + leagueYearsSinceGame)
+    if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
+        same_local=1
+        similarity = wYears*same_local
+        return similarity
+    if match1.get_home() == match2.get_away() and match1.get_away() == match2.get_home():
+        same_local=0.8
+        similarity = wYears*same_local
+        return similarity
+    return 0
 
 def expert(match, predicted_result):
     """
