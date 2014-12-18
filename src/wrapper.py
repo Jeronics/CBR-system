@@ -293,6 +293,13 @@ def similarity(match1, match2):
     leagueYearsSinceGame = ut.diff_in_league_years(match2.get_date(), match1.get_date())
 
 
+    # Weighting method 1:
+    #
+    #   1-. Location
+    #         + equality 1
+    #         + different 0.5
+    #   2-. Data
+    #         + For each year * 0.1
 
     wYears = float(leagueYearsSinceGame) * 0.1
     # print yearsSinceGame
@@ -300,8 +307,22 @@ def similarity(match1, match2):
         similarity = max(0.1, float(1 - wYears))
         return similarity
     if match1.get_home() == match2.get_away() and match1.get_away() == match2.get_home():
-        similarity = max(0.1, float(0.7 - wYears))
+        similarity = max(0.1, float(0.5 - wYears))
         return similarity
+
+    # Weighting method 2:
+    #
+    # 1-. Location
+    #       + equality 1
+    #       + difference 0.8
+    # 2-. Data
+    #     + 1 / (1 + passed years)
+
+    # wYears = 1 / (1 + float(leagueYearsSinceGame))
+    # # print yearsSinceGame
+    # similarity = wYears*(1 if (match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away()) else 0.8)
+    # return similarity
+
     return 0
 
 
@@ -373,6 +394,16 @@ def read_case_base(filename):
     matches_base = jsonpickle.decode(f.read())
     f.close()
     return matches_base
+
+def read_from_csv(data):
+    """
+
+    :param data:
+    :return:
+    """
+    matches_data = MatchesCaseBase()
+    matches_data = read_match_dataset(data, matches_data)
+    return matches_data
 
 if __name__ == '__main__':
     # Create Train Data set
