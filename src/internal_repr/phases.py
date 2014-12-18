@@ -36,11 +36,12 @@ def retrieve(casebase, case, sim, thr, max_cases):
             if similarity > thr:
                 if len(similar_cases) < max_cases:
                     similar_cases.append(c)
+                    # print c.__str__()
                     similarities.append(similarity)
                     similar_cases.sort(key=lambda x: sim(x, case), reverse=True)
                     similarities.sort(reverse=True)
                 elif similarity > sim(similar_cases[-1], case):
-                    similar_cases[-1] = case
+                    similar_cases[-1] = c
                     similarities[-1] = similarity
                     similar_cases.sort(key=lambda x: sim(x, case), reverse=True)
                     similarities.sort(reverse=True)
@@ -85,15 +86,15 @@ def reuse(similar_cases, actual_case, similarities):
                 else:
                     winProb = winProb + (1 * similarities[idx]);
             # D = Draw
-            else:
-                loseProb = loseProb + (1 * similarities[idx]);
+            elif (str(case.get_solution()) == str("D")):
+                drawProb = drawProb + (1 * similarities[idx]);
 
         total = winProb+loseProb+drawProb
 
         print "win = " + str(winProb/total)
-        print "lose = " + str(loseProb/total)
         print "draw = " + str(drawProb/total)
-    
+        print "lose = " + str(loseProb/total)
+
         probabilities = {'H': winProb/total, 'A': loseProb/total, 'D': drawProb/total}
 
         probability = max(winProb/total, loseProb/total, drawProb/total)

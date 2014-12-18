@@ -80,9 +80,9 @@ def printResult(match, probability):
     else:
         print "draw with a probability of "+str(probability)+"%"
 
-def printMatches(matches, similarity, actualMatch):
-    for match in matches:
-        print str(match.name) + ' | sim: ' + str(similarity(match, actualMatch))
+def printMatches(matches, similarities):
+    for idx, match in enumerate(matches):
+        print str(match.__str__()) + ' | sim: ' + str(similarities[idx])
 
 # TEST
 # date = "3/2/08"

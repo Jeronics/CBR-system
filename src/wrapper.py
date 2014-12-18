@@ -289,7 +289,7 @@ def similarity(match1, match2):
     :type match2: Test Match: Actual MATCH
     :return: Similarity between match1 and match2 (0 - 1)
     """
-    # leagueYearsSinceGame = match2.get_date().year - match1.get_date().year
+    # yearsSinceGame = match2.get_date().year - match1.get_date().year
     leagueYearsSinceGame = ut.diff_in_league_years(match2.get_date(), match1.get_date())
 
 
@@ -323,7 +323,7 @@ def similarity(match1, match2):
     # similarity = wYears*(1 if (match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away()) else 0.8)
     # return similarity
 
-    return 0
+    # return 0
 
 
 def expert(match, predicted_result):
