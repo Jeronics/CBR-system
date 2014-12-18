@@ -27,11 +27,10 @@ def main(actualMatch):
     max_matches = 10
     retrieved_matches, similarities = cbr.retrieve(matches, actualMatch, w.similarity, threshold, max_matches)
 
-    print 'home '+actualMatch.get_home() + '  away '+actualMatch.get_away()
     print similarities
 
     # Print retrieved matches from the repository
-    # ut.printMatches(retrieved_matches, w.similarity, actualMatch)
+    ut.printMatches(retrieved_matches, similarities)
 
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
@@ -43,19 +42,27 @@ def main(actualMatch):
     # TODO 6-. REVISE
 
     conf = cbr.revise(actualMatch, w.expert, predicted_result)
-
     # TODO 7-. RETAIN
 
     thr = 0.5
     saved = cbr.retain(actualMatch, matches, conf, thr)
 
     # w.save_case_base(matches, '../data/Train/train.jpkl')
-
+    return conf
 
 if __name__ == '__main__':
 
-    test_matches = w.read_case_base('../data/Test/test.jpkl')
+    # Read from JSON pickle
+    # test_matches = w.read_case_base('../data/Test/test.jpkl')
 
+    # Read from CSV file
+    test_matches = w.read_from_csv('../data/Test/ultimaJornada.csv')
+    # test_matches = w.read_from_csv('../data/Test/LaLiga2014-15 hasta diciembre.csv')
+    i = 0
     for match in test_matches.get_case_values():
-        main(match)
-        break
+        print match.__str__()
+        conf = main(match)
+        # break
+        i = i + int(conf[0])
+
+    print 'partidos acertados = '+str(i)
