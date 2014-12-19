@@ -49,9 +49,9 @@ def subtract_months(date, months):
     return date_x
 
 
-def return_football_season(date):
+def return_football_season(date=datetime.datetime.today()):
     '''
-    Returns the football season in which a date is in.
+    Returns the football season in which a date is in. By default it gets today's date
     :type date: datetime.datetime.date object
     :param date:
 
