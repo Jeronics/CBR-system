@@ -328,6 +328,7 @@ def similarity(match1, match2):
         same_local=0.8
         similarity = wYears*same_local
         return similarity
+
     return 0
 
 
