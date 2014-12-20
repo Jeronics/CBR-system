@@ -1,6 +1,7 @@
 from model import CaseBase, Case
 import random
 
+
 def retrieve(casebase, case, sim, thr, max_cases):
     """
     This function will retrieve the most similar cases
@@ -74,20 +75,20 @@ def reuse(similar_cases, actual_case, similarities):
         loseProb = 0
         for idx, case in enumerate(similar_cases):
             # H = Home team wins.
-            if (str(case.get_solution()) == str("H")):
-                if (str(actual_case.get_home()) == str(case.get_home())):
-                    winProb = winProb + (1 * similarities[idx]);
+            if str(case.get_solution()) == str("H"):
+                if str(actual_case.get_home()) == str(case.get_home()):
+                    winProb += 1 * similarities[idx]
                 else:
-                    loseProb = loseProb + (1 * similarities[idx]);
+                    loseProb += 1 * similarities[idx]
             # A = Away team wins.
-            elif (str(case.get_solution()) == str("A")):
-                if (str(actual_case.get_away()) == str(case.get_away())):
-                    loseProb = loseProb + (1 * similarities[idx]);
+            elif str(case.get_solution()) == str("A"):
+                if str(actual_case.get_away()) == str(case.get_away()):
+                    loseProb += 1 * similarities[idx]
                 else:
-                    winProb = winProb + (1 * similarities[idx]);
+                    winProb += 1 * similarities[idx]
             # D = Draw
-            elif (str(case.get_solution()) == str("D")):
-                drawProb = drawProb + (1 * similarities[idx]);
+            elif str(case.get_solution()) == str("D"):
+                drawProb += 1 * similarities[idx]
 
         total = winProb+loseProb+drawProb
 
@@ -158,7 +159,6 @@ def retain(case, casebase, confidence, thr):
     """
     if confidence > thr:
         casebase.add_case(case)
-        # save_case_base(casebase, filename)
     else:
         print 'expert advise not to save match'
 
