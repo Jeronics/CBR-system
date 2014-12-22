@@ -152,7 +152,7 @@ def retain(case, casebase, confidence, conf_thr, retrieved_sim, sim_thr):
 
     :type  conf_thr: float
     :param conf_thr: Threshold to chose whether to add a case to the case library
-                given a certain confidence.
+                     given a certain confidence.
 
     :type  retrieved_sim: list of float
     :param retrieved_sim: List of similarities given by the Retrieve Phase.
