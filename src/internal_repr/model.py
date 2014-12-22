@@ -103,7 +103,8 @@ class CBRclass(object):
 class Case(object):
     """
     Case is the main class in the CBR.
-    Contains a problem (CBRclass) and a solution (default empty string).
+    Contains a problem (CBRclass), a solution (default empty string)
+    and the operation required to find the solution (CBRclass).
     """
     def __init__(self, name, problem, **kwargs):
         assert type(name) is str, 'The name of the Case must be a string.'
@@ -115,6 +116,7 @@ class Case(object):
             raise NameError("The problem must be an instance of CBRclass object.")
 
         self.solution = kwargs['solution'] if 'solution' in kwargs else ''
+        self.operation = kwargs['operation'] if 'operation' in kwargs else CBRclass(name)
 
     def get_solution(self):
         """
@@ -152,6 +154,26 @@ class Case(object):
             self.problem = problem
         else:
             raise NameError("The problem must be an instance of CBRclass object.")
+
+    def get_operation(self):
+        """
+        Gets the operation of the case.
+
+        :return: Returns the operation.
+        """
+        return self.operation
+
+    def set_operation(self, operation):
+        """
+        Set the operation of the case to a given operation.
+
+        :param operation: CBRclass containing the description of the operation.
+        :type  operation: CBRclass
+        """
+        if type(operation) is CBRclass:
+            self.operation = operation
+        else:
+            raise NameError("The operation must be an instance of CBRclass object.")
 
     def __str__(self):
         return "Case " + self.name + ":\n\t-Problem: " + str(self.problem) + "\n\t-Solution: " + self.solution
