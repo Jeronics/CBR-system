@@ -1,9 +1,4 @@
 # Important: Nothing in the first line.
 .idea/
+*.jpkl
 *.pyc
-*.iml
-*.jpkl
-
-data/Train/train.jpkl
-
-*.jpkl
