@@ -40,7 +40,7 @@ def subtract_months(date, months):
 
     difference = (date.month - months)
     new_month = difference % 12
-    diff_year = (months - 1 ) / 12 + (1 if difference <= 0 else 0)
+    diff_year = (months - 1) / 12 + (1 if difference <= 0 else 0)
     if new_month == 0:
         new_month = 12
     date_x = date_x.replace(year=date.year - diff_year)

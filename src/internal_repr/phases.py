@@ -1,5 +1,5 @@
 from model import CaseBase, Case
-import random
+import numpy as np
 
 
 def retrieve(casebase, case, sim, thr, max_cases):
@@ -50,59 +50,53 @@ def retrieve(casebase, case, sim, thr, max_cases):
     else:
         raise NameError('The argument "sim" should be callable.')
 
+def null_adapatation(new_case, retrieved_cases, similarities, specific_function):
+    return retrieved_cases[np.argmax(similarities)].get_solution()
 
-def reuse(similar_cases, actual_case, similarities):
+def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_function):
+    new_solution = specific_function(new_case, retrieved_cases, similarities)
+    return new_solution
+
+
+def transformational_adaptation(new_case, retrieved_cases, similarities, specific_function):
+    # structural changes in solution
+    modifier, solution_to_change = specific_function(new_case, retrieved_cases, similarities)
+
+    return modifier(solution_to_change)
+
+
+def generative_adaptation(new_case, retrieved_cases, similarities, specific_function):
+    # return the operation that returns the solution given a problem
+    operation = specific_function(retrieved_cases, similarities, specific_function)
+
+    # Apply the operation on the problem of the new_case
+    return operation(new_case)
+
+
+def reuse(similar_cases, new_case, similarities, method, specific_function):
     """
     In the Reuse Phase we will observe the retrieved solutions and we will try to adapt them to our new case with
     the implementation of an heuristic.
 
     :type similar_cases: Case array
-    :param similar_cases: Array of cases similar to the actual case.
+    :param similar_cases: Array of cases similar to the new case.
 
-    :type actual_case: Case
-    :param actual_case: Actual case to solve
+    :type new_case: Case
+    :param new_case: New case to solve
 
     :type similarities: Vector
     :param similarities: Vector with the similarity values of the similar cases.
 
+    :type method: Function object
+    :param method: General adaption technique used
+
+    :type specific_function: Function object
+    :param specific_function: Specific problem-dependent function
+
     :return: String with the result of the case
     """
+    result = method(new_case, similar_cases, similarities, specific_function)
 
-    try:
-        winProb = 0
-        drawProb = 0
-        loseProb = 0
-        for idx, case in enumerate(similar_cases):
-            # H = Home team wins.
-            if str(case.get_solution()) == str("H"):
-                if str(actual_case.get_home()) == str(case.get_home()):
-                    winProb += 1 * similarities[idx]
-                else:
-                    loseProb += 1 * similarities[idx]
-            # A = Away team wins.
-            elif str(case.get_solution()) == str("A"):
-                if str(actual_case.get_away()) == str(case.get_away()):
-                    loseProb += 1 * similarities[idx]
-                else:
-                    winProb += 1 * similarities[idx]
-            # D = Draw
-            elif str(case.get_solution()) == str("D"):
-                drawProb += 1 * similarities[idx]
-
-        total = winProb+loseProb+drawProb
-
-        print "win = " + str(winProb/total)
-        print "draw = " + str(drawProb/total)
-        print "lose = " + str(loseProb/total)
-
-        probabilities = {'H': winProb/total, 'A': loseProb/total, 'D': drawProb/total}
-
-        probability = max(winProb/total, loseProb/total, drawProb/total)
-        result = max(probabilities, key=probabilities.get)
-    except Exception as e:
-        print e.message
-        print 'no similar cases in the history'
-        result = random.choice(['H', 'A', 'D'])
     return result
 
 

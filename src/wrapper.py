@@ -4,6 +4,8 @@ import pandas as pd
 import glob
 import utils as ut
 from internal_repr.model import CBRclass, Case, CaseBase
+import random
+
 
 
 class Match(Case):
@@ -330,6 +332,48 @@ def similarity(match1, match2):
         return similarity
 
     return 0
+
+
+def adapt_match_result(similar_cases, actual_case, similarities):
+    try:
+        winProb = 0
+        drawProb = 0
+        loseProb = 0
+        for idx, case in enumerate(similar_cases):
+            # H = Home team wins.
+            if str(case.get_solution()) == str("H"):
+                if str(actual_case.get_home()) == str(case.get_home()):
+                    winProb += 1 * similarities[idx]
+                else:
+                    loseProb += 1 * similarities[idx]
+            # A = Away team wins.
+            elif str(case.get_solution()) == str("A"):
+                if str(actual_case.get_away()) == str(case.get_away()):
+                    loseProb += 1 * similarities[idx]
+                else:
+                    winProb += 1 * similarities[idx]
+            # D = Draw
+            elif str(case.get_solution()) == str("D"):
+                drawProb += 1 * similarities[idx]
+
+        total = winProb + loseProb + drawProb
+
+        print "win = " + str(winProb / total)
+        print "draw = " + str(drawProb / total)
+        print "lose = " + str(loseProb / total)
+
+        probabilities = {'H': winProb / total, 'A': loseProb / total, 'D': drawProb / total}
+
+        probability = max(winProb / total, loseProb / total, drawProb / total)
+        result = max(probabilities, key=probabilities.get)
+    except Exception as e:
+        print e.message
+        print 'no similar cases in the history'
+        result = random.choice(['H', 'A', 'D'])
+
+    return result
+
+
 
 
 def expert(match, predicted_result):
