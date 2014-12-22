@@ -44,8 +44,9 @@ def main(actualMatch):
     conf = cbr.revise(actualMatch, w.expert, predicted_result)
     # TODO 7-. RETAIN
 
-    thr = 0.5
-    saved = cbr.retain(actualMatch, matches, conf, thr)
+    conf_thr = 0.5
+    sim_thr = 1
+    saved = cbr.retain(actualMatch, matches, conf, conf_thr, similarities, sim_thr)
 
     # w.save_case_base(matches, '../data/Train/train.jpkl')
     return conf
