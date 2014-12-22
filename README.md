@@ -14,9 +14,9 @@ Task List
 - [x] **Revise**
  - [x] Create abstract Revise.
  - [x] Adapt the abstract case to our problem.
-- [ ] **Retain**
+- [x] **Retain**
  - [x] Create abstract Retain.
- - [ ] Adapt the abstract case to our problem.
+ - [x] Adapt the abstract case to our problem.
 
 
 Deadlines
