@@ -37,7 +37,6 @@ def retrieve(casebase, case, sim, thr, max_cases):
             if similarity > thr:
                 if len(similar_cases) < max_cases:
                     similar_cases.append(c)
-                    # print c.__str__()
                     similarities.append(similarity)
                     similar_cases.sort(key=lambda x: sim(x, case), reverse=True)
                     similarities.sort(reverse=True)
@@ -136,7 +135,7 @@ def revise(case, expert, predicted_result):
         raise NameError('The argument "expert" should be callable.')
 
 
-def retain(case, casebase, confidence, thr):
+def retain(case, casebase, confidence, conf_thr, retrieved_sim, sim_thr):
     """
     In the Retain Phase, the proposed solution will be consider to be saved
     in the repository of the case base or not.
@@ -149,17 +148,30 @@ def retain(case, casebase, confidence, thr):
     :param casebase: CaseBase storing Cases with its solutions.
 
     :type  confidence: float
-    :param confidence: Confidence given by the expert.
+    :param confidence: Confidence given by the Revise Phase.
 
-    :type  thr: float
-    :param thr: Threshold to decide whether to add a case to the case library
+    :type  conf_thr: float
+    :param conf_thr: Threshold to chose whether to add a case to the case library
                 given a certain confidence.
+
+    :type  retrieved_sim: list of float
+    :param retrieved_sim: List of similarities given by the Retrieve Phase.
+
+    :type  sim_thr: float
+    :param sim_thr: Threshold to choose whether two cases are similar.
 
     :return: Boolean
     """
-    if confidence > thr:
-        casebase.add_case(case)
+    if confidence > conf_thr:
+        try:
+            if max(retrieved_sim) < sim_thr:
+                casebase.add_case(case)
+            else:
+                print 'There are similar cases in the CaseBase, so the case was not stored.'
+        except Exception, e:
+            casebase.add_case(case)
+            print e
     else:
-        print 'expert advise not to save match'
+        print 'The Revise Phase gave too low confidence to the proposed solution, so the case was not stored.'
 
     return casebase
