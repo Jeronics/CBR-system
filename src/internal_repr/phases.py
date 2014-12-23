@@ -50,8 +50,10 @@ def retrieve(casebase, case, sim, thr, max_cases):
     else:
         raise NameError('The argument "sim" should be callable.')
 
+
 def null_adapatation(new_case, retrieved_cases, similarities, specific_function):
     return retrieved_cases[np.argmax(similarities)].get_solution()
+
 
 def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_function):
     new_solution = specific_function(new_case, retrieved_cases, similarities)
@@ -78,26 +80,30 @@ def reuse(similar_cases, new_case, similarities, method, specific_function):
     In the Reuse Phase we will observe the retrieved solutions and we will try to adapt them to our new case with
     the implementation of an heuristic.
 
-    :type similar_cases: Case array
+    :type  similar_cases: list of Case
     :param similar_cases: Array of cases similar to the new case.
 
-    :type new_case: Case
+    :type  new_case: Case
     :param new_case: New case to solve
 
-    :type similarities: Vector
+    :type  similarities: list of float
     :param similarities: Vector with the similarity values of the similar cases.
 
-    :type method: Function object
+    :type  method: callable
     :param method: General adaption technique used
 
-    :type specific_function: Function object
+    :type  specific_function: callable
     :param specific_function: Specific problem-dependent function
 
     :return: String with the result of the case
     """
-    result = method(new_case, similar_cases, similarities, specific_function)
-
-    return result
+    if hasattr(method, '__call__'):
+        if hasattr(specific_function, '__call__'):
+            return method(new_case, similar_cases, similarities, specific_function)
+        else:
+            raise NameError('The "specific_function" must be a callable object not a {0}.'.format(type(specific_function)))
+    else:
+        raise NameError('The "method! must be a callable object not a {0}'.format(type(method)))
 
 
 def revise(case, expert, predicted_result):
