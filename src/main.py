@@ -27,17 +27,18 @@ def main(actualMatch):
     max_matches = 10
     retrieved_matches, similarities = cbr.retrieve(matches, actualMatch, w.similarity, threshold, max_matches)
 
-    print similarities
+    # print similarities
 
     # Print retrieved matches from the repository
-    ut.printMatches(retrieved_matches, similarities)
+    # ut.printMatches(retrieved_matches, similarities)
 
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
 
     predicted_result = cbr.reuse(retrieved_matches, actualMatch, similarities)
-    print "predicted result = " + predicted_result
-    print "real result = " + actualMatch.get_solution()
+    # print "predicted result = " + predicted_result
+    # print "real result = " + actualMatch.get_solution()
+    print predicted_result + ' - ' + actualMatch.get_solution()
 
     # TODO 6-. REVISE
 
@@ -64,6 +65,6 @@ if __name__ == '__main__':
         print match.__str__()
         conf = main(match)
         # break
-        i = i + int(conf[0])
+        i += int(conf[0])
 
-    print 'partidos acertados = '+str(i)
+    print 'Accuracy: {0}/{1}'.format(i, len(test_matches.get_case_values()))
