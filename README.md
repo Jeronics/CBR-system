@@ -8,9 +8,9 @@ Task List
 - [x] **Retrieve**
  - [x] Create abstract Retrieve.
  - [x] Match Iosu's implementation with the abstract case.
-- [ ] **Reuse**
- - [ ] Create abstract Reuse.
- - [ ] Match Iosu's implementation with the abstract case.
+- [x] **Reuse**
+ - [x] Create abstract Reuse.
+ - [x] Match Iosu's implementation with the abstract case.
 - [x] **Revise**
  - [x] Create abstract Revise.
  - [x] Adapt the abstract case to our problem.
