@@ -1,10 +1,6 @@
 import datetime
 
 
-def isNaN(x):
-    return True if x != x else False
-
-
 def date_to_day_of_week(date):
     """
     takes a date and returns day of the week
@@ -94,9 +90,9 @@ def printMatches(matches):
 
 
 def printResult(match, probability):
-    if str(match.result) == str("H"):
+    if str(match.result) == "H":
         print str(match.local) + " wins the game with a probability of " + str(probability) + "%"
-    elif str(match.result) == str("L"):
+    elif str(match.result) == "L":
         print str(match.local) + " looses the game with a probability of " + str(probability) + "%"
     else:
         print "draw with a probability of " + str(probability) + "%"

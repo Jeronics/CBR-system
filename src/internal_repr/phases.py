@@ -15,7 +15,7 @@ def retrieve(casebase, case, sim, thr, max_cases):
 
     :type  sim: callable
     :param sim: Similarity function which takes as an argument
-                two cases and returns an float between 0 and 1.
+                two cases and returns a float number between 0 and 1.
                 Where 0 means the two cases are dissimilar and
                 1 means that the two cases are equal or vary
                 similar.
@@ -38,13 +38,11 @@ def retrieve(casebase, case, sim, thr, max_cases):
                 if len(similar_cases) < max_cases:
                     similar_cases.append(c)
                     similarities.append(similarity)
-                    similar_cases.sort(key=lambda x: sim(x, case), reverse=True)
-                    similarities.sort(reverse=True)
                 elif similarity > sim(similar_cases[-1], case):
                     similar_cases[-1] = c
                     similarities[-1] = similarity
-                    similar_cases.sort(key=lambda x: sim(x, case), reverse=True)
-                    similarities.sort(reverse=True)
+                similar_cases.sort(key=lambda x: sim(x, case), reverse=True)
+                similarities.sort(reverse=True)
 
         return similar_cases, similarities
     else:
