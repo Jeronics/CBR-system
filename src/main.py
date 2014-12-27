@@ -12,7 +12,7 @@ import internal_repr.phases as cbr
  # ______________________________________________________________________
 
 
-def main(actualMatch):
+def main(actual_match):
 
     # 1-. LOAD DATA
 
@@ -23,7 +23,7 @@ def main(actualMatch):
 
     threshold = 0.01
     max_matches = 10
-    retrieved_matches, similarities = cbr.retrieve(matches, actualMatch, w.similarity, threshold, max_matches)
+    retrieved_matches, similarities = cbr.retrieve(matches, actual_match, w.similarity, threshold, max_matches)
 
     # print similarities
 
@@ -33,18 +33,18 @@ def main(actualMatch):
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
 
-    predicted_result = cbr.reuse(retrieved_matches, actualMatch, similarities, cbr.substitutional_adaptation, w.adapt_match_result)
+    predicted_result = cbr.reuse(retrieved_matches, actual_match, similarities, cbr.substitutional_adaptation, w.adapt_match_result)
     print "predicted result = " + predicted_result
-    print "real result = " + actualMatch.get_solution()
+    print "real result = " + actual_match.get_solution()
 
     # TODO 6-. REVISE
 
-    conf = cbr.revise(actualMatch, w.expert, predicted_result)
+    conf = cbr.revise(actual_match, w.expert, predicted_result)
     # TODO 7-. RETAIN
 
     conf_thr = 0.5
     sim_thr = 1
-    saved = cbr.retain(actualMatch, matches, conf, conf_thr, similarities, sim_thr)
+    saved = cbr.retain(actual_match, matches, conf, conf_thr, similarities, sim_thr)
 
     # w.save_case_base(matches, '../data/Train/train.jpkl')
     return conf
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     # test_matches = w.read_from_csv('../data/Test/LaLiga2014-15 hasta diciembre.csv')
     i = 0
     for match in test_matches.get_case_values():
-        print match.__str__()
+        print match
         conf = main(match)
         # break
         i += int(conf[0])

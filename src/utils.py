@@ -89,15 +89,6 @@ def printMatches(matches):
             match.data) + " RESULT " + str(match.lGoals) + "-" + str(match.fGoals)
 
 
-def printResult(match, probability):
-    if str(match.result) == "H":
-        print str(match.local) + " wins the game with a probability of " + str(probability) + "%"
-    elif str(match.result) == "L":
-        print str(match.local) + " looses the game with a probability of " + str(probability) + "%"
-    else:
-        print "draw with a probability of " + str(probability) + "%"
-
-
 def printMatches(matches, similarities):
     for idx, match in enumerate(matches):
         print str(match.__str__()) + ' | sim: ' + str(similarities[idx])

@@ -332,43 +332,46 @@ def similarity(match1, match2):
 
     return 0
 
+HOME_TEAM_WINS = "H"
+AWAY_TEAM_WINS = "A"
+DRAW = "D"
 
 def adapt_match_result(similar_cases, actual_case, similarities):
     try:
-        winProb = 0
-        drawProb = 0
-        loseProb = 0
+        win_prob = 0
+        draw_prob = 0
+        lose_prob = 0
         for idx, case in enumerate(similar_cases):
             # H = Home team wins.
-            if str(case.get_solution()) == str("H"):
+            if str(case.get_solution()) == HOME_TEAM_WINS:
                 if str(actual_case.get_home()) == str(case.get_home()):
-                    winProb += 1 * similarities[idx]
+                    win_prob += 1 * similarities[idx]
                 else:
-                    loseProb += 1 * similarities[idx]
+                    lose_prob += 1 * similarities[idx]
             # A = Away team wins.
-            elif str(case.get_solution()) == str("A"):
+            elif str(case.get_solution()) == AWAY_TEAM_WINS:
                 if str(actual_case.get_away()) == str(case.get_away()):
-                    loseProb += 1 * similarities[idx]
+                    lose_prob += 1 * similarities[idx]
                 else:
-                    winProb += 1 * similarities[idx]
+                    win_prob += 1 * similarities[idx]
             # D = Draw
-            elif str(case.get_solution()) == str("D"):
-                drawProb += 1 * similarities[idx]
+            elif str(case.get_solution()) == DRAW:
+                draw_prob += 1 * similarities[idx]
 
-        total = winProb + loseProb + drawProb
+        total = win_prob + lose_prob + draw_prob
 
-        print "win = " + str(winProb / total)
-        print "draw = " + str(drawProb / total)
-        print "lose = " + str(loseProb / total)
+        print "win = " + str(win_prob / total)
+        print "draw = " + str(draw_prob / total)
+        print "lose = " + str(lose_prob / total)
 
-        probabilities = {'H': winProb / total, 'A': loseProb / total, 'D': drawProb / total}
+        probabilities = {HOME_TEAM_WINS: win_prob / total, AWAY_TEAM_WINS: lose_prob / total, DRAW: draw_prob / total}
 
-        probability = max(winProb / total, loseProb / total, drawProb / total)
+        probability = max(win_prob / total, lose_prob / total, draw_prob / total)
         result = max(probabilities, key=probabilities.get)
     except Exception as e:
         print e.message
         print 'no similar cases in the history'
-        result = random.choice(['H', 'A', 'D'])
+        result = random.choice([HOME_TEAM_WINS, AWAY_TEAM_WINS, DRAW])
 
     return result
 
