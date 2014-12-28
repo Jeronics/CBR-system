@@ -1,3 +1,5 @@
+from datetime import datetime
+import sys
 import wrapper as w
 import internal_repr.phases as cbr
 
@@ -51,17 +53,29 @@ def main(actual_match):
 
 if __name__ == '__main__':
 
-    # Read from JSON pickle
-    # test_matches = w.read_case_base('../data/Test/test.jpkl')
+    #if the main is called manually, this if/else-branch will be executed:
+    #create a 'mock' match object with minimum information required and run the cbr for the given fixture
+    if len(sys.argv) == 3:
+        _, team1, team2 = sys.argv
+        now = datetime.now()
+        params = {'FTR': 'N/A', 'HomeTeam': team1, 'AwayTeam': team2, 'Date': '%s/%s/%s' % (now.day, now.month, now.year)}
 
-    # Read from CSV file
-    test_matches = w.read_from_csv('../data/Test/ultimaJornada.csv')
-    # test_matches = w.read_from_csv('../data/Test/LaLiga2014-15 hasta diciembre.csv')
-    i = 0
-    for match in test_matches.get_case_values():
-        print match
+        match = w.Match(params)
         conf = main(match)
-        # break
-        i += int(conf[0])
+        print "checking for manual input: %s" % str(match)
+        print "result: %s" % conf
+    else:
+        # Read from JSON pickle
+        # test_matches = w.read_case_base('../data/Test/test.jpkl')
 
-    print 'Accuracy: {0}/{1}'.format(i, len(test_matches.get_case_values()))
+        # Read from CSV file
+        test_matches = w.read_from_csv('../data/Test/ultimaJornada.csv')
+        # test_matches = w.read_from_csv('../data/Test/LaLiga2014-15 hasta diciembre.csv')
+        i = 0
+        for match in test_matches.get_case_values():
+            print match
+            conf = main(match)
+            # break
+            i += int(conf[0])
+
+        print 'Accuracy: {0}/{1}'.format(i, len(test_matches.get_case_values()))

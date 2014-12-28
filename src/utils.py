@@ -46,15 +46,14 @@ def subtract_months(date, months):
 
 
 def return_football_season(date=datetime.datetime.today()):
-    '''
+    """
     Returns the football season in which a date is in. By default it gets today's date
     :type date: datetime.datetime.date object
     :param date:
 
     :type season: str
     :return season: football season in this format: 'XXXX-YY'
-
-    '''
+    """
     date_aux = subtract_months(date, 6)
     beginning_year = str(date_aux.year)
     ending_year = date_aux.year + 1
@@ -64,8 +63,20 @@ def return_football_season(date=datetime.datetime.today()):
 
 
 def date_to_python_date(date):
-    # print date
-    return datetime.datetime.strptime(date, "%d/%m/%y")
+    """
+    parse possibly 'impure' string date into the string date object
+    :type date: str
+    :param date: string date represendation
+
+    :type ret_date: str
+    :param ret_date: string representation of the date
+    """
+    try:
+        ret_date = datetime.datetime.strptime(date, "%d/%m/%y")
+    except ValueError:
+        #another format -- a year can also have four digits
+        ret_date = datetime.datetime.strptime(date, "%d/%m/%Y")
+    return ret_date
 
 
 def int_to_weekday(day):
