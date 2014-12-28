@@ -25,7 +25,7 @@ def main(actual_match):
 
     threshold = 0.01
     max_matches = 10
-    retrieved_matches, similarities = cbr.retrieve(matches, actual_match, w.similarity, threshold, max_matches)
+    retrieved_matches, similarities = cbr.retrieve(matches, actual_match, w.similarity_function, threshold, max_matches)
 
     # print similarities
 
@@ -35,13 +35,13 @@ def main(actual_match):
     # TODO 5-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
 
-    predicted_result = cbr.reuse(retrieved_matches, actual_match, similarities, cbr.substitutional_adaptation, w.adapt_match_result)
+    predicted_result = cbr.reuse(retrieved_matches, actual_match, similarities, cbr.substitutional_adaptation, w.adapt_match_result_function)
     print "predicted result = " + predicted_result
     print "real result = " + actual_match.get_solution()
 
     # TODO 6-. REVISE
 
-    conf = cbr.revise(actual_match, w.expert, predicted_result)
+    conf = cbr.revise(actual_match, w.expert_function, predicted_result)
     # TODO 7-. RETAIN
 
     conf_thr = 0.5

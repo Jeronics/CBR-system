@@ -283,7 +283,7 @@ class MatchesCaseBase(CaseBase):
                 {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
 
 
-def similarity(match1, match2):
+def similarity_function(match1, match2):
     """
     Calculate the similarity between the two matches.
 
@@ -336,7 +336,7 @@ HOME_TEAM_WINS = "H"
 AWAY_TEAM_WINS = "A"
 DRAW = "D"
 
-def adapt_match_result(similar_cases, actual_case, similarities):
+def adapt_match_result_function(similar_cases, actual_case, similarities):
     try:
         win_prob = 0
         draw_prob = 0
@@ -378,7 +378,7 @@ def adapt_match_result(similar_cases, actual_case, similarities):
 
 
 
-def expert(match, predicted_result):
+def expert_function(match, predicted_result):
     """
     Check whether the proposed solution is correct, returns 1
     if so and 0 otherwise.
