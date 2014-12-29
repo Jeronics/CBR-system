@@ -10,26 +10,26 @@ def date_to_day_of_week(date):
 
 
 def diff_in_league_years(last_date, earlier_date):
-    '''
+    """
     Finds how many leagues have passed from one date to the other
 
     :param last_date (datetime.datetime.date object):
     :param earlier_date (datetime.datetime.date object):
 
     :return: league year differences: 0 if in the same league year etc.
-    '''
+    """
     return subtract_months(last_date, 6).year - subtract_months(earlier_date, 6).year
 
 
 def subtract_months(date, months):
-    '''
+    """
     Subtracts 6 months from a date.
     Warning: The days are set to 01 to avoid problems in monthly day variations
 
     :param date: (datetime.datetime.object)
     :param months: (int) number of months to subtract
     :return: (datetime.datetime.object) a new date 6 months earlier but with day=1
-    '''
+    """
     if months < 0:
         months = abs(months)
     date_x = date.replace(day=1)

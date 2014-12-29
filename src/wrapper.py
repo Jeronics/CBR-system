@@ -283,16 +283,14 @@ class MatchesCaseBase(CaseBase):
                 {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
 
 
-def similarity_function(match1, match2):
+def similarity_function(train_match, test_match):
     """
     Calculate the similarity between the two matches.
 
-    :type match1: Train Match
-    :type match2: Test Match: Actual MATCH
+    :type train_match: Train Match
+    :type test_match: Test Match: Actual MATCH
     :return: Similarity between match1 and match2 (0 - 1)
     """
-    leagueYearsSinceGame = ut.diff_in_league_years(match2.get_date(), match1.get_date())
-
 
     # Weighting method 1:
     #
@@ -303,7 +301,7 @@ def similarity_function(match1, match2):
     #         + For each year * 0.1
     #
 
-    # wYears = float(leagueYearsSinceGame) * 0.1
+    # wYears = float(league_years_since_game) * 0.1
     # # print yearsSinceGame
     # if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
     #     similarity = max(0.1, float(1 - wYears))
@@ -320,14 +318,15 @@ def similarity_function(match1, match2):
     # 2-. Data
     #     + 1 / (1 + passed years)
 
-    wYears = 1 / float(1 + leagueYearsSinceGame)
-    if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
+    league_years_since_game = ut.diff_in_league_years(test_match.get_date(), train_match.get_date())
+    w_years = 1 / float(1 + league_years_since_game)
+    if train_match.get_home() == test_match.get_home() and train_match.get_away() == test_match.get_away():
         same_local = 1
-        sim = wYears*same_local
+        sim = w_years * same_local
         return sim
-    if match1.get_home() == match2.get_away() and match1.get_away() == match2.get_home():
+    if train_match.get_home() == test_match.get_away() and train_match.get_away() == test_match.get_home():
         same_local = 0.8
-        sim = wYears*same_local
+        sim = w_years * same_local
         return sim
 
     return 0
