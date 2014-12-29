@@ -336,7 +336,7 @@ HOME_TEAM_WINS = "H"
 AWAY_TEAM_WINS = "A"
 DRAW = "D"
 
-def adapt_match_result_function(similar_cases, actual_case, similarities):
+def specific_function(similar_cases, actual_case, similarities):
     try:
         win_prob = 0
         draw_prob = 0
