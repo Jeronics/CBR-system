@@ -409,11 +409,11 @@ def read_match_dataset(dataset, mcb):
 
     :return: MatchCaseBase
     """
+    #using pandas instead of numpy because the csv files are not well-formed and cannot be parsed by numpy
     data = pd.read_csv(dataset, sep=',', header=0)
     for i in data.index:
-        params = {c: data.irow(i)[c] for c in data.columns}
+        params = {c: data.loc[i, c] for c in data.columns}
         mcb.create_match(params)
-    return mcb
 
 
 def save_case_base(case_base, filename):
@@ -448,26 +448,24 @@ def read_case_base(filename):
 
 def read_from_csv(data):
     """
-
     :param data:
     :return:
     """
     matches_data = MatchesCaseBase()
-    matches_data = read_match_dataset(data, matches_data)
+    read_match_dataset(data, matches_data)
     return matches_data
 
 if __name__ == '__main__':
     # Create Train Data set
-    dataset = []
-    for files in glob.glob("../data/Train/*.csv"):
-        dataset.append(files)
+    dataset = [files for files in glob.glob("../data/Train/*.csv")]
 
     matches_data = MatchesCaseBase()
-    for data in dataset[:8]:
-        matches_data = read_match_dataset(data, matches_data)
+    skip_dataset_index = 8
+    for data in dataset[:skip_dataset_index]:
+        read_match_dataset(data, matches_data)
+    for data in dataset[skip_dataset_index:]:
+        read_match_dataset(data, matches_data)
 
-    for data in dataset[8:]:
-        matches_data = read_match_dataset(data, matches_data)
     save_case_base(matches_data, '../data/Train/train.jpkl')
 
     # # Create Test Data set
