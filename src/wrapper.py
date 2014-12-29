@@ -340,21 +340,21 @@ def specific_function(similar_cases, actual_case, similarities):
         win_prob = 0
         draw_prob = 0
         lose_prob = 0
-        for idx, case in enumerate(similar_cases):
+        for idx, similar_case in enumerate(similar_cases):
             # H = Home team wins.
-            if str(case.get_solution()) == HOME_TEAM_WINS:
-                if str(actual_case.get_home()) == str(case.get_home()):
+            if str(similar_case.get_solution()) == HOME_TEAM_WINS:
+                if str(actual_case.get_home()) == str(similar_case.get_home()):
                     win_prob += 1 * similarities[idx]
                 else:
                     lose_prob += 1 * similarities[idx]
             # A = Away team wins.
-            elif str(case.get_solution()) == AWAY_TEAM_WINS:
-                if str(actual_case.get_away()) == str(case.get_away()):
+            elif str(similar_case.get_solution()) == AWAY_TEAM_WINS:
+                if str(actual_case.get_away()) == str(similar_case.get_away()):
                     lose_prob += 1 * similarities[idx]
                 else:
                     win_prob += 1 * similarities[idx]
             # D = Draw
-            elif str(case.get_solution()) == DRAW:
+            elif str(similar_case.get_solution()) == DRAW:
                 draw_prob += 1 * similarities[idx]
 
         total = win_prob + lose_prob + draw_prob
@@ -412,6 +412,7 @@ def read_match_dataset(dataset, mcb):
     #using pandas instead of numpy because the csv files are not well-formed and cannot be parsed by numpy
     data = pd.read_csv(dataset, sep=',', header=0)
     for i in data.index:
+        #data.irow()[] is deprecated, use data.loc instead
         params = {c: data.loc[i, c] for c in data.columns}
         mcb.create_match(params)
 

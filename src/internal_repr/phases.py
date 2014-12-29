@@ -135,7 +135,7 @@ def revise(case, expert_function, predicted_result):
 
 def retain(case, casebase, confidence, conf_thr, retrieved_sim, sim_thr):
     """
-    In the Retain Phase, the proposed solution will be consider to be saved
+    In the Retain Phase, the proposed solution will be considered to be saved
     in the repository of the case base or not.
 
     :type  case: Case
@@ -156,7 +156,7 @@ def retain(case, casebase, confidence, conf_thr, retrieved_sim, sim_thr):
     :param retrieved_sim: List of similarities given by the Retrieve Phase.
 
     :type  sim_thr: float
-    :param sim_thr: Threshold to choose whether two cases are similar.
+    :param sim_thr: Threshold to chose whether two cases are similar.
 
     :return: Boolean
     """
