@@ -52,6 +52,7 @@ def retrieve(casebase, case, similarity_function, thr, max_cases):
 def null_adapatation(new_case, retrieved_cases, similarities, specific_function):
     '''
     This is an adaptation function to a sub-case of the adaptational substitution.
+    It returns the solution of the most similar case. Null adaptation.
 
     :type new_case: Case (Unused)
     :param new_case: New case to solve (Unused)
@@ -72,6 +73,14 @@ def null_adapatation(new_case, retrieved_cases, similarities, specific_function)
 
 
 def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_function):
+    '''
+
+    :param new_case:
+    :param retrieved_cases:
+    :param similarities:
+    :param specific_function:
+    :return:
+    '''
     new_solution = specific_function(new_case, retrieved_cases, similarities)
     return new_solution
 
@@ -117,7 +126,8 @@ def reuse(similar_cases, new_case, similarities, adaptation_function, specific_f
         if hasattr(specific_function, '__call__'):
             return adaptation_function(new_case, similar_cases, similarities, specific_function)
         else:
-            raise NameError('The "specific_function" must be a callable object not a {0}.'.format(type(specific_function)))
+            raise NameError(
+                'The "specific_function" must be a callable object not a {0}.'.format(type(specific_function)))
     else:
         raise NameError('The "method! must be a callable object not a {0}'.format(type(adaptation_function)))
 
