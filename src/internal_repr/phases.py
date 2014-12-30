@@ -53,11 +53,21 @@ def retrieve(casebase, case, sim, thr, max_cases):
 def null_adapatation(new_case, retrieved_cases, similarities, specific_function):
     '''
     This is an adaptation function to a sub-case of the adaptational substitution.
-    :param new_case:
+
+    :type new_case: Case (Unused)
+    :param new_case: New case to solve (Unused)
+
+    :type retrieved_cases: List of Case Objects
     :param retrieved_cases:
-    :param similarities:
-    :param specific_function:
-    :return:
+
+    :type similarities: List of floats
+    :param similarities: list of similiarities between elements in retrieved_cases and the new case.
+
+    :type specific_function: Function Object
+    :param specific_function: (Unused)
+
+    :type: Solution Object
+    :return: solution object in the most similar case.
     '''
     return retrieved_cases[np.argmax(similarities)].get_solution()
 
