@@ -74,18 +74,19 @@ def null_adapatation(new_case, retrieved_cases, similarities, specific_function)
 
 def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_function):
     '''
-
+    This function is a domain specific substitutional_adaptation which using a specific domain function returns a new
+    solution.
 
     :type new_case: Case
     :param new_case: New case to solve
 
-    :param retrieved_cases: List of Case
+    :type retrieved_cases: List of Case
     :param retrieved_cases:
 
-    :param similarities: List of floats
+    :type similarities: List of floats
     :param similarities: list of similarities between elements in retrieved_cases and the new case.
 
-    :param specific_function: Function Object - must have as inputs: (new_case, retrieved_cases, similarities)
+    :type specific_function: Function Object - must have as inputs: (new_case, retrieved_cases, similarities)
     :param specific_function: Specific function that determines the domain specific substitutional adaptation.
 
     :type: Solution Object
@@ -97,17 +98,21 @@ def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_
 
 def transformational_adaptation(new_case, retrieved_cases, similarities, specific_function):
     '''
+    This function is a domain specific tranforamtional adaptation which using a specific domain function returns a new
+    solution.
 
     :type new_case: Case
     :param new_case: New case to solve
 
-    :param retrieved_cases: List of Case
+    :type retrieved_cases: List of Case
     :param retrieved_cases:
 
-    :param similarities: List of floats
+    :type similarities: List of floats
     :param similarities: list of similarities between elements in retrieved_cases and the new case.
 
-    :param specific_function: Function Object - must have as inputs: (new_case, retrieved_cases, similarities)
+    :type specific_function: Function Object
+            - must have as inputs: (new_case, retrieved_cases, similarities)
+            -
     :param specific_function: Specific function that determines the domain specific substitutional adaptation.
 
     :type: Solution Object
@@ -125,13 +130,13 @@ def generative_adaptation(new_case, retrieved_cases, similarities, specific_func
     :type new_case: Case
     :param new_case: New case to solve
 
-    :param retrieved_cases: List of Case
+    :type retrieved_cases: List of Case
     :param retrieved_cases:
 
-    :param similarities: List of floats
+    :type similarities: List of floats
     :param similarities: list of similarities between elements in retrieved_cases and the new case.
 
-    :param specific_function: Function Object - must have as inputs: (new_case, retrieved_cases, similarities)
+    :type specific_function: Function Object - must have as inputs: (new_case, retrieved_cases, similarities)
     :param specific_function: Specific function that determines the domain specific substitutional adaptation.
 
     :type: Solution Object
@@ -164,7 +169,8 @@ def reuse(similar_cases, new_case, similarities, adaptation_function, specific_f
     :type  specific_function: callable
     :param specific_function: Specific problem-dependent function
 
-    :return: String with the result of the case
+    :type: String
+    :return: result of the case
     """
     if hasattr(adaptation_function, '__call__'):
         if hasattr(specific_function, '__call__'):
@@ -191,6 +197,7 @@ def revise(case, expert_function, predicted_result):
                    the first element being a confidence measure and the second
                    element an improved solution if there is.
 
+    :type: Tuple list of confidence and case object
     :return: confidence measure of the proposed solution to be positive.
     """
     if hasattr(expert_function, '__call__'):
