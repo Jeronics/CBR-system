@@ -75,6 +75,7 @@ def null_adapatation(new_case, retrieved_cases, similarities, specific_function)
 def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_function):
     '''
 
+
     :type new_case: Case
     :param new_case:
 
@@ -95,6 +96,23 @@ def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_
 
 
 def transformational_adaptation(new_case, retrieved_cases, similarities, specific_function):
+    '''
+
+    :type new_case: Case
+    :param new_case:
+
+    :param retrieved_cases: List of Case
+    :param retrieved_cases:
+
+    :param similarities: List of floats
+    :param similarities: list of similarities between elements in retrieved_cases and the new case.
+
+    :param specific_function: Function Object - must have as inputs: (new_case, retrieved_cases, similarities)
+    :param specific_function: Specific function that determines the domain specific substitutional adaptation.
+
+    :type: Solution Object
+    :return: solution object returned by the specific function
+    '''
     # structural changes in solution
     modifier, solution_to_change = specific_function(new_case, retrieved_cases, similarities)
 
@@ -102,6 +120,23 @@ def transformational_adaptation(new_case, retrieved_cases, similarities, specifi
 
 
 def generative_adaptation(new_case, retrieved_cases, similarities, specific_function):
+    '''
+
+    :type new_case: Case
+    :param new_case:
+
+    :param retrieved_cases: List of Case
+    :param retrieved_cases:
+
+    :param similarities: List of floats
+    :param similarities: list of similarities between elements in retrieved_cases and the new case.
+
+    :param specific_function: Function Object - must have as inputs: (new_case, retrieved_cases, similarities)
+    :param specific_function: Specific function that determines the domain specific substitutional adaptation.
+
+    :type: Solution Object
+    :return: solution object returned by the specific function
+    '''
     # return the operation that returns the solution given a problem
     operation = specific_function(retrieved_cases, similarities, specific_function)
 
