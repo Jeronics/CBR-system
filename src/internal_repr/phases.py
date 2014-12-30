@@ -61,7 +61,7 @@ def null_adapatation(new_case, retrieved_cases, similarities, specific_function)
     :param retrieved_cases:
 
     :type similarities: List of floats
-    :param similarities: list of similiarities between elements in retrieved_cases and the new case.
+    :param similarities: list of similarities between elements in retrieved_cases and the new case.
 
     :type specific_function: Function Object
     :param specific_function: (Unused)
@@ -75,11 +75,20 @@ def null_adapatation(new_case, retrieved_cases, similarities, specific_function)
 def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_function):
     '''
 
+    :type new_case: Case
     :param new_case:
+
+    :param retrieved_cases: List of Case
     :param retrieved_cases:
-    :param similarities:
-    :param specific_function:
-    :return:
+
+    :param similarities: List of floats
+    :param similarities: list of similarities between elements in retrieved_cases and the new case.
+
+    :param specific_function: Function Object - must have as inputs: (new_case, retrieved_cases, similarities)
+    :param specific_function: Specific function that determines the domain specific substitutional adaptation.
+
+    :type: Solution Object
+    :return: solution object returned by the specific function
     '''
     new_solution = specific_function(new_case, retrieved_cases, similarities)
     return new_solution
