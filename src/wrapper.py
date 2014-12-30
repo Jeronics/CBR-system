@@ -283,16 +283,14 @@ class MatchesCaseBase(CaseBase):
                 {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
 
 
-def similarity(match1, match2):
+def similarity_function(train_match, test_match):
     """
     Calculate the similarity between the two matches.
 
-    :type match1: Train Match
-    :type match2: Test Match: Actual MATCH
+    :type train_match: Train Match
+    :type test_match: Test Match: Actual MATCH
     :return: Similarity between match1 and match2 (0 - 1)
     """
-    leagueYearsSinceGame = ut.diff_in_league_years(match2.get_date(), match1.get_date())
-
 
     # Weighting method 1:
     #
@@ -303,7 +301,7 @@ def similarity(match1, match2):
     #         + For each year * 0.1
     #
 
-    # wYears = float(leagueYearsSinceGame) * 0.1
+    # wYears = float(league_years_since_game) * 0.1
     # # print yearsSinceGame
     # if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
     #     similarity = max(0.1, float(1 - wYears))
@@ -320,62 +318,66 @@ def similarity(match1, match2):
     # 2-. Data
     #     + 1 / (1 + passed years)
 
-    wYears = 1 / float(1 + leagueYearsSinceGame)
-    if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
+    league_years_since_game = ut.diff_in_league_years(test_match.get_date(), train_match.get_date())
+    w_years = 1 / float(1 + league_years_since_game)
+    if train_match.get_home() == test_match.get_home() and train_match.get_away() == test_match.get_away():
         same_local = 1
-        sim = wYears*same_local
+        sim = w_years * same_local
         return sim
-    if match1.get_home() == match2.get_away() and match1.get_away() == match2.get_home():
+    if train_match.get_home() == test_match.get_away() and train_match.get_away() == test_match.get_home():
         same_local = 0.8
-        sim = wYears*same_local
+        sim = w_years * same_local
         return sim
 
     return 0
 
+HOME_TEAM_WINS = "H"
+AWAY_TEAM_WINS = "A"
+DRAW = "D"
 
-def adapt_match_result(similar_cases, actual_case, similarities):
+def specific_function(similar_cases, actual_case, similarities):
     try:
-        winProb = 0
-        drawProb = 0
-        loseProb = 0
-        for idx, case in enumerate(similar_cases):
+        win_prob = 0
+        draw_prob = 0
+        lose_prob = 0
+        for idx, similar_case in enumerate(similar_cases):
             # H = Home team wins.
-            if str(case.get_solution()) == str("H"):
-                if str(actual_case.get_home()) == str(case.get_home()):
-                    winProb += 1 * similarities[idx]
+            if str(similar_case.get_solution()) == HOME_TEAM_WINS:
+                if str(actual_case.get_home()) == str(similar_case.get_home()):
+                    win_prob += 1 * similarities[idx]
                 else:
-                    loseProb += 1 * similarities[idx]
+                    lose_prob += 1 * similarities[idx]
             # A = Away team wins.
-            elif str(case.get_solution()) == str("A"):
-                if str(actual_case.get_away()) == str(case.get_away()):
-                    loseProb += 1 * similarities[idx]
+            elif str(similar_case.get_solution()) == AWAY_TEAM_WINS:
+                if str(actual_case.get_away()) == str(similar_case.get_away()):
+                    lose_prob += 1 * similarities[idx]
                 else:
-                    winProb += 1 * similarities[idx]
+                    win_prob += 1 * similarities[idx]
             # D = Draw
-            elif str(case.get_solution()) == str("D"):
-                drawProb += 1 * similarities[idx]
+            elif str(similar_case.get_solution()) == DRAW:
+                draw_prob += 1 * similarities[idx]
 
-        total = winProb + loseProb + drawProb
+        total = win_prob + lose_prob + draw_prob
 
-        print "win = " + str(winProb / total)
-        print "draw = " + str(drawProb / total)
-        print "lose = " + str(loseProb / total)
+        print "win = " + str(win_prob / total)
+        print "draw = " + str(draw_prob / total)
+        print "lose = " + str(lose_prob / total)
 
-        probabilities = {'H': winProb / total, 'A': loseProb / total, 'D': drawProb / total}
+        probabilities = {HOME_TEAM_WINS: win_prob / total, AWAY_TEAM_WINS: lose_prob / total, DRAW: draw_prob / total}
 
-        probability = max(winProb / total, loseProb / total, drawProb / total)
+        probability = max(win_prob / total, lose_prob / total, draw_prob / total)
         result = max(probabilities, key=probabilities.get)
     except Exception as e:
         print e.message
         print 'no similar cases in the history'
-        result = random.choice(['H', 'A', 'D'])
+        result = random.choice([HOME_TEAM_WINS, AWAY_TEAM_WINS, DRAW])
 
     return result
 
 
 
 
-def expert(match, predicted_result):
+def expert_function(match, predicted_result):
     """
     Check whether the proposed solution is correct, returns 1
     if so and 0 otherwise.
@@ -407,11 +409,12 @@ def read_match_dataset(dataset, mcb):
 
     :return: MatchCaseBase
     """
+    #using pandas instead of numpy because the csv files are not well-formed and cannot be parsed by numpy
     data = pd.read_csv(dataset, sep=',', header=0)
     for i in data.index:
-        params = {c: data.irow(i)[c] for c in data.columns}
+        #data.irow()[] is deprecated, use data.loc instead
+        params = {c: data.loc[i, c] for c in data.columns}
         mcb.create_match(params)
-    return mcb
 
 
 def save_case_base(case_base, filename):
@@ -446,26 +449,24 @@ def read_case_base(filename):
 
 def read_from_csv(data):
     """
-
     :param data:
     :return:
     """
     matches_data = MatchesCaseBase()
-    matches_data = read_match_dataset(data, matches_data)
+    read_match_dataset(data, matches_data)
     return matches_data
 
 if __name__ == '__main__':
     # Create Train Data set
-    dataset = []
-    for files in glob.glob("../data/Train/*.csv"):
-        dataset.append(files)
+    dataset = [files for files in glob.glob("../data/Train/*.csv")]
 
     matches_data = MatchesCaseBase()
-    for data in dataset[:8]:
-        matches_data = read_match_dataset(data, matches_data)
+    skip_dataset_index = 8
+    for data in dataset[:skip_dataset_index]:
+        read_match_dataset(data, matches_data)
+    for data in dataset[skip_dataset_index:]:
+        read_match_dataset(data, matches_data)
 
-    for data in dataset[8:]:
-        matches_data = read_match_dataset(data, matches_data)
     save_case_base(matches_data, '../data/Train/train.jpkl')
 
     # # Create Test Data set
