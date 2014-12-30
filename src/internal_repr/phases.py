@@ -112,7 +112,7 @@ def transformational_adaptation(new_case, retrieved_cases, similarities, specifi
 
     :type specific_function: Function Object
             - must have as inputs: (new_case, retrieved_cases, similarities)
-            -
+            - output: modifier: operation which modifies the structure of the solution and the solution Object to change
     :param specific_function: Specific function that determines the domain specific substitutional adaptation.
 
     :type: Solution Object
