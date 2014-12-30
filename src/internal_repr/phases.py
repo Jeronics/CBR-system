@@ -77,7 +77,7 @@ def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_
 
 
     :type new_case: Case
-    :param new_case:
+    :param new_case: New case to solve
 
     :param retrieved_cases: List of Case
     :param retrieved_cases:
@@ -99,7 +99,7 @@ def transformational_adaptation(new_case, retrieved_cases, similarities, specifi
     '''
 
     :type new_case: Case
-    :param new_case:
+    :param new_case: New case to solve
 
     :param retrieved_cases: List of Case
     :param retrieved_cases:
@@ -123,7 +123,7 @@ def generative_adaptation(new_case, retrieved_cases, similarities, specific_func
     '''
 
     :type new_case: Case
-    :param new_case:
+    :param new_case: New case to solve
 
     :param retrieved_cases: List of Case
     :param retrieved_cases:
