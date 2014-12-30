@@ -51,6 +51,14 @@ def retrieve(casebase, case, sim, thr, max_cases):
         raise NameError('The argument "sim" should be callable.')
 
 def null_adapatation(new_case, retrieved_cases, similarities, specific_function):
+    '''
+    This is an adaptation function to a sub-case of the adaptational substitution.
+    :param new_case:
+    :param retrieved_cases:
+    :param similarities:
+    :param specific_function:
+    :return:
+    '''
     return retrieved_cases[np.argmax(similarities)].get_solution()
 
 def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_function):
