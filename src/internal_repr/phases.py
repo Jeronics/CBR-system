@@ -50,7 +50,7 @@ def retrieve(casebase, case, similarity_function, thr, max_cases):
 
 
 def null_adapatation(new_case, retrieved_cases, similarities, specific_function):
-    '''
+    """
     This is an adaptation function to a sub-case of the adaptational substitution.
     It returns the solution of the most similar case. Null adaptation.
 
@@ -68,12 +68,12 @@ def null_adapatation(new_case, retrieved_cases, similarities, specific_function)
 
     :type: Solution Object
     :return: solution object in the most similar case.
-    '''
+    """
     return retrieved_cases[np.argmax(similarities)].get_solution()
 
 
 def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_function):
-    '''
+    """
     This function is a domain specific substitutional_adaptation which using a specific domain function returns a new
     solution.
 
@@ -91,13 +91,13 @@ def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_
 
     :type: Solution Object
     :return: solution object returned by the specific function
-    '''
+    """
     new_solution = specific_function(new_case, retrieved_cases, similarities)
     return new_solution
 
 
 def transformational_adaptation(new_case, retrieved_cases, similarities, specific_function):
-    '''
+    """
     This function is a domain specific tranforamtional adaptation which using a specific domain function returns a new
     solution.
 
@@ -117,7 +117,7 @@ def transformational_adaptation(new_case, retrieved_cases, similarities, specifi
 
     :type: Solution Object
     :return: solution object returned by the specific function
-    '''
+    """
     # structural changes in solution
     modifier, solution_to_change = specific_function(new_case, retrieved_cases, similarities)
 
@@ -125,8 +125,7 @@ def transformational_adaptation(new_case, retrieved_cases, similarities, specifi
 
 
 def generative_adaptation(new_case, retrieved_cases, similarities, specific_function):
-    '''
-
+    """
     :type new_case: Case
     :param new_case: New case to solve
 
@@ -141,7 +140,7 @@ def generative_adaptation(new_case, retrieved_cases, similarities, specific_func
 
     :type: Solution Object
     :return: solution object returned by the specific function
-    '''
+    """
     # return the operation that returns the solution given a problem
     operation = specific_function(retrieved_cases, similarities, specific_function)
 
