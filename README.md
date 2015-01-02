@@ -31,10 +31,10 @@ Global Goals
 
 OPTIMAL CBR SYSTEM(Case base maintenence especially affects space and time)
 
-1.  Maximum Competence: to maximize the # of target problems it can satisfactorily solve
-2.  Optimal Efficiency:
-    a)  Time: minimize time
-    b)  Space: Smaller CL
+- 1.  Maximum Competence: to maximize the # of target problems it can satisfactorily solve
+- 2.  Optimal Efficiency:
+ - a)  Time: minimize time
+ - b)  Space: Smaller CL
 
 0. Data
 -------
