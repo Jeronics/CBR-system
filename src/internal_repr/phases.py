@@ -96,9 +96,9 @@ def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_
     return new_solution
 
 
-def transformational_adaptation(new_case, retrieved_cases, similarities, specific_function):
+def structural_adaptation(new_case, retrieved_cases, similarities, specific_function):
     """
-    This function is a domain specific tranforamtional adaptation which using a specific domain function returns a new
+    This function is a generic structural adaptation which when using a specific domain function returns a new
     solution.
 
     :type new_case: Case
@@ -126,6 +126,10 @@ def transformational_adaptation(new_case, retrieved_cases, similarities, specifi
 
 def generative_adaptation(new_case, retrieved_cases, similarities, specific_function):
     """
+
+    This is an adaptation function that acts as a gereric function of the generative substitution. It generates an
+    operation based on the retrieved cases to obtain a solution.
+
     :type new_case: Case
     :param new_case: New case to solve
 
@@ -135,7 +139,9 @@ def generative_adaptation(new_case, retrieved_cases, similarities, specific_func
     :type similarities: List of floats
     :param similarities: list of similarities between elements in retrieved_cases and the new case.
 
-    :type specific_function: Function Object - must have as inputs: (new_case, retrieved_cases, similarities)
+    :type specific_function: Function Object - inputs: (new_case, retrieved_cases, similarities)
+                                             - output: Operation function which returns the solution from the new case.
+
     :param specific_function: Specific function that determines the domain specific substitutional adaptation.
 
     :type: Solution Object
