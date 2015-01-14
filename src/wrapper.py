@@ -335,7 +335,7 @@ HOME_TEAM_WINS = "H"
 AWAY_TEAM_WINS = "A"
 DRAW = "D"
 
-def specific_function(similar_cases, actual_case, similarities):
+def specific_function(actual_case,similar_cases, similarities):
     try:
         win_prob = 0
         draw_prob = 0
@@ -371,7 +371,7 @@ def specific_function(similar_cases, actual_case, similarities):
         print e.message
         print 'no similar cases in the history'
         result = random.choice([HOME_TEAM_WINS, AWAY_TEAM_WINS, DRAW])
-
+    print 'ACTUAL CASE:', actual_case, '\nSIMILAR CASE:', [case.name for case in similar_cases]
     return result
 
 
