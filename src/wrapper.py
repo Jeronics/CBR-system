@@ -4,8 +4,8 @@ import pandas as pd
 import glob
 import utils as ut
 from internal_repr.model import CBRclass, Case, CaseBase
+from joblib import Parallel, delayed
 import random
-
 
 
 class Match(Case):
@@ -336,6 +336,7 @@ AWAY_TEAM_WINS = "A"
 DRAW = "D"
 
 def specific_function(actual_case, similar_cases, similarities):
+
     try:
         win_prob = 0
         draw_prob = 0
@@ -373,8 +374,6 @@ def specific_function(actual_case, similar_cases, similarities):
         result = random.choice([HOME_TEAM_WINS, AWAY_TEAM_WINS, DRAW])
     print 'ACTUAL CASE:', actual_case, '\nSIMILAR CASE:', [case.name for case in similar_cases]
     return result
-
-
 
 
 def expert_function(match, predicted_result):
@@ -447,6 +446,7 @@ def read_case_base(filename):
     f.close()
     return matches_base
 
+
 def read_from_csv(data):
     """
     :param data:
@@ -458,16 +458,25 @@ def read_from_csv(data):
 
 if __name__ == '__main__':
     # Create Train Data set
+    import time
     dataset = [files for files in glob.glob("../data/Train/*.csv")]
 
     matches_data = MatchesCaseBase()
     skip_dataset_index = 8
+
+    t = time.time()
+    Parallel(n_jobs=8)(delayed(read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
+    print str(time.time() - t)
+    t = time.time()
+
     for data in dataset[:skip_dataset_index]:
         read_match_dataset(data, matches_data)
     for data in dataset[skip_dataset_index:]:
         read_match_dataset(data, matches_data)
 
-    save_case_base(matches_data, '../data/Train/train.jpkl')
+    print str(time.time() - t)
+
+    # save_case_base(matches_data, '../data/Train/train.jpkl')
 
     # # Create Test Data set
     # test_matches = MatchesCaseBase()

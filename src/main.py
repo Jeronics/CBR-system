@@ -2,6 +2,9 @@ from datetime import datetime
 import sys
 import wrapper as w
 import internal_repr.phases as cbr
+import glob
+from joblib import Parallel, delayed
+from wrapper import Match, MatchesCaseBase
 
  # ______________________________________________________________________
  #
@@ -14,12 +17,12 @@ import internal_repr.phases as cbr
  # ______________________________________________________________________
 
 
-def main_CBR(actual_match):
+def main_CBR(actual_match, matches):
 
     # 1-. LOAD DATA
 
-    dataset = '../data/Train/train.jpkl'
-    matches = w.read_case_base(dataset)
+    # dataset = '../data/Train/train.jpkl'
+    # matches = w.read_case_base(dataset)
 
     # 2-. RETRIEVE SIMILAR MATCHES
 
@@ -44,7 +47,7 @@ def main_CBR(actual_match):
     conf = cbr.revise(actual_match, w.expert_function, predicted_result)
     # TODO 7-. RETAIN
 
-    conf_thr = 0.90
+    conf_thr = 0.50
     sim_thr = 1
     saved = cbr.retain(actual_match, matches, conf, conf_thr, similarities, sim_thr)
 
@@ -52,6 +55,11 @@ def main_CBR(actual_match):
     return conf
 
 if __name__ == '__main__':
+
+    # Load the
+    dataset = [files for files in glob.glob("../data/Train/*.csv")]
+    matches_data = MatchesCaseBase()
+    Parallel(n_jobs=8)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
 
     #if the main is called manually, this if/else-branch will be executed:
     #create a 'mock' match object with minimum information required and run the cbr for the given fixture
@@ -74,7 +82,7 @@ if __name__ == '__main__':
         i = 0
         for match in test_matches.get_case_values():
             print match
-            conf = main_CBR(match)
+            conf = main_CBR(match, matches_data)
             # break
             i += int(conf[0])
 
