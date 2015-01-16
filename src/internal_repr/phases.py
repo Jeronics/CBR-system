@@ -248,11 +248,11 @@ def retain(case, casebase, confidence, conf_thr, retrieved_sim, sim_thr):
         try:
             if max(retrieved_sim) < sim_thr:
                 casebase.add_case(case)
-            else:
-                print 'There are similar cases in the CaseBase, so the case was not stored.'
+            # else:
+                # print 'There are similar cases in the CaseBase, so the case was not stored.'
         except:
             casebase.add_case(case)
-    else:
-        print 'The Revise Phase gave too low confidence to the proposed solution, so the case was not stored.'
+    # else:
+        # print 'The Revise Phase gave too low confidence to the proposed solution, so the case was not stored.'
 
     return casebase

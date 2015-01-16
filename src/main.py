@@ -17,38 +17,33 @@ from wrapper import Match, MatchesCaseBase
  # ______________________________________________________________________
 
 
-def main_CBR(actual_match, matches):
+def main_CBR(actual_match, matches, **kwargs):
 
-    # 1-. LOAD DATA
+    # 1-. RETRIEVE SIMILAR MATCHES
 
-    # dataset = '../data/Train/train.jpkl'
-    # matches = w.read_case_base(dataset)
-
-    # 2-. RETRIEVE SIMILAR MATCHES
-
-    threshold = 0.01
-    max_matches = 10
+    threshold = kwargs['retrieve_thr'] if 'retrieve_thr' in kwargs else 0.01
+    max_matches = kwargs['max_matches'] if 'max_matches' in kwargs else 5
     retrieved_matches, similarities = cbr.retrieve(matches, actual_match, w.similarity_function, threshold, max_matches)
 
     # print similarities
-
     # Print retrieved matches from the repository
     # ut.printMatches(retrieved_matches, similarities)
 
-    # 5-. REUSE
+    # 2-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
 
     predicted_result = cbr.reuse(retrieved_matches, actual_match, similarities, cbr.substitutional_adaptation, w.specific_function)
-    print "predicted result = " + predicted_result
-    print "real result = " + actual_match.get_solution()
+    # print "predicted result = " + predicted_result
+    # print "real result = " + actual_match.get_solution()
 
-    # TODO 6-. REVISE
+    # 3-. REVISE
 
     conf = cbr.revise(actual_match, w.expert_function, predicted_result)
-    # TODO 7-. RETAIN
 
-    conf_thr = 0.50
-    sim_thr = 1
+    # 4-. RETAIN
+
+    conf_thr = kwargs['conf_thr'] if 'conf_thr' in kwargs else 0.8
+    sim_thr = kwargs['sim_thr'] if 'sim_thr' in kwargs else 1
     saved = cbr.retain(actual_match, matches, conf, conf_thr, similarities, sim_thr)
 
     # w.save_case_base(matches, '../data/Train/train.jpkl')
@@ -61,12 +56,15 @@ if __name__ == '__main__':
     matches_data = MatchesCaseBase()
     Parallel(n_jobs=8)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
 
-    #if the main is called manually, this if/else-branch will be executed:
-    #create a 'mock' match object with minimum information required and run the cbr for the given fixture
+    # if the main is called manually, this if/else-branch will be executed:
+    # create a 'mock' match object with minimum information required and run the cbr for the given fixture
     if len(sys.argv) == 3:
         _, team1, team2 = sys.argv
         now = datetime.now()
-        params = {'FTR': 'N/A', 'HomeTeam': team1, 'AwayTeam': team2, 'Date': '%s/%s/%s' % (now.day, now.month, now.year)}
+        params = {'FTR': 'N/A',
+                  'HomeTeam': team1,
+                  'AwayTeam': team2,
+                  'Date': '%s/%s/%s' % (now.day, now.month, now.year)}
 
         match = w.Match(params)
         conf = main_CBR(match)
@@ -79,11 +77,10 @@ if __name__ == '__main__':
         # Read from CSV file
         test_matches = w.read_from_csv('../data/Test/LaLiga2013-14.csv')
         # test_matches = w.read_from_csv('../data/Test/LaLiga2014-15 hasta diciembre.csv')
+
         i = 0
         for match in test_matches.get_case_values():
-            print match
             conf = main_CBR(match, matches_data)
-            # break
             i += int(conf[0])
 
         print 'Accuracy: {0}/{1}'.format(i, len(test_matches.get_case_values()))

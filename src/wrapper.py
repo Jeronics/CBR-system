@@ -360,19 +360,12 @@ def specific_function(actual_case,similar_cases, similarities):
 
         total = win_prob + lose_prob + draw_prob
 
-        print "win = " + str(win_prob / total)
-        print "draw = " + str(draw_prob / total)
-        print "lose = " + str(lose_prob / total)
-
         probabilities = {HOME_TEAM_WINS: win_prob / total, AWAY_TEAM_WINS: lose_prob / total, DRAW: draw_prob / total}
-
-        probability = max(win_prob / total, lose_prob / total, draw_prob / total)
         result = max(probabilities, key=probabilities.get)
     except Exception as e:
         print e.message
         print 'no similar cases in the history'
         result = random.choice([HOME_TEAM_WINS, AWAY_TEAM_WINS, DRAW])
-    print 'ACTUAL CASE:', actual_case, '\nSIMILAR CASE:', [case.name for case in similar_cases]
     return result
 
 
@@ -408,10 +401,10 @@ def read_match_dataset(dataset, mcb):
 
     :return: MatchCaseBase
     """
-    #using pandas instead of numpy because the csv files are not well-formed and cannot be parsed by numpy
+    # using pandas instead of numpy because the csv files are not well-formed and cannot be parsed by numpy
     data = pd.read_csv(dataset, sep=',', header=0)
     for i in data.index:
-        #data.irow()[] is deprecated, use data.loc instead
+        # data.irow()[] is deprecated, use data.loc instead
         params = {c: data.loc[i, c] for c in data.columns}
         mcb.create_match(params)
 
@@ -458,23 +451,12 @@ def read_from_csv(data):
 
 if __name__ == '__main__':
     # Create Train Data set
-    import time
     dataset = [files for files in glob.glob("../data/Train/*.csv")]
 
     matches_data = MatchesCaseBase()
     skip_dataset_index = 8
 
-    t = time.time()
     Parallel(n_jobs=8)(delayed(read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
-    print str(time.time() - t)
-    t = time.time()
-
-    for data in dataset[:skip_dataset_index]:
-        read_match_dataset(data, matches_data)
-    for data in dataset[skip_dataset_index:]:
-        read_match_dataset(data, matches_data)
-
-    print str(time.time() - t)
 
     # save_case_base(matches_data, '../data/Train/train.jpkl')
 
