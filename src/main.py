@@ -106,7 +106,7 @@ if __name__ == '__main__':
                                             sim_thr=thr3)
                             i += int(conf)
                         acc = i*(100/float(n))
-                        if acc < best_acc:
+                        if acc > best_acc:
                             best_acc = acc
                             best_param = {'m': m, 'retr_thr': thr1, 'conf_thr': thr2, 'sim_thr': thr3}
 
