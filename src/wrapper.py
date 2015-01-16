@@ -335,6 +335,7 @@ HOME_TEAM_WINS = "H"
 AWAY_TEAM_WINS = "A"
 DRAW = "D"
 
+
 def specific_function(actual_case, similar_cases, similarities):
 
     try:
@@ -363,8 +364,8 @@ def specific_function(actual_case, similar_cases, similarities):
         probabilities = {HOME_TEAM_WINS: win_prob / total, AWAY_TEAM_WINS: lose_prob / total, DRAW: draw_prob / total}
         result = max(probabilities, key=probabilities.get)
     except Exception as e:
-        print e.message
-        print 'no similar cases in the history'
+        # print e.message
+        # print 'no similar cases in the history'
         result = random.choice([HOME_TEAM_WINS, AWAY_TEAM_WINS, DRAW])
     return result
 

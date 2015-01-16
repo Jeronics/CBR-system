@@ -6,15 +6,15 @@ import glob
 from joblib import Parallel, delayed
 from wrapper import Match, MatchesCaseBase
 
- # ______________________________________________________________________
- #
- #
- #
- #       How to execute: e.g.
- #                  python main.py "Real Madrid" Barcelona
- #
- #
- # ______________________________________________________________________
+# ______________________________________________________________________
+#
+#
+#
+#       How to execute: e.g.
+#                  python main.py "Real Madrid" Barcelona
+#
+#
+# ______________________________________________________________________
 
 
 def main_CBR(actual_match, matches, **kwargs):
@@ -38,24 +38,29 @@ def main_CBR(actual_match, matches, **kwargs):
 
     # 3-. REVISE
 
-    conf = cbr.revise(actual_match, w.expert_function, predicted_result)
+    confidence, actual_match = cbr.revise(actual_match, w.expert_function, predicted_result)
 
     # 4-. RETAIN
 
     conf_thr = kwargs['conf_thr'] if 'conf_thr' in kwargs else 0.8
     sim_thr = kwargs['sim_thr'] if 'sim_thr' in kwargs else 1
-    saved = cbr.retain(actual_match, matches, conf, conf_thr, similarities, sim_thr)
 
-    # w.save_case_base(matches, '../data/Train/train.jpkl')
-    return conf
+    cbr.retain(actual_match, matches, confidence, conf_thr, similarities, sim_thr)
+    return confidence
 
 if __name__ == '__main__':
+    import copy
+    import numpy as np
 
     # Load the
+    print 'Loading data ...'
     dataset = [files for files in glob.glob("../data/Train/*.csv")]
     matches_data = MatchesCaseBase()
     Parallel(n_jobs=8)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
 
+    orig_data = copy.deepcopy(matches_data)
+
+    print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
     # create a 'mock' match object with minimum information required and run the cbr for the given fixture
     if len(sys.argv) == 3:
@@ -71,16 +76,44 @@ if __name__ == '__main__':
         print "checking for manual input: %s" % str(match)
         print "result: %s" % conf
     else:
-        # Read from JSON pickle
-        # test_matches = w.read_case_base('../data/Test/test.jpkl')
-
         # Read from CSV file
         test_matches = w.read_from_csv('../data/Test/LaLiga2013-14.csv')
-        # test_matches = w.read_from_csv('../data/Test/LaLiga2014-15 hasta diciembre.csv')
 
-        i = 0
-        for match in test_matches.get_case_values():
-            conf = main_CBR(match, matches_data)
-            i += int(conf[0])
+        n = len(test_matches.get_case_values())
 
-        print 'Accuracy: {0}/{1}'.format(i, len(test_matches.get_case_values()))
+        # Create grid of parameters
+        max_m = range(3, 13)
+        r1_threshold = np.array(range(1, 10))/10.0
+        conf_threshold = np.array(range(1, 10))/10.0
+        sim_threshold = np.array(range(1, 10))/10.0
+
+        best_param = {}
+        best_acc = 0
+        count = 0
+        for m in max_m:
+            for thr1 in r1_threshold:
+                for thr2 in conf_threshold:
+                    for thr3 in sim_threshold:
+                        matches_data = copy.deepcopy(orig_data)
+                        i = 0
+                        count += 1
+                        for match in test_matches.get_case_values():
+                            conf = main_CBR(actual_match=match,
+                                            matches=matches_data,
+                                            max_matches=m,
+                                            retrieve_thr=thr1,
+                                            conf_thr=thr2,
+                                            sim_thr=thr3)
+                            i += int(conf)
+                        acc = i*(100/float(n))
+                        if acc < best_acc:
+                            best_acc = acc
+                            best_param = {'m': m, 'retr_thr': thr1, 'conf_thr': thr2, 'sim_thr': thr3}
+
+                        print '{4}/{5} - Parameters:\t m: {0} - retr_thr: {1} - conf_thr: {2} - sim_thr: {3}'.format(m, thr1, thr2, thr3, count, 10000)
+                        print '            Accuracy: {0}/{1} Best Accuracy: {2}\n'.format(i, n, best_acc)
+
+        print '\n\n--------- BEST PARAMETERS -----------'
+        print best_param
+        print '\n--------- BEST ACCURACY -----------'
+        print best_acc
