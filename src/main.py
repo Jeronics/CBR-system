@@ -77,7 +77,8 @@ if __name__ == '__main__':
         print "result: %s" % conf
     else:
         # Read from CSV file
-        test_matches = w.read_from_csv('../data/Test/LaLiga2013-14.csv')
+        test_matches = w.read_from_csv('../data/Test/LaLiga2013-15.csv')
+        test_matches
 
         n = len(test_matches.get_case_values())
 
@@ -125,7 +126,7 @@ if __name__ == '__main__':
         print '\n--------- BEST ACCURACY -----------'
         print best_acc
 
-        f = open('data/Results/results.csv', 'w')
+        f = open('data/Results/results_long.csv', 'w')
         f.write('# Learning Curve')
         for i in best_lc:
             f.write(str(i))
