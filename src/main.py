@@ -118,7 +118,7 @@ if __name__ == '__main__':
                     for thr3 in sim_threshold:
                         params.append([m, thr1, thr2, thr3])
 
-        r = Parallel(n_jobs=8, verbose=1)(delayed(test)(orig_data, params[i]) for i in range(len(params)))
+        r = Parallel(n_jobs=8, verbose=3)(delayed(test)(orig_data, params[i]) for i in range(len(params)))
         acc, lc = zip(*r)
 
         best_acc = max(acc)
