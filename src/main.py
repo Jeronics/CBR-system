@@ -4,7 +4,9 @@ import wrapper as w
 import internal_repr.phases as cbr
 import glob
 from joblib import Parallel, delayed
-from wrapper import Match, MatchesCaseBase
+from wrapper import MatchesCaseBase
+import copy
+import numpy as np
 
 # ______________________________________________________________________
 #
@@ -49,8 +51,6 @@ def main_CBR(actual_match, matches, **kwargs):
     return confidence
 
 if __name__ == '__main__':
-    import copy
-    import numpy as np
 
     # Load the
     print 'Loading data ...'
