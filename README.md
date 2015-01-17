@@ -1,4 +1,5 @@
-CBR-system
+CBR Bet Assistant
+(this a GitHub readme file)
 ==========
 
 Task List
@@ -29,7 +30,7 @@ Deadlines
 Global Goals
 ------------
 
-OPTIMAL CBR SYSTEM(Case base maintenence especially affects space and time)
+OPTIMAL CBR SYSTEM (Case base maintenance especially affects space and time)
 
 - 1.  Maximum Competence: to maximize the # of target problems it can satisfactorily solve
 - 2.  Optimal Efficiency:
@@ -38,18 +39,18 @@ OPTIMAL CBR SYSTEM(Case base maintenence especially affects space and time)
 
 0. Data
 -------
-   - We have csv-s of first and second division of spain from 1996/97 til now. And lot of more information.
+   - We have csv-s of first and second division of Spain from 1996/97 til now. And lots of additional information.
                         http://www.football-data.co.uk/spainm.php
 
    - Here we have history of 'quinielas': http://www.resultados-futbol.com/quiniela/historico/18
    
    - Here we have the statistics of the 2014-15: http://www.lfp.es/estadisticas/liga-bbva/goles/
    
-   - Here we can get everything!!: http://www.marca.com/estadisticas/futbol/primera/2010_11/
+   - Here we can get everything: http://www.marca.com/estadisticas/futbol/primera/2010_11/
 
 1. Data Structure
 -----------------
-Consists in three classes:
+The data structure is largely defined by the three classes:
 
 ### CBRclass:
 Is an abstraction of an object class, which can contain other instances of CBRclass 
@@ -205,7 +206,7 @@ def substitutional_adaptation(new_case, retrieved_cases, similarities, specific_
 ```python
 def transformational_adaptation(new_case, retrieved_cases, similarities, specific_function):
     """
-    This function is a domain specific tranforamtional adaptation which using a specific domain function returns a new
+    This function is a domain specific transformational adaptation which using a specific domain function returns a new
     solution.
 
     :type new_case: Case
@@ -333,5 +334,3 @@ def retain(case, casebase, confidence, conf_thr, retrieved_sim, sim_thr):
     :return: Boolean
     """
 ```
-
-
