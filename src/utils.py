@@ -77,33 +77,3 @@ def date_to_python_date(date):
         #another format -- a year can also have four digits
         ret_date = datetime.datetime.strptime(date, "%d/%m/%Y")
     return ret_date
-
-
-def int_to_weekday(day):
-    """
-
-    Returns day of the week from an integer
-    :param day: an integer from 0 to 6
-    :return: returns a day of the week
-    """
-    week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    return week[day]
-
-
-def daysNumber(time):
-    return datetime.datetime.day(time)
-
-
-def printMatches(matches):
-    for match in matches:
-        print "Match " + str(match.local) + " vs " + str(match.foreign) + " on " + str(
-            match.data) + " RESULT " + str(match.lGoals) + "-" + str(match.fGoals)
-
-
-def printMatches(matches, similarities):
-    for idx, match in enumerate(matches):
-        print str(match.__str__()) + ' | sim: ' + str(similarities[idx])
-
-# TEST
-# date = "3/2/08"
-# print int_to_weekday(date_to_day_of_week(date))
