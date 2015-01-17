@@ -4,7 +4,9 @@ import wrapper as w
 import internal_repr.phases as cbr
 import glob
 from joblib import Parallel, delayed
-from wrapper import Match, MatchesCaseBase
+from wrapper import MatchesCaseBase
+import copy
+import numpy as np
 
 # ______________________________________________________________________
 #
@@ -68,8 +70,6 @@ def test(orig_data, params):
 
 
 if __name__ == '__main__':
-    import copy
-    import numpy as np
 
     # Load the
     print 'Loading data ...'
@@ -96,7 +96,8 @@ if __name__ == '__main__':
         print "result: %s" % conf
     else:
         # Read from CSV file
-        test_matches = w.read_from_csv('../data/Test/LaLiga2013-14.csv')
+        test_matches = w.read_from_csv('../data/Test/LaLiga2013-15.csv')
+        test_matches
 
         n = len(test_matches.get_case_values())
 
@@ -132,8 +133,13 @@ if __name__ == '__main__':
         print '\n--------- BEST LEARNING CURVE -----------'
         print best_lc
 
+<<<<<<< HEAD
         f = open('../data/Results/results.csv', 'w')
         f.write('# Learning Curve\n')
+=======
+        f = open('data/Results/results_long.csv', 'w')
+        f.write('# Learning Curve')
+>>>>>>> e07eb7534783a422f17d3edae2ba6ca093ae335a
         for i in best_lc:
             f.write(str(i) + ',')
 
