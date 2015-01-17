@@ -96,7 +96,7 @@ if __name__ == '__main__':
         print "result: %s" % conf
     else:
         # Read from CSV file
-        test_matches = w.read_from_csv('../data/Test/LaLiga2013-15.csv')
+        test_matches = w.read_from_csv('../data/Test/LaLiga2013-14.csv')
         test_matches
 
         n = len(test_matches.get_case_values())
@@ -118,7 +118,7 @@ if __name__ == '__main__':
                     for thr3 in sim_threshold:
                         params.append([m, thr1, thr2, thr3])
 
-        r = Parallel(n_jobs=8, verbose=1)(delayed(test)(orig_data, params[i]) for i in range(len(params)))
+        r = Parallel(n_jobs=8, verbose=3)(delayed(test)(orig_data, params[i]) for i in range(len(params)))
         acc, lc = zip(*r)
 
         best_acc = max(acc)
