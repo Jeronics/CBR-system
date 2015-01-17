@@ -77,7 +77,7 @@ if __name__ == '__main__':
         print "result: %s" % conf
     else:
         # Read from CSV file
-        test_matches = w.read_from_csv('../data/Test/LaLiga2013-15.csv')
+        test_matches = w.read_from_csv('../data/Test/LaLiga2013-14.csv')
         test_matches
 
         n = len(test_matches.get_case_values())
