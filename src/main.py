@@ -48,6 +48,25 @@ def main_CBR(actual_match, matches, **kwargs):
     cbr.retain(actual_match, matches, confidence, conf_thr, similarities, sim_thr)
     return confidence
 
+
+def test(orig_data, params):
+    m, thr1, thr2, thr3 = params
+    matches_data = copy.deepcopy(orig_data)
+    i = 0
+    lc = []
+    for match in test_matches.get_case_values():
+        conf = main_CBR(actual_match=match,
+                        matches=matches_data,
+                        max_matches=m,
+                        retrieve_thr=thr1,
+                        conf_thr=thr2,
+                        sim_thr=thr3)
+        i += int(conf)
+        lc.append(i)
+    acc = i*(100/float(n))
+    return acc, lc
+
+
 if __name__ == '__main__':
     import copy
     import numpy as np
@@ -91,41 +110,46 @@ if __name__ == '__main__':
         best_acc = 0
         best_lc = []
         count = 0
+        params = []
         for m in max_m:
             for thr1 in r1_threshold:
                 for thr2 in conf_threshold:
                     for thr3 in sim_threshold:
-                        matches_data = copy.deepcopy(orig_data)
-                        i = 0
-                        count += 1
-                        lc = []
-                        for match in test_matches.get_case_values():
-                            conf = main_CBR(actual_match=match,
-                                            matches=matches_data,
-                                            max_matches=m,
-                                            retrieve_thr=thr1,
-                                            conf_thr=thr2,
-                                            sim_thr=thr3)
-                            i += int(conf)
-                            lc.append(i)
-                        acc = i*(100/float(n))
-                        if acc > best_acc:
-                            best_acc = acc
-                            best_lc = lc
-                            best_param = {'m': m, 'retr_thr': thr1, 'conf_thr': thr2, 'sim_thr': thr3}
+                        params.append([m, thr1, thr2, thr3])
 
-                        print '{4}/{5} - Accuracy: {0}/{1} - Best Accuracy: {2} - Best param: {3}'.format(i, n,
-                                                                                                          best_acc,
-                                                                                                          best_param,
-                                                                                                          count,
-                                                                                                          len(max_m)*len(r1_threshold)*len(conf_threshold)*len(sim_threshold))
+        acc, lc = Parallel(n_jobs=8, verbose=1)(delayed(test)(orig_data, params[i]) for i in range(len(params)))
+
+        # matches_data = copy.deepcopy(orig_data)
+        # i = 0
+        # count += 1
+        # lc = []
+        # for match in test_matches.get_case_values():
+        #     conf = main_CBR(actual_match=match,
+        #                     matches=matches_data,
+        #                     max_matches=m,
+        #                     retrieve_thr=thr1,
+        #                     conf_thr=thr2,
+        #                     sim_thr=thr3)
+        #     i += int(conf)
+        #     lc.append(i)
+        # acc = i*(100/float(n))
+        # if acc > best_acc:
+        #     best_acc = acc
+        #     best_lc = lc
+        #     best_param = {'m': m, 'retr_thr': thr1, 'conf_thr': thr2, 'sim_thr': thr3}
+        #
+        # print '{4}/{5} - Accuracy: {0}/{1} - Best Accuracy: {2} - Best param: {3}'.format(i, n,
+        #                                                                                   best_acc,
+        #                                                                                   best_param,
+        #                                                                                   count,
+        #                                                                                   len(max_m)*len(r1_threshold)*len(conf_threshold)*len(sim_threshold))
 
         print '\n\n--------- BEST PARAMETERS -----------'
         print best_param
         print '\n--------- BEST ACCURACY -----------'
         print best_acc
 
-        f = open('data/Results/results.csv', 'w')
+        f = open('../data/Results/results.csv', 'w')
         f.write('# Learning Curve')
         for i in best_lc:
             f.write(str(i))
