@@ -133,13 +133,8 @@ if __name__ == '__main__':
         print '\n--------- BEST LEARNING CURVE -----------'
         print best_lc
 
-<<<<<<< HEAD
         f = open('../data/Results/results.csv', 'w')
         f.write('# Learning Curve\n')
-=======
-        f = open('data/Results/results_long.csv', 'w')
-        f.write('# Learning Curve')
->>>>>>> e07eb7534783a422f17d3edae2ba6ca093ae335a
         for i in best_lc:
             f.write(str(i) + ',')
 
