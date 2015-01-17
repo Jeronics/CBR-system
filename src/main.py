@@ -117,44 +117,27 @@ if __name__ == '__main__':
                     for thr3 in sim_threshold:
                         params.append([m, thr1, thr2, thr3])
 
-        acc, lc = Parallel(n_jobs=8, verbose=1)(delayed(test)(orig_data, params[i]) for i in range(len(params)))
+        r = Parallel(n_jobs=8, verbose=1)(delayed(test)(orig_data, params[i]) for i in range(len(params)))
+        acc, lc = zip(*r)
 
-        # matches_data = copy.deepcopy(orig_data)
-        # i = 0
-        # count += 1
-        # lc = []
-        # for match in test_matches.get_case_values():
-        #     conf = main_CBR(actual_match=match,
-        #                     matches=matches_data,
-        #                     max_matches=m,
-        #                     retrieve_thr=thr1,
-        #                     conf_thr=thr2,
-        #                     sim_thr=thr3)
-        #     i += int(conf)
-        #     lc.append(i)
-        # acc = i*(100/float(n))
-        # if acc > best_acc:
-        #     best_acc = acc
-        #     best_lc = lc
-        #     best_param = {'m': m, 'retr_thr': thr1, 'conf_thr': thr2, 'sim_thr': thr3}
-        #
-        # print '{4}/{5} - Accuracy: {0}/{1} - Best Accuracy: {2} - Best param: {3}'.format(i, n,
-        #                                                                                   best_acc,
-        #                                                                                   best_param,
-        #                                                                                   count,
-        #                                                                                   len(max_m)*len(r1_threshold)*len(conf_threshold)*len(sim_threshold))
+        best_acc = max(acc)
+        idx = acc.index(best_acc)
+        best_param = params[idx]
+        best_lc = lc[idx]
 
-        print '\n\n--------- BEST PARAMETERS -----------'
+        print '\n--------- BEST PARAMETERS -----------'
         print best_param
         print '\n--------- BEST ACCURACY -----------'
         print best_acc
+        print '\n--------- BEST LEARNING CURVE -----------'
+        print best_lc
 
         f = open('../data/Results/results.csv', 'w')
-        f.write('# Learning Curve')
+        f.write('# Learning Curve\n')
         for i in best_lc:
-            f.write(str(i))
+            f.write(str(i) + ',')
 
-        f.write('# Best Parameters')
-        for i in best_param.keys():
-            f.write(i + ': ' + str(best_param[i]))
+        f.write('\n# Best Parameters (max_matches, retreave_threshold, confidence_threshold, similarity_threshold)\n')
+        for i in best_param:
+            f.write(str(i) + ',')
         f.close()
