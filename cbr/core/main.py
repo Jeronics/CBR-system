@@ -9,6 +9,7 @@ import numpy as np
 import cbr.core.internal_repr.phases as cbr
 from cbr.core.wrapper import MatchesCaseBase
 from cbr.core import wrapper as w
+import multiprocessing
 
 # ______________________________________________________________________
 #
@@ -72,9 +73,11 @@ def test(orig_data, test_matches, n, params):
 def run(args=[]):
     # Load the
     print 'Loading data ...'
-    dataset = [files for files in glob.glob("../data/Train/*.csv")]
+    num_cpu = multiprocessing.cpu_count()
+
+    dataset = [files for files in glob.glob("../../data/Train/*.csv")]
     matches_data = MatchesCaseBase()
-    Parallel(n_jobs=8)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
+    Parallel(n_jobs=num_cpu)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
 
     orig_data = copy.deepcopy(matches_data)
 
@@ -118,7 +121,7 @@ def run(args=[]):
                     for thr3 in sim_threshold:
                         params.append([m, thr1, thr2, thr3])
 
-        r = Parallel(n_jobs=8, verbose=3)(delayed(test)(orig_data, test_matches, n, params[i]) for i in range(len(params)))
+        r = Parallel(n_jobs=num_cpu, verbose=3)(delayed(test)(orig_data, test_matches, n, params[i]) for i in range(len(params)))
         acc, lc = zip(*r)
 
         best_acc = max(acc)
