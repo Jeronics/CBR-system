@@ -10,6 +10,11 @@ from cbr.core import utils as ut
 from cbr.core.internal_repr.model import CBRclass, Case, CaseBase
 
 
+HOME_TEAM_WINS = "H"
+AWAY_TEAM_WINS = "A"
+DRAW = "D"
+
+
 class Match(Case):
     # these need to be static for the web access
     provider_names = ["Bet365", "Blue Square", "Bet&Win", "Gamebookers", "Interwetten",
@@ -32,6 +37,11 @@ class Match(Case):
     #                 'BbMx<2.5', 'BbAv<2.5', 'GB>2.5', 'GB<2.5', 'B365>2.5', 'B365<2.5', 'BbAH', 'BbAHh', 'BbMxAHH',
     #                 'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
     #                 'B365AHA', 'B365AH']
+
+    @staticmethod
+    def map_to_human_prediction(prediction):
+        m = {HOME_TEAM_WINS: "1 (home)", DRAW: "X (draw)", AWAY_TEAM_WINS: "2 (away)"}
+        return m[prediction]
 
     @staticmethod
     def gen_params(team1, team2, match_date, odds={}):
@@ -435,11 +445,6 @@ def similarity_function(match1, match2, weighting_method=method_odds):
 
     return sim
 
-HOME_TEAM_WINS = "H"
-AWAY_TEAM_WINS = "A"
-DRAW = "D"
-
-
 def reuse_matches(actual_case, similar_cases, similarities):
 
     try:
@@ -490,7 +495,8 @@ def expert_function(match, predicted_result):
     if match.get_solution() == predicted_result:
         return [1]
     else:
-        return [0]
+        match.set_solution(predicted_result)
+        return [0, match]
 
 
 def read_match_dataset(dataset, mcb):
