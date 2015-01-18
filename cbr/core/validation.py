@@ -42,8 +42,8 @@ def run_validation():
 
     # Read from CSV file
     test_matches = MatchesCaseBase()
-    # read_match_dataset('../../data/Test/LaLiga2013-14.csv', test_matches)
-    read_match_dataset('../../data/Test/ultimaJornada.csv', test_matches)
+    read_match_dataset('../../data/Test/LaLiga2013-14.csv', test_matches)
+    # read_match_dataset('../../data/Test/ultimaJornada.csv', test_matches)
 
     n = len(test_matches.get_case_values())
 
@@ -73,7 +73,7 @@ def run_validation():
     print '\n--------- BEST LEARNING CURVE -----------'
     print best_lc
 
-    f = open('../../data/Results/results.csv', 'w')
+    f = open('../../data/Results/validation_results_sim3.csv', 'w')
     f.write('# Learning Curve\n')
     for i in best_lc:
         f.write(str(i) + ',')
