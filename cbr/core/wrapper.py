@@ -3,7 +3,6 @@ import pandas as pd
 import glob
 import random
 import numpy as np
-
 import jsonpickle
 from joblib import Parallel, delayed
 
@@ -123,27 +122,71 @@ class Match(Case):
                         - B365AHA = Bet365 Asian handicap away team odds
                         - B365AH = Bet365 size of handicap (home team)
         """
-        date = params['Date']
-        home = params['HomeTeam']
-        away = params['AwayTeam']
-        name = date + home + away
-        problem = CBRclass(name=name)
-        Case.__init__(self, name, problem)
+        home_odds_params = ['B365H', 'BSH', 'BWH', 'GBH', 'IWH', 'LBH', 'PSH', 'SOH', 'SBH', 'SJH', 'SYH', 'VCH', 'WHH']
+        draw_odds_params = ['B365D', 'BSD', 'BWD', 'GBD', 'IWD', 'LBD', 'PSD', 'SOD', 'SBD', 'SJD', 'SYD', 'VCD', 'WHD']
+        away_odds_params = ['B365A', 'BSA', 'BWA', 'GBA', 'IWA', 'LBA', 'PSA', 'SOA', 'SBA', 'SJA', 'SYA', 'VCA', 'WHA']
 
-        params_names = ['Div', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HTR', 'Attendance', 'Referee', 'HS', 'AS', 'HST', 'AST',
-                        'HHW', 'AHW', 'HC', 'AC', 'HF', 'AF', 'HO', 'AO', 'HY', 'AY', 'HR', 'AR', 'HBP', 'ABP', 'B365H',
-                        'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
-                        'IWA', 'LBH', 'LBD', 'LBA', 'PSH', 'PSD', 'PSA', 'SOH', 'SOD', 'SOA', 'SBH', 'SBD', 'SBA',
-                        'SJH', 'SJD', 'SJA', 'SYH', 'SYD', 'SYA', 'VCH', 'VCD', 'VCA', 'WHH', 'WHD', 'WHA', 'Bb1X2',
-                        'BbMxH', 'BbAvH', 'BbMxD', 'BbAvD', 'BbMxA', 'BbAvA', 'BbOU', 'BbMx>2.5', 'BbAv>2.5',
-                        'BbMx<2.5', 'BbAv<2.5', 'GB>2.5', 'GB<2.5', 'B365>2.5', 'B365<2.5', 'BbAH', 'BbAHh', 'BbMxAHH',
-                        'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
-                        'B365AHA', 'B365AH']
+        # odd_params = [ 'B365H', 'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
+        # 'IWA', 'LBH', 'LBD', 'LBA', 'PSH', 'PSD', 'PSA', 'SOH', 'SOD', 'SOA', 'SBH', 'SBD', 'SBA',
+        #                 'SJH', 'SJD', 'SJA', 'SYH', 'SYD', 'SYA', 'VCH', 'VCD', 'VCA', 'WHH', 'WHD', 'WHA']
+
+        # params_names = ['Div', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HTR', 'Attendance', 'Referee', 'HS', 'AS', 'HST', 'AST',
+        #                 'HHW', 'AHW', 'HC', 'AC', 'HF', 'AF', 'HO', 'AO', 'HY', 'AY', 'HR', 'AR', 'HBP', 'ABP', 'B365H',
+        #                 'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
+        #                 'IWA', 'LBH', 'LBD', 'LBA', 'PSH', 'PSD', 'PSA', 'SOH', 'SOD', 'SOA', 'SBH', 'SBD', 'SBA',
+        #                 'SJH', 'SJD', 'SJA', 'SYH', 'SYD', 'SYA', 'VCH', 'VCD', 'VCA', 'WHH', 'WHD', 'WHA', 'Bb1X2',
+        #                 'BbMxH', 'BbAvH', 'BbMxD', 'BbAvD', 'BbMxA', 'BbAvA', 'BbOU', 'BbMx>2.5', 'BbAv>2.5',
+        #                 'BbMx<2.5', 'BbAv<2.5', 'GB>2.5', 'GB<2.5', 'B365>2.5', 'B365<2.5', 'BbAH', 'BbAHh', 'BbMxAHH',
+        #                 'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
+        #                 'B365AHA', 'B365AH']
+
+        home_odd = 0
+        draw_odd = 0
+        away_odd = 0
+        counter = 0
+        for p in home_odds_params:
+            if p in params:
+                if params[p] is str or params[p] != params[p]:
+                    continue
+                else:
+                    home_odd = home_odd + float(params[p])
+                    counter = counter + 1
+        if counter != 0:
+            home_odd = home_odd / counter
+
+        counter = 0
+
+        for p in draw_odds_params:
+            if p in params:
+                if params[p] is str or params[p] != params[p]:
+                    continue
+                else:
+                    draw_odd = draw_odd + float(params[p])
+                    counter = counter + 1
+        if counter != 0:
+            draw_odd = draw_odd / counter
+
+        counter = 0
+
+        for p in away_odds_params:
+
+            if p in params:
+                if params[p] is str or params[p] != params[p]:
+                    continue
+                else:
+                    away_odd = away_odd + float(params[p])
+                    counter = counter + 1
+        if counter != 0:
+            away_odd = away_odd / counter
+
         self.problem.add_feature(name='date', values=ut.date_to_python_date(date))
         self.problem.add_class('home', home)
         self.problem.add_class('away', away)
         self.set_solution(params['FTR'])
-        self.problem.add_feature(name='params', values={p: params[p] for p in params_names if p in params})
+        self.problem.add_feature(name='home_odd', values=home_odd)
+        self.problem.add_feature(name='draw_odd', values=draw_odd)
+        self.problem.add_feature(name='away_odd', values=away_odd)
+
 
     def __str__(self):
         return str(self.get_date()) + ': ' + self.get_home() + ' vs ' + self.get_away() + ' --> ' + self.get_solution()
@@ -292,12 +335,12 @@ class MatchesCaseBase(CaseBase):
                 {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
 
 
-def similarity_function(train_match, test_match, weighting_method=3):
+def similarity_function(match1, match2, weighting_method=3):
     """
     Calculate the similarity between the two matches.
 
-    :type train_match: Train Match
-    :type test_match: Test Match: Actual MATCH
+    :type match1: Match
+    :type match2: Match
     :return: Similarity between match1 and match2 (0 - 1)
     """
     if weighting_method == 1:
@@ -309,9 +352,9 @@ def similarity_function(train_match, test_match, weighting_method=3):
         #   2-. Data
         #         + For each year * 0.1
         #
-        league_years_since_game = ut.diff_in_league_years(test_match.get_date(), train_match.get_date())
+        league_years_since_game = ut.diff_in_league_years(match2.get_date(), match1.get_date())
         wYears = float(league_years_since_game) * 0.1
-        # print yearsSinceGame
+
         if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
             similarity = max(0.1, float(1 - wYears))
             return similarity
@@ -327,13 +370,13 @@ def similarity_function(train_match, test_match, weighting_method=3):
         # 2-. Data
         #     + 1 / (1 + passed years)
 
-        league_years_since_game = ut.diff_in_league_years(test_match.get_date(), train_match.get_date())
+        league_years_since_game = ut.diff_in_league_years(match2.get_date(), match1.get_date())
         w_years = 1 / float(1 + league_years_since_game)
-        if train_match.get_home() == test_match.get_home() and train_match.get_away() == test_match.get_away():
+        if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
             same_local = 1
             sim = w_years * same_local
             return sim
-        if train_match.get_home() == test_match.get_away() and train_match.get_away() == test_match.get_home():
+        if match1.get_home() == match2.get_away() and match1.get_away() == match2.get_home():
             same_local = 0.8
             sim = w_years * same_local
             return sim
@@ -341,11 +384,11 @@ def similarity_function(train_match, test_match, weighting_method=3):
         # Weighting method 3:
         #   With euclidean distance between the bet houses.
         #
-        league_years_since_game = ut.diff_in_league_years(test_match.get_date(), train_match.get_date())
+        league_years_since_game = ut.diff_in_league_years(match2.get_date(), match1.get_date())
         w_years = 1 / float(1 + league_years_since_game)
 
-        train = np.array((train_match.get_home_odd(), train_match.get_draw_odd(), train_match.get_away_odd()), np.float)
-        test = np.array((test_match.get_home_odd(), test_match.get_draw_odd(), test_match.get_away_odd()), np.float)
+        train = np.array((match1.get_home_odd(), match1.get_draw_odd(), match1.get_away_odd()), np.float)
+        test = np.array((match2.get_home_odd(), match2.get_draw_odd(), match2.get_away_odd()), np.float)
 
         train_norm = np.linalg.norm(train)
         test_norm = np.linalg.norm(test)
@@ -356,6 +399,7 @@ def similarity_function(train_match, test_match, weighting_method=3):
         euclidean_distance = np.linalg.norm(train_normalized - test_normalized)
 
         sim = 1 / (euclidean_distance * w_years)
+
 
     return sim
 
