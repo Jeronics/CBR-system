@@ -435,8 +435,7 @@ def similarity_function(match1, match2, weighting_method=3):
 
         sim = 1 / (euclidean_distance * w_years)
 
-
-    return sim
+        return sim
 
 HOME_TEAM_WINS = "H"
 AWAY_TEAM_WINS = "A"
