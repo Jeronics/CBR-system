@@ -41,7 +41,6 @@ def main_CBR(actual_match, matches, **kwargs):
     # print "real result = " + actual_match.get_solution()
 
     # 3-. REVISE
-
     confidence, actual_match = cbr.revise(actual_match, w.expert_function, predicted_result)
 
     # 4-. RETAIN

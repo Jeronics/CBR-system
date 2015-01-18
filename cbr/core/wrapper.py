@@ -357,7 +357,7 @@ AWAY_TEAM_WINS = "A"
 DRAW = "D"
 
 
-def specific_function(actual_case, similar_cases, similarities):
+def reuse_matches(actual_case, similar_cases, similarities):
 
     try:
         win_prob = 0
