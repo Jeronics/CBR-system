@@ -243,17 +243,13 @@ def retain(case, casebase, confidence, conf_thr, retrieved_sim, sim_thr):
     :type  sim_thr: float
     :param sim_thr: Threshold to chose whether two cases are similar.
 
-    :return: Boolean
+    :return: CaseBase
     """
     if confidence > conf_thr:
-        try:
+        if retrieved_sim:
             if max(retrieved_sim) < sim_thr:
                 casebase.add_case(case)
-            # else:
-                # print 'There are similar cases in the CaseBase, so the case was not stored.'
-        except:
+        else:
             casebase.add_case(case)
-    # else:
-        # print 'The Revise Phase gave too low confidence to the proposed solution, so the case was not stored.'
 
     return casebase

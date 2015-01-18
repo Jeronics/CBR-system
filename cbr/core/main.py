@@ -110,15 +110,13 @@ def run(args=[]):
         # Create grid of parameters
         max_m = range(3, 13)
         r1_threshold = np.array(range(1, 10))/10.0
-        conf_threshold = np.array(range(1, 10))/10.0
-        sim_threshold = np.array(range(1, 10))/10.0
+        conf_threshold = 0.5
+        sim_threshold = 1
 
         params = []
         for m in max_m:
             for thr1 in r1_threshold:
-                for thr2 in conf_threshold:
-                    for thr3 in sim_threshold:
-                        params.append([m, thr1, thr2, thr3])
+                params.append([m, thr1, conf_threshold, sim_threshold])
 
         r = Parallel(n_jobs=num_cpu, verbose=3)(delayed(test)(orig_data, test_matches, n, params[i]) for i in range(len(params)))
         acc, lc = zip(*r)
