@@ -3,9 +3,9 @@ import pandas as pd
 import glob
 import random
 import numpy as np
-import jsonpickle
+import jsonpickle as jpk
+import pickle as pk
 from joblib import Parallel, delayed
-
 from cbr.core import utils as ut
 from cbr.core.internal_repr.model import CBRclass, Case, CaseBase
 
@@ -517,9 +517,10 @@ def save_case_base(case_base, filename):
     :type  filename: str
     :param filename: name of the file.
     """
-    f = open(filename, 'wb')
-    json = jsonpickle.encode(case_base)
-    f.write(json)
+    f = open(filename, 'w')
+    # json = jpk.encode(case_base)
+    pk.dump(case_base, f)
+    # f.write(json)
     f.close()
 
 
@@ -533,7 +534,8 @@ def read_case_base(filename):
     :return: Return the unpickled object.
     """
     f = open(filename, 'rb')
-    matches_base = jsonpickle.decode(f.read())
+    # matches_base = jpk.decode(f.read())
+    matches_base = pk.load(f)
     f.close()
     return matches_base
 
@@ -549,20 +551,19 @@ def read_from_csv(data):
 
 if __name__ == '__main__':
     # Create Train Data set
-    dataset = [files for files in glob.glob("../data/Train/*.csv")]
+    dataset = [files for files in glob.glob("../../data/Train/*.csv")]
 
     matches_data = MatchesCaseBase()
     skip_dataset_index = 8
 
-    Parallel(n_jobs=8)(delayed(read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
+    for i in range(len(dataset)):
+        read_match_dataset(dataset[i], matches_data)
 
-    # save_case_base(matches_data, '../data/Train/train.jpkl')
+    save_case_base(matches_data, '../../data/Train/train.pkl')
 
     # # Create Test Data set
-    # test_matches = MatchesCaseBase()
-    # test_matches = read_match_dataset('../data/Test/LaLiga2013-14.csv', test_matches)
-    # save_case_base(test_matches, '../data/Test/test.jpkl')
-    #
-    # matches = read_case_base('../data/Test/test.jpkl')
-    #
-    # print matches.get_case_values()[0].get_home()
+    test_matches = MatchesCaseBase()
+    read_match_dataset('../data/Test/LaLiga2013-14.csv', test_matches)
+
+    save_case_base(test_matches, '../data/Test/test.pkl')
+

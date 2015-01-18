@@ -2,12 +2,13 @@ from datetime import datetime
 import sys
 import glob
 import copy
+import pickle as pk
 
 from joblib import Parallel, delayed
 import numpy as np
 
 import cbr.core.internal_repr.phases as cbr
-from cbr.core.wrapper import MatchesCaseBase
+from cbr.core.wrapper import MatchesCaseBase, Match
 from cbr.core import wrapper as w
 import multiprocessing
 
@@ -76,9 +77,13 @@ def run(args=[]):
     print 'Loading data ...'
     num_cpu = multiprocessing.cpu_count()
 
-    dataset = [files for files in glob.glob("../../data/Train/*.csv")]
-    matches_data = MatchesCaseBase()
-    Parallel(n_jobs=num_cpu)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
+    # dataset = [files for files in glob.glob("../../data/Train/*.csv")]
+    # matches_data = MatchesCaseBase()
+    # Parallel(n_jobs=1)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
+
+    f = open('../../data/Train/train1.pkl', 'rb')
+    matches_data = pk.load(f)
+    f.close()
 
     orig_data = copy.deepcopy(matches_data)
 
@@ -101,7 +106,9 @@ def run(args=[]):
         return output
     else:
         # Read from CSV file
-        test_matches = w.read_from_csv('../../data/Test/LaLiga2013-14.csv')
+        f = open('../../data/Test/LaLiga2013-14.csv', 'rb')
+        test_matches = pk.load(f)
+        f.close()
 
         n = len(test_matches.get_case_values())
 
@@ -111,10 +118,6 @@ def run(args=[]):
         conf_threshold = np.array(range(1, 10))/10.0
         sim_threshold = np.array(range(1, 10))/10.0
 
-        best_param = {}
-        best_acc = 0
-        best_lc = []
-        count = 0
         params = []
         for m in max_m:
             for thr1 in r1_threshold:
