@@ -11,6 +11,7 @@ from cbr.core.wrapper import MatchesCaseBase
 from cbr.core import wrapper as w
 import multiprocessing
 
+num_cpu = multiprocessing.cpu_count()
 # ______________________________________________________________________
 #
 #       How to execute: e.g.
@@ -67,8 +68,7 @@ def test(orig_data, test_matches, n, params):
     return acc, lc
 
 def get_matches():
-    num_cpu = multiprocessing.cpu_count()
-    dataset = [files for files in glob.glob("../../data/Train/LaLiga2000-01.csv")]
+    dataset = [files for files in glob.glob("../../data/Train/*.csv")]
     matches_data = MatchesCaseBase()
     Parallel(n_jobs=num_cpu)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
     orig_data = copy.deepcopy(matches_data)
@@ -77,7 +77,6 @@ def get_matches():
 def run(args=[]):
     # Load the
     print 'Loading data ...'
-    num_cpu = multiprocessing.cpu_count()
     orig_data = get_matches()
     print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
