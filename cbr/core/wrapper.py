@@ -122,6 +122,13 @@ class Match(Case):
                         - B365AHA = Bet365 Asian handicap away team odds
                         - B365AH = Bet365 size of handicap (home team)
         """
+        date = params['Date']
+        home = params['HomeTeam']
+        away = params['AwayTeam']
+        name = date + home + away
+        problem = CBRclass(name=name)
+        Case.__init__(self, name, problem)
+
         home_odds_params = ['B365H', 'BSH', 'BWH', 'GBH', 'IWH', 'LBH', 'PSH', 'SOH', 'SBH', 'SJH', 'SYH', 'VCH', 'WHH']
         draw_odds_params = ['B365D', 'BSD', 'BWD', 'GBD', 'IWD', 'LBD', 'PSD', 'SOD', 'SBD', 'SJD', 'SYD', 'VCD', 'WHD']
         away_odds_params = ['B365A', 'BSA', 'BWA', 'GBA', 'IWA', 'LBA', 'PSA', 'SOA', 'SBA', 'SJA', 'SYA', 'VCA', 'WHA']
@@ -208,6 +215,26 @@ class Match(Case):
         Returns the name of the away team in the match.
         """
         return str(self.problem.get_class('away').name)
+
+
+    def get_home_odd(self):
+        """
+        Returns the odd of the home team in the match.
+        """
+        return str(self.problem.get_feature('home_odd'))
+
+    def get_draw_odd(self):
+        """
+        Returns the odd of the draw in the match.
+        """
+        return str(self.problem.get_feature('draw_odd'))
+
+    def get_away_odd(self):
+        """
+        Returns the odd of the away team in the match.
+        """
+        return str(self.problem.get_feature('away_odd'))
+
 
     def get_params(self):
         """
