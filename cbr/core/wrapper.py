@@ -122,27 +122,71 @@ class Match(Case):
                         - B365AHA = Bet365 Asian handicap away team odds
                         - B365AH = Bet365 size of handicap (home team)
         """
-        date = params['Date']
-        home = params['HomeTeam']
-        away = params['AwayTeam']
-        name = date + home + away
-        problem = CBRclass(name=name)
-        Case.__init__(self, name, problem)
+        home_odds_params = ['B365H', 'BSH', 'BWH', 'GBH', 'IWH', 'LBH', 'PSH', 'SOH', 'SBH', 'SJH', 'SYH', 'VCH', 'WHH']
+        draw_odds_params = ['B365D', 'BSD', 'BWD', 'GBD', 'IWD', 'LBD', 'PSD', 'SOD', 'SBD', 'SJD', 'SYD', 'VCD', 'WHD']
+        away_odds_params = ['B365A', 'BSA', 'BWA', 'GBA', 'IWA', 'LBA', 'PSA', 'SOA', 'SBA', 'SJA', 'SYA', 'VCA', 'WHA']
 
-        params_names = ['Div', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HTR', 'Attendance', 'Referee', 'HS', 'AS', 'HST', 'AST',
-                        'HHW', 'AHW', 'HC', 'AC', 'HF', 'AF', 'HO', 'AO', 'HY', 'AY', 'HR', 'AR', 'HBP', 'ABP', 'B365H',
-                        'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
-                        'IWA', 'LBH', 'LBD', 'LBA', 'PSH', 'PSD', 'PSA', 'SOH', 'SOD', 'SOA', 'SBH', 'SBD', 'SBA',
-                        'SJH', 'SJD', 'SJA', 'SYH', 'SYD', 'SYA', 'VCH', 'VCD', 'VCA', 'WHH', 'WHD', 'WHA', 'Bb1X2',
-                        'BbMxH', 'BbAvH', 'BbMxD', 'BbAvD', 'BbMxA', 'BbAvA', 'BbOU', 'BbMx>2.5', 'BbAv>2.5',
-                        'BbMx<2.5', 'BbAv<2.5', 'GB>2.5', 'GB<2.5', 'B365>2.5', 'B365<2.5', 'BbAH', 'BbAHh', 'BbMxAHH',
-                        'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
-                        'B365AHA', 'B365AH']
+        # odd_params = [ 'B365H', 'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
+        # 'IWA', 'LBH', 'LBD', 'LBA', 'PSH', 'PSD', 'PSA', 'SOH', 'SOD', 'SOA', 'SBH', 'SBD', 'SBA',
+        #                 'SJH', 'SJD', 'SJA', 'SYH', 'SYD', 'SYA', 'VCH', 'VCD', 'VCA', 'WHH', 'WHD', 'WHA']
+
+        # params_names = ['Div', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HTR', 'Attendance', 'Referee', 'HS', 'AS', 'HST', 'AST',
+        #                 'HHW', 'AHW', 'HC', 'AC', 'HF', 'AF', 'HO', 'AO', 'HY', 'AY', 'HR', 'AR', 'HBP', 'ABP', 'B365H',
+        #                 'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
+        #                 'IWA', 'LBH', 'LBD', 'LBA', 'PSH', 'PSD', 'PSA', 'SOH', 'SOD', 'SOA', 'SBH', 'SBD', 'SBA',
+        #                 'SJH', 'SJD', 'SJA', 'SYH', 'SYD', 'SYA', 'VCH', 'VCD', 'VCA', 'WHH', 'WHD', 'WHA', 'Bb1X2',
+        #                 'BbMxH', 'BbAvH', 'BbMxD', 'BbAvD', 'BbMxA', 'BbAvA', 'BbOU', 'BbMx>2.5', 'BbAv>2.5',
+        #                 'BbMx<2.5', 'BbAv<2.5', 'GB>2.5', 'GB<2.5', 'B365>2.5', 'B365<2.5', 'BbAH', 'BbAHh', 'BbMxAHH',
+        #                 'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
+        #                 'B365AHA', 'B365AH']
+
+        home_odd = 0
+        draw_odd = 0
+        away_odd = 0
+        counter = 0
+        for p in home_odds_params:
+            if p in params:
+                if params[p] is str or params[p] != params[p]:
+                    continue
+                else:
+                    home_odd = home_odd + float(params[p])
+                    counter = counter + 1
+        if counter != 0:
+            home_odd = home_odd / counter
+
+        counter = 0
+
+        for p in draw_odds_params:
+            if p in params:
+                if params[p] is str or params[p] != params[p]:
+                    continue
+                else:
+                    draw_odd = draw_odd + float(params[p])
+                    counter = counter + 1
+        if counter != 0:
+            draw_odd = draw_odd / counter
+
+        counter = 0
+
+        for p in away_odds_params:
+
+            if p in params:
+                if params[p] is str or params[p] != params[p]:
+                    continue
+                else:
+                    away_odd = away_odd + float(params[p])
+                    counter = counter + 1
+        if counter != 0:
+            away_odd = away_odd / counter
+
         self.problem.add_feature(name='date', values=ut.date_to_python_date(date))
         self.problem.add_class('home', home)
         self.problem.add_class('away', away)
         self.set_solution(params['FTR'])
-        self.problem.add_feature(name='params', values={p: params[p] for p in params_names if p in params})
+        self.problem.add_feature(name='home_odd', values=home_odd)
+        self.problem.add_feature(name='draw_odd', values=draw_odd)
+        self.problem.add_feature(name='away_odd', values=away_odd)
+
 
     def __str__(self):
         return str(self.get_date()) + ': ' + self.get_home() + ' vs ' + self.get_away() + ' --> ' + self.get_solution()
@@ -353,6 +397,7 @@ def similarity_function(match1, match2, weighting_method=3):
         euclidean_distance = np.linalg.norm(train_normalized - test_normalized)
 
         sim = 1 / (euclidean_distance * w_years)
+
 
     return sim
 
