@@ -291,6 +291,10 @@ def similarity_function(match1, match2, weighting_method=3):
 
     :type match1: Match
     :type match2: Match
+    :type weighting_method: int
+    :param weighting_method: It allows you to choose between 3 different weighting
+                             methods (1: W. method 1, 2: W. method 2, 3: Use Euclidean
+                             distance with the betting odds to choose the similar matches)
     :return: Similarity between match1 and match2 (0 - 1)
     """
     if weighting_method == 1:
@@ -301,7 +305,7 @@ def similarity_function(match1, match2, weighting_method=3):
         #         + different 0.5
         #   2-. Data
         #         + For each year * 0.1
-        #
+
         league_years_since_game = ut.diff_in_league_years(match2.get_date(), match1.get_date())
         wYears = float(league_years_since_game) * 0.1
 
