@@ -444,7 +444,7 @@ DRAW = "D"
 
 def reuse_matches(actual_case, similar_cases, similarities):
 
-    try:
+    if similar_cases:
         win_prob = 0
         draw_prob = 0
         lose_prob = 0
@@ -467,11 +467,11 @@ def reuse_matches(actual_case, similar_cases, similarities):
 
         total = win_prob + lose_prob + draw_prob
 
-        probabilities = {HOME_TEAM_WINS: win_prob / total, AWAY_TEAM_WINS: lose_prob / total, DRAW: draw_prob / total}
+        probabilities = {HOME_TEAM_WINS: win_prob / total,
+                         AWAY_TEAM_WINS: lose_prob / total,
+                         DRAW: draw_prob / total}
         result = max(probabilities, key=probabilities.get)
-    except Exception as e:
-        # print e.message
-        # print 'no similar cases in the history'
+    else:
         result = random.choice([HOME_TEAM_WINS, AWAY_TEAM_WINS, DRAW])
     return result
 
