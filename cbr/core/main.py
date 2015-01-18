@@ -1,19 +1,21 @@
 from datetime import datetime
 import sys
-import wrapper as w
-import internal_repr.phases as cbr
 import glob
-from joblib import Parallel, delayed
-from wrapper import MatchesCaseBase
 import copy
+
+from joblib import Parallel, delayed
 import numpy as np
+
+import cbr.core.internal_repr.phases as cbr
+from cbr.core.wrapper import MatchesCaseBase
+from cbr.core import wrapper as w
 
 # ______________________________________________________________________
 #
 #
 #
 #       How to execute: e.g.
-#                  python main.py "Real Madrid" Barcelona
+#                  python hello.py "Real Madrid" Barcelona
 #
 #
 # ______________________________________________________________________
@@ -51,7 +53,7 @@ def main_CBR(actual_match, matches, **kwargs):
     return confidence
 
 
-def test(orig_data, params):
+def test(orig_data, test_matches, n, params):
     m, thr1, thr2, thr3 = params
     matches_data = copy.deepcopy(orig_data)
     i = 0
@@ -68,9 +70,7 @@ def test(orig_data, params):
     acc = i*(100/float(n))
     return acc, lc
 
-
-if __name__ == '__main__':
-
+def run(args=[]):
     # Load the
     print 'Loading data ...'
     dataset = [files for files in glob.glob("../data/Train/*.csv")]
@@ -82,8 +82,8 @@ if __name__ == '__main__':
     print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
     # create a 'mock' match object with minimum information required and run the cbr for the given fixture
-    if len(sys.argv) == 3:
-        _, team1, team2 = sys.argv
+    if len(args) == 3:
+        _, team1, team2 = args
         now = datetime.now()
         params = {'FTR': 'N/A',
                   'HomeTeam': team1,
@@ -91,13 +91,14 @@ if __name__ == '__main__':
                   'Date': '%s/%s/%s' % (now.day, now.month, now.year)}
 
         match = w.Match(params)
-        conf = main_CBR(match)
-        print "checking for manual input: %s" % str(match)
-        print "result: %s" % conf
+        conf = main_CBR(match, orig_data)
+        output = "checking for manual input: %s\n" % str(match)
+        output += "result: %s" % conf
+        print output
+        return output
     else:
         # Read from CSV file
-        test_matches = w.read_from_csv('../data/Test/LaLiga2013-14.csv')
-        test_matches
+        test_matches = w.read_from_csv('../../data/Test/LaLiga2013-14.csv')
 
         n = len(test_matches.get_case_values())
 
@@ -118,7 +119,7 @@ if __name__ == '__main__':
                     for thr3 in sim_threshold:
                         params.append([m, thr1, thr2, thr3])
 
-        r = Parallel(n_jobs=8, verbose=3)(delayed(test)(orig_data, params[i]) for i in range(len(params)))
+        r = Parallel(n_jobs=8, verbose=3)(delayed(test)(orig_data, test_matches, n, params[i]) for i in range(len(params)))
         acc, lc = zip(*r)
 
         best_acc = max(acc)
@@ -142,3 +143,6 @@ if __name__ == '__main__':
         for i in best_param:
             f.write(str(i) + ',')
         f.close()
+
+if __name__ == '__main__':
+    run(sys.argv)

@@ -1,0 +1,5 @@
+cd web
+virtualenv venv
+. venv/bin/activate
+pip install flask
+python index.py
