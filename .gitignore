@@ -2,3 +2,4 @@
 .idea/
 *.jpkl
 *.pyc
+venv/

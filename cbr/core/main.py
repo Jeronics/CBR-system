@@ -12,14 +12,12 @@ from cbr.core.wrapper import MatchesCaseBase, Match
 from cbr.core import wrapper as w
 import multiprocessing
 
+num_cpu = multiprocessing.cpu_count()
+num_cpu = 1
 # ______________________________________________________________________
-#
-#
 #
 #       How to execute: e.g.
 #                  python hello.py "Real Madrid" Barcelona
-#
-#
 # ______________________________________________________________________
 
 
@@ -72,21 +70,18 @@ def test(orig_data, test_matches, n, params):
     return acc, lc
 
 
-def run(args=[]):
-    # Load the
-    print 'Loading data ...'
-    num_cpu = multiprocessing.cpu_count()
-
-    # dataset = [files for files in glob.glob("../../data/Train/*.csv")]
-    # matches_data = MatchesCaseBase()
-    # Parallel(n_jobs=1)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
-
+def get_matches():
     f = open('../../data/Train/train1.pkl', 'rb')
     matches_data = pk.load(f)
     f.close()
-
     orig_data = copy.deepcopy(matches_data)
+    return orig_data
 
+
+def run(args=[]):
+    # Load the
+    print 'Loading data ...'
+    orig_data = get_matches()
     print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
     # create a 'mock' match object with minimum information required and run the cbr for the given fixture

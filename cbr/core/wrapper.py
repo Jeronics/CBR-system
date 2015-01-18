@@ -11,6 +11,28 @@ from cbr.core.internal_repr.model import CBRclass, Case, CaseBase
 
 
 class Match(Case):
+    # these need to be static for the web access
+    provider_names = ["Bet365", "Blue Square", "Bet&Win", "Gamebookers", "Interwetten",
+                      "Ladbrokes", "Pinnacle", "Sporting", "Sportingbet", "Stan James",
+                      "Stanleybet", "VC Bet", "William Hill" ]
+    home_odds_params = ['B365H', 'BSH', 'BWH', 'GBH', 'IWH', 'LBH', 'PSH', 'SOH', 'SBH', 'SJH', 'SYH', 'VCH', 'WHH']
+    draw_odds_params = ['B365D', 'BSD', 'BWD', 'GBD', 'IWD', 'LBD', 'PSD', 'SOD', 'SBD', 'SJD', 'SYD', 'VCD', 'WHD']
+    away_odds_params = ['B365A', 'BSA', 'BWA', 'GBA', 'IWA', 'LBA', 'PSA', 'SOA', 'SBA', 'SJA', 'SYA', 'VCA', 'WHA']
+
+    # odd_params = [ 'B365H', 'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
+    # 'IWA', 'LBH', 'LBD', 'LBA', 'PSH', 'PSD', 'PSA', 'SOH', 'SOD', 'SOA', 'SBH', 'SBD', 'SBA',
+    #                 'SJH', 'SJD', 'SJA', 'SYH', 'SYD', 'SYA', 'VCH', 'VCD', 'VCA', 'WHH', 'WHD', 'WHA']
+
+    # params_names = ['Div', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HTR', 'Attendance', 'Referee', 'HS', 'AS', 'HST', 'AST',
+    #                 'HHW', 'AHW', 'HC', 'AC', 'HF', 'AF', 'HO', 'AO', 'HY', 'AY', 'HR', 'AR', 'HBP', 'ABP', 'B365H',
+    #                 'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
+    #                 'IWA', 'LBH', 'LBD', 'LBA', 'PSH', 'PSD', 'PSA', 'SOH', 'SOD', 'SOA', 'SBH', 'SBD', 'SBA',
+    #                 'SJH', 'SJD', 'SJA', 'SYH', 'SYD', 'SYA', 'VCH', 'VCD', 'VCA', 'WHH', 'WHD', 'WHA', 'Bb1X2',
+    #                 'BbMxH', 'BbAvH', 'BbMxD', 'BbAvD', 'BbMxA', 'BbAvA', 'BbOU', 'BbMx>2.5', 'BbAv>2.5',
+    #                 'BbMx<2.5', 'BbAv<2.5', 'GB>2.5', 'GB<2.5', 'B365>2.5', 'B365<2.5', 'BbAH', 'BbAHh', 'BbMxAHH',
+    #                 'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
+    #                 'B365AHA', 'B365AH']
+
     def __init__(self, params):
         """
         :type  params: dict
@@ -129,29 +151,11 @@ class Match(Case):
         problem = CBRclass(name=name)
         Case.__init__(self, name, problem)
 
-        home_odds_params = ['B365H', 'BSH', 'BWH', 'GBH', 'IWH', 'LBH', 'PSH', 'SOH', 'SBH', 'SJH', 'SYH', 'VCH', 'WHH']
-        draw_odds_params = ['B365D', 'BSD', 'BWD', 'GBD', 'IWD', 'LBD', 'PSD', 'SOD', 'SBD', 'SJD', 'SYD', 'VCD', 'WHD']
-        away_odds_params = ['B365A', 'BSA', 'BWA', 'GBA', 'IWA', 'LBA', 'PSA', 'SOA', 'SBA', 'SJA', 'SYA', 'VCA', 'WHA']
-
-        # odd_params = [ 'B365H', 'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
-        # 'IWA', 'LBH', 'LBD', 'LBA', 'PSH', 'PSD', 'PSA', 'SOH', 'SOD', 'SOA', 'SBH', 'SBD', 'SBA',
-        #                 'SJH', 'SJD', 'SJA', 'SYH', 'SYD', 'SYA', 'VCH', 'VCD', 'VCA', 'WHH', 'WHD', 'WHA']
-
-        # params_names = ['Div', 'FTHG', 'FTAG', 'HTHG', 'HTAG', 'HTR', 'Attendance', 'Referee', 'HS', 'AS', 'HST', 'AST',
-        #                 'HHW', 'AHW', 'HC', 'AC', 'HF', 'AF', 'HO', 'AO', 'HY', 'AY', 'HR', 'AR', 'HBP', 'ABP', 'B365H',
-        #                 'B365D', 'B365A', 'BSH', 'BSD', 'BSA', 'BWH', 'BWD', 'BWA', 'GBH', 'GBD', 'GBA', 'IWH', 'IWD',
-        #                 'IWA', 'LBH', 'LBD', 'LBA', 'PSH', 'PSD', 'PSA', 'SOH', 'SOD', 'SOA', 'SBH', 'SBD', 'SBA',
-        #                 'SJH', 'SJD', 'SJA', 'SYH', 'SYD', 'SYA', 'VCH', 'VCD', 'VCA', 'WHH', 'WHD', 'WHA', 'Bb1X2',
-        #                 'BbMxH', 'BbAvH', 'BbMxD', 'BbAvD', 'BbMxA', 'BbAvA', 'BbOU', 'BbMx>2.5', 'BbAv>2.5',
-        #                 'BbMx<2.5', 'BbAv<2.5', 'GB>2.5', 'GB<2.5', 'B365>2.5', 'B365<2.5', 'BbAH', 'BbAHh', 'BbMxAHH',
-        #                 'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
-        #                 'B365AHA', 'B365AH']
-
         home_odd = 0
         draw_odd = 0
         away_odd = 0
         counter = 0
-        for p in home_odds_params:
+        for p in Match.home_odds_params:
             if p in params:
                 if params[p] is str or params[p] != params[p]:
                     continue
@@ -163,7 +167,7 @@ class Match(Case):
 
         counter = 0
 
-        for p in draw_odds_params:
+        for p in Match.draw_odds_params:
             if p in params:
                 if params[p] is str or params[p] != params[p]:
                     continue
@@ -175,7 +179,7 @@ class Match(Case):
 
         counter = 0
 
-        for p in away_odds_params:
+        for p in Match.away_odds_params:
 
             if p in params:
                 if params[p] is str or params[p] != params[p]:
@@ -280,6 +284,12 @@ class MatchesCaseBase(CaseBase):
         m = Match(params)
         self.add_case(m)
         return m
+
+    def get_all_teams(self):
+        case_values = self.cases.values()
+        teams = [cv.get_home() for cv in case_values] + [cv.get_away() for cv in case_values]
+        teams = sorted(list(set(teams)))
+        return teams
 
     def get_case_team(self, team, where, **kwargs):
         """
