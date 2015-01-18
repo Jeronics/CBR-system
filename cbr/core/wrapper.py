@@ -285,7 +285,7 @@ class MatchesCaseBase(CaseBase):
                 {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
 
 
-def similarity_function(train_match, test_match, weighting_method=0):
+def similarity_function(train_match, test_match, weighting_method=3):
     """
     Calculate the similarity between the two matches.
 
