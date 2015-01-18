@@ -133,7 +133,7 @@ def run(args=[]):
         print '\n--------- BEST LEARNING CURVE -----------'
         print best_lc
 
-        f = open('../data/Results/results.csv', 'w')
+        f = open('../../data/Results/results.csv', 'w')
         f.write('# Learning Curve\n')
         for i in best_lc:
             f.write(str(i) + ',')

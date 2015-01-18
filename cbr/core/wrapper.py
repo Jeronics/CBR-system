@@ -122,6 +122,13 @@ class Match(Case):
                         - B365AHA = Bet365 Asian handicap away team odds
                         - B365AH = Bet365 size of handicap (home team)
         """
+        date = params['Date']
+        home = params['HomeTeam']
+        away = params['AwayTeam']
+        name = date + home + away
+        problem = CBRclass(name=name)
+        Case.__init__(self, name, problem)
+
         home_odds_params = ['B365H', 'BSH', 'BWH', 'GBH', 'IWH', 'LBH', 'PSH', 'SOH', 'SBH', 'SJH', 'SYH', 'VCH', 'WHH']
         draw_odds_params = ['B365D', 'BSD', 'BWD', 'GBD', 'IWD', 'LBD', 'PSD', 'SOD', 'SBD', 'SJD', 'SYD', 'VCD', 'WHD']
         away_odds_params = ['B365A', 'BSA', 'BWA', 'GBA', 'IWA', 'LBA', 'PSA', 'SOA', 'SBA', 'SJA', 'SYA', 'VCA', 'WHA']
@@ -208,6 +215,26 @@ class Match(Case):
         Returns the name of the away team in the match.
         """
         return str(self.problem.get_class('away').name)
+
+
+    def get_home_odd(self):
+        """
+        Returns the odd of the home team in the match.
+        """
+        return str(self.problem.get_feature('home_odd'))
+
+    def get_draw_odd(self):
+        """
+        Returns the odd of the draw in the match.
+        """
+        return str(self.problem.get_feature('draw_odd'))
+
+    def get_away_odd(self):
+        """
+        Returns the odd of the away team in the match.
+        """
+        return str(self.problem.get_feature('away_odd'))
+
 
     def get_params(self):
         """
@@ -341,6 +368,10 @@ def similarity_function(match1, match2, weighting_method=3):
 
     :type match1: Match
     :type match2: Match
+    :type weighting_method: int
+    :param weighting_method: It allows you to choose between 3 different weighting
+                             methods (1: W. method 1, 2: W. method 2, 3: Use Euclidean
+                             distance with the betting odds to choose the similar matches)
     :return: Similarity between match1 and match2 (0 - 1)
     """
     if weighting_method == 1:
@@ -351,7 +382,7 @@ def similarity_function(match1, match2, weighting_method=3):
         #         + different 0.5
         #   2-. Data
         #         + For each year * 0.1
-        #
+
         league_years_since_game = ut.diff_in_league_years(match2.get_date(), match1.get_date())
         wYears = float(league_years_since_game) * 0.1
 
