@@ -66,7 +66,8 @@ def test(orig_data, test_matches, n, params):
     acc = i*(100/float(n))
     return acc, lc
 
-def get_matches(num_cpu):
+def get_matches():
+    num_cpu = multiprocessing.cpu_count()
     dataset = [files for files in glob.glob("../../data/Train/LaLiga2000-01.csv")]
     matches_data = MatchesCaseBase()
     Parallel(n_jobs=num_cpu)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
@@ -77,7 +78,7 @@ def run(args=[]):
     # Load the
     print 'Loading data ...'
     num_cpu = multiprocessing.cpu_count()
-    orig_data = get_matches(num_cpu)
+    orig_data = get_matches()
     print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
     # create a 'mock' match object with minimum information required and run the cbr for the given fixture
