@@ -89,15 +89,16 @@
                 </div><!--/panel-->
 
 			</div>
-         	<!--/col-->
+         	{% if prediction %}
+            <!--/col-->
         	<div class="col-md-6">
 				<div class="panel panel-default">
                   <div class="panel-heading"><h4>Prediction</h4></div>
                   <div class="panel-body">
                    {{prediction}}
               	</div>
-
 			</div><!--/col-span-6-->
+             {% endif %}
      
       </div><!--/row-->
       
