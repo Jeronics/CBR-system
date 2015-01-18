@@ -12,6 +12,7 @@ from cbr.core import wrapper as w
 import multiprocessing
 
 num_cpu = multiprocessing.cpu_count()
+num_cpu = 1
 # ______________________________________________________________________
 #
 #       How to execute: e.g.
@@ -69,6 +70,7 @@ def test(orig_data, test_matches, n, params):
 
 def get_matches():
     dataset = [files for files in glob.glob("../../data/Train/*.csv")]
+    #dataset = [files for files in glob.glob("../../data/Train/LaLiga2000-01.csv")]
     matches_data = MatchesCaseBase()
     Parallel(n_jobs=num_cpu)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
     orig_data = copy.deepcopy(matches_data)

@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
-		<title>Bootstrap 3 Admin</title>
+		<title>CBR Bet Assistant</title>
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
@@ -49,34 +49,38 @@
 
                       <form class="form form-vertical">
 
+                        {% for control_heading, control_name in team_form%}
                         <div class="control-group">
-                          <label>Home Team</label>
+                          <label>{{control_heading}}</label>
                           <div class="controls">
-                             <select class="form-control"><option>options</option></select>
+                             <select class="form-control" name="{{control_name}}">
+                                 {% for team in teams%}
+                                    <option>{{team}}</option>
+                                 {% endfor %}
+                             </select>
                           </div>
                         </div>
+                        {% endfor %}
 
-                        <div class="control-group">
+                        <label>Please enter any known values of the following betting providers</label>
+                        {% for provider_name, provider_odds in providers %}
+                        <div class="control-group" style="clear:left">
+                          <label>{{provider_name}}</label>
+                          {% for odd_name, odd_type in provider_odds %}
+                              <div class="controls">
+                                  <label style="width: 50px;float:left;text-align:center">{{odd_name}}</label>
+                                  <input type="text" name="{{odd_type}}" style="width:17%;float:left;display:inline" class="form-control">
+                              </div>
+                          {% endfor %}
+                        </div>
+                        {% endfor %}
+                        <div class="control-group" style="clear: left;float: right;">
                           	<label></label>
                         	<div class="controls">
                         	<button type="submit" class="btn btn-primary">
                               Predict
                             </button>
                         	</div>
-                        </div>
-
-                        <div class="control-group">
-                          <label>Name</label>
-                          <div class="controls">
-                           <input type="text" class="form-control" placeholder="Enter Name">
-                          </div>
-                        </div>
-
-                        <div class="control-group">
-                          <label>Message</label>
-                          <div class="controls">
-                          	<textarea class="form-control"></textarea>
-                          </div>
                         </div>
 
                       </form>
