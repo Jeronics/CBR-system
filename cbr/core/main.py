@@ -36,7 +36,7 @@ def main_CBR(actual_match, matches, **kwargs):
     # 2-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
 
-    predicted_result = cbr.reuse(retrieved_matches, actual_match, similarities, cbr.substitutional_adaptation, w.specific_function)
+    predicted_result = cbr.reuse(retrieved_matches, actual_match, similarities, cbr.substitutional_adaptation, w.reuse_matches)
     # print "predicted result = " + predicted_result
     # print "real result = " + actual_match.get_solution()
 

@@ -285,7 +285,7 @@ class MatchesCaseBase(CaseBase):
                 {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
 
 
-def similarity_function(train_match, test_match):
+def similarity_function(train_match, test_match, weighting_method=0):
     """
     Calculate the similarity between the two matches.
 
@@ -293,45 +293,64 @@ def similarity_function(train_match, test_match):
     :type test_match: Test Match: Actual MATCH
     :return: Similarity between match1 and match2 (0 - 1)
     """
+    if weighting_method == 1:
+        # Weighting method 1:
+        #
+        #   1-. Location
+        #         + equality 1
+        #         + different 0.5
+        #   2-. Data
+        #         + For each year * 0.1
+        #
 
-    # Weighting method 1:
-    #
-    #   1-. Location
-    #         + equality 1
-    #         + different 0.5
-    #   2-. Data
-    #         + For each year * 0.1
-    #
+        wYears = float(league_years_since_game) * 0.1
+        # print yearsSinceGame
+        if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
+            similarity = max(0.1, float(1 - wYears))
+            return similarity
+        if match1.get_home() == match2.get_away() and match1.get_away() == match2.get_home():
+            similarity = max(0.1, float(0.5 - wYears))
+            return similarity
+    if weighting_method == 2:
+        # Weighting method 2:
+        #
+        # 1-. Location
+        #       + equality 1
+        #       + difference 0.8
+        # 2-. Data
+        #     + 1 / (1 + passed years)
 
-    # wYears = float(league_years_since_game) * 0.1
-    # # print yearsSinceGame
-    # if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
-    #     similarity = max(0.1, float(1 - wYears))
-    #     return similarity
-    # if match1.get_home() == match2.get_away() and match1.get_away() == match2.get_home():
-    #     similarity = max(0.1, float(0.5 - wYears))
-    #     return similarity
+        league_years_since_game = ut.diff_in_league_years(test_match.get_date(), train_match.get_date())
+        w_years = 1 / float(1 + league_years_since_game)
+        if train_match.get_home() == test_match.get_home() and train_match.get_away() == test_match.get_away():
+            same_local = 1
+            sim = w_years * same_local
+            return sim
+        if train_match.get_home() == test_match.get_away() and train_match.get_away() == test_match.get_home():
+            same_local = 0.8
+            sim = w_years * same_local
+            return sim
+    if weighting_method == 3:
+        # Weighting method 3:
+        #   With euclidean distance between the bet houses.
+        #
+        league_years_since_game = ut.diff_in_league_years(test_match.get_date(), train_match.get_date())
+        w_years = 1 / float(1 + league_years_since_game)
 
-    # Weighting method 2:
-    #
-    # 1-. Location
-    #       + equality 1
-    #       + difference 0.8
-    # 2-. Data
-    #     + 1 / (1 + passed years)
+        train = np.array((train_match.get_home_odd(), train_match.get_draw_odd(), train_match.get_away_odd()), np.float)
+        test = np.array((test_match.get_home_odd(), test_match.get_draw_odd(), test_match.get_away_odd()), np.float)
 
-    league_years_since_game = ut.diff_in_league_years(test_match.get_date(), train_match.get_date())
-    w_years = 1 / float(1 + league_years_since_game)
-    if train_match.get_home() == test_match.get_home() and train_match.get_away() == test_match.get_away():
-        same_local = 1
-        sim = w_years * same_local
-        return sim
-    if train_match.get_home() == test_match.get_away() and train_match.get_away() == test_match.get_home():
-        same_local = 0.8
-        sim = w_years * same_local
-        return sim
+        train_norm = np.linalg.norm(train)
+        test_norm = np.linalg.norm(test)
 
-    return 0
+        train_normalized = train / train_norm
+        test_normalized = test / test_norm
+
+        euclidean_distance = np.linalg.norm(train_normalized - test_normalized)
+
+        sim = 1 / (euclidean_distance * w_years)
+
+    return sim
 
 HOME_TEAM_WINS = "H"
 AWAY_TEAM_WINS = "A"
