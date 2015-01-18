@@ -302,7 +302,7 @@ def similarity_function(train_match, test_match, weighting_method=3):
         #   2-. Data
         #         + For each year * 0.1
         #
-
+        league_years_since_game = ut.diff_in_league_years(test_match.get_date(), train_match.get_date())
         wYears = float(league_years_since_game) * 0.1
         # print yearsSinceGame
         if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
