@@ -73,7 +73,7 @@ def test(orig_data, test_matches, n, params):
 def run(args=[]):
     # Load the
     print 'Loading data ...'
-    dataset = [files for files in glob.glob("../data/Train/*.csv")]
+    dataset = [files for files in glob.glob("../../data/Train/*.csv")]
     matches_data = MatchesCaseBase()
     Parallel(n_jobs=8)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
 
