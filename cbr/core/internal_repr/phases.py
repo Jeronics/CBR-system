@@ -1,5 +1,6 @@
-from model import CaseBase, Case
 import numpy as np
+
+from cbr.core.internal_repr.model import CaseBase, Case
 
 
 def retrieve(casebase, case, similarity_function, thr, max_cases):
