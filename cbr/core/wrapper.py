@@ -33,6 +33,18 @@ class Match(Case):
     #                 'BbAvAHH', 'BbMxAHA', 'BbAvAHA', 'GBAHH', 'GBAHA', 'GBAH', 'LBAHH', 'LBAHA', 'LBAH', 'B365AHH',
     #                 'B365AHA', 'B365AH']
 
+    @staticmethod
+    def gen_params(team1, team2, match_date, odds={}):
+        params = {'FTR': 'N/A',
+          'HomeTeam': team1,
+          'AwayTeam': team2,
+          #todo optional date param
+          'Date': '%s/%s/%s' % (match_date.day, match_date.month, match_date.year)
+        }
+        for key, value in odds.iteritems():
+            params[key] = value
+        return params
+
     def __init__(self, params):
         """
         :type  params: dict
@@ -365,8 +377,11 @@ class MatchesCaseBase(CaseBase):
         return ({m.name: m for m in home_matches.values() if m.get_away().name in away_opponent},
                 {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
 
+method_team_correspondence = 2
+method_odds = 3
 
-def similarity_function(match1, match2, weighting_method=3):
+
+def similarity_function(match1, match2, weighting_method=method_odds):
     """
     Calculate the similarity between the two matches.
 
@@ -378,25 +393,7 @@ def similarity_function(match1, match2, weighting_method=3):
                              distance with the betting odds to choose the similar matches)
     :return: Similarity between match1 and match2 (0 - 1)
     """
-    if weighting_method == 1:
-        # Weighting method 1:
-        #
-        #   1-. Location
-        #         + equality 1
-        #         + different 0.5
-        #   2-. Data
-        #         + For each year * 0.1
-
-        league_years_since_game = ut.diff_in_league_years(match2.get_date(), match1.get_date())
-        wYears = float(league_years_since_game) * 0.1
-
-        if match1.get_home() == match2.get_home() and match1.get_away() == match2.get_away():
-            similarity = max(0.1, float(1 - wYears))
-            return similarity
-        if match1.get_home() == match2.get_away() and match1.get_away() == match2.get_home():
-            similarity = max(0.1, float(0.5 - wYears))
-            return similarity
-    if weighting_method == 2:
+    if weighting_method == method_team_correspondence:
         # Weighting method 2:
         #
         # 1-. Location
@@ -415,7 +412,7 @@ def similarity_function(match1, match2, weighting_method=3):
             same_local = 0.8
             sim = w_years * same_local
             return sim
-    if weighting_method == 3:
+    if weighting_method == method_odds:
         # Weighting method 3:
         #   With euclidean distance between the bet houses.
         #

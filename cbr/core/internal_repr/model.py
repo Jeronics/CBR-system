@@ -107,8 +107,8 @@ class Case(object):
     and the operation required to find the solution (CBRclass).
     """
     def __init__(self, name, problem, **kwargs):
-        assert type(name) is str, 'The name of the Case must be a string.'
-        self.name = name
+        assert type(name) is str or type(name) is unicode, 'The name of the Case must be a string.'
+        self.name = str(name)
 
         if type(problem) is CBRclass:
             self.problem = problem

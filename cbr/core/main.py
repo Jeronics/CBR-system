@@ -1,6 +1,5 @@
 from datetime import datetime
 import sys
-import glob
 import copy
 import pickle as pk
 
@@ -49,7 +48,7 @@ def main_CBR(actual_match, matches, **kwargs):
     sim_thr = kwargs['sim_thr'] if 'sim_thr' in kwargs else 1
 
     cbr.retain(actual_match, matches, confidence, conf_thr, similarities, sim_thr)
-    return confidence
+    return confidence, predicted_result
 
 
 def test(orig_data, test_matches, n, params):
@@ -58,7 +57,7 @@ def test(orig_data, test_matches, n, params):
     i = 0
     lc = []
     for match in test_matches.get_case_values():
-        conf = main_CBR(actual_match=match,
+        conf, _ = main_CBR(actual_match=match,
                         matches=matches_data,
                         max_matches=m,
                         retrieve_thr=thr1,
@@ -77,28 +76,20 @@ def get_matches():
     orig_data = copy.deepcopy(matches_data)
     return orig_data
 
-
-def run(args=[]):
+def run(input_match=None):
     # Load the
     print 'Loading data ...'
     orig_data = get_matches()
     print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
     # create a 'mock' match object with minimum information required and run the cbr for the given fixture
-    if len(args) == 3:
-        _, team1, team2 = args
-        now = datetime.now()
-        params = {'FTR': 'N/A',
-                  'HomeTeam': team1,
-                  'AwayTeam': team2,
-                  'Date': '%s/%s/%s' % (now.day, now.month, now.year)}
-
-        match = w.Match(params)
-        conf = main_CBR(match, orig_data)
-        output = "checking for manual input: %s\n" % str(match)
+    if input_match:
+        conf, prediction_result = main_CBR(input_match, orig_data)
+        output = "checking for manual input: %s\n" % str(input_match)
         output += "result: %s" % conf
+        output += "prediction_result: %s" % prediction_result
         print output
-        return output
+        return input_match, prediction_result
     else:
         # Read from CSV file
         test_matches = MatchesCaseBase()
@@ -142,5 +133,13 @@ def run(args=[]):
             f.write(str(i) + ',')
         f.close()
 
+def gen_input_match(team1, team2, odds={}):
+    match_date = datetime.now()
+    params = Match.gen_params(team1, team2, match_date, odds)
+    input_match = w.Match(params)
+    return input_match
+
 if __name__ == '__main__':
-    run(sys.argv)
+    _, team1, team2 = sys.argv
+    input_match = gen_input_match(team1, team2)
+    run(input_match)

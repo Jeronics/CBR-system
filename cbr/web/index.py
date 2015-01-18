@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, session
 
 from cbr.core import main as core_main
-from cbr.core.wrapper import Match
+from cbr.core.wrapper import MatchesCaseBase, Match
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RTasdf7808012342'
@@ -12,21 +12,35 @@ def get_teams():
         session['teams'] = core_main.get_matches().get_all_teams()
     return session['teams']
 
+home_team_form = "home_team"
+away_team_form = "away_team"
+odd_name_triples = [(Match.home_odds_params[idx], Match.draw_odds_params[idx], Match.away_odds_params[idx])
+                    for idx, _ in enumerate(Match.home_odds_params)]
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     teams = get_teams()
-    team_form = [("Home Team", "home_team"), ("Away Team", "away_team")]
+    team_form = [("Home Team", home_team_form), ("Away Team", away_team_form)]
     providers = [(Match.provider_names[idx],
-                  (("1", Match.home_odds_params[idx]),
-                  ("X", Match.draw_odds_params[idx]),
-                  ("2", Match.away_odds_params[idx])))
-                 for idx, _ in enumerate(Match.home_odds_params)]
+                  (("1", odd_triple[0]),
+                  ("X", odd_triple[1]),
+                  ("2", odd_triple[2]))) for idx, odd_triple in enumerate(odd_name_triples)]
 
+    output = None
     #in case a form has been submitted
     if request.method == 'POST':
-        output = core_main.run([None, "Real Madrid", "Barcelona"])
-    else:
-        output = None
+        team1 = request.form[home_team_form]
+        team2 = request.form[away_team_form]
+        odds = {}
+        for odd_triple in odd_name_triples:
+            for odd_key in odd_triple:
+                if odd_key in request.form:
+                    value = request.form[odd_key]
+                    if value:
+                        odds[odd_key] = value
+        input_match = core_main.gen_input_match(team1, team2, odds)
+        output = core_main.run(input_match)
+
 
     return render_template('index.html', teams=teams, team_form=team_form, providers=providers, prediction=output)
 
