@@ -71,7 +71,7 @@ def test(orig_data, test_matches, n, params):
 
 
 def get_matches():
-    f = open('../../data/Train/train1.pkl', 'rb')
+    f = open('../../data/Train/train.pkl', 'rb')
     matches_data = pk.load(f)
     f.close()
     orig_data = copy.deepcopy(matches_data)
@@ -101,9 +101,8 @@ def run(args=[]):
         return output
     else:
         # Read from CSV file
-        f = open('../../data/Test/LaLiga2013-14.csv', 'rb')
-        test_matches = pk.load(f)
-        f.close()
+        test_matches = MatchesCaseBase()
+        w.read_match_dataset('../../data/Test/LaLiga2013-14.csv', test_matches)
 
         n = len(test_matches.get_case_values())
 
