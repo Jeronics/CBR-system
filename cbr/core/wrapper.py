@@ -2,6 +2,7 @@ import operator
 import pandas as pd
 import glob
 import random
+import numpy as np
 
 import jsonpickle
 from joblib import Parallel, delayed
@@ -210,6 +211,12 @@ class MatchesCaseBase(CaseBase):
         self.add_case(m)
         return m
 
+    def get_all_teams(self):
+        case_values = self.cases.values()
+        teams = [cv.get_home() for cv in case_values] + [cv.get_away() for cv in case_values]
+        teams = sorted(list(set(teams)))
+        return teams
+
     def get_case_team(self, team, where, **kwargs):
         """
         Get the matches a team has played.
@@ -285,7 +292,7 @@ class MatchesCaseBase(CaseBase):
                 {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
 
 
-def similarity_function(train_match, test_match, weighting_method=0):
+def similarity_function(train_match, test_match, weighting_method=3):
     """
     Calculate the similarity between the two matches.
 

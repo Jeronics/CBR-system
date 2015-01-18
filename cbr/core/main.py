@@ -13,12 +13,8 @@ import multiprocessing
 
 # ______________________________________________________________________
 #
-#
-#
 #       How to execute: e.g.
 #                  python hello.py "Real Madrid" Barcelona
-#
-#
 # ______________________________________________________________________
 
 
@@ -70,16 +66,17 @@ def test(orig_data, test_matches, n, params):
     acc = i*(100/float(n))
     return acc, lc
 
+
 def run(args=[]):
     # Load the
     print 'Loading data ...'
     num_cpu = multiprocessing.cpu_count()
-
-    dataset = [files for files in glob.glob("../../data/Train/*.csv")]
+    dataset = [files for files in glob.glob("../../data/Train/LaLiga2000-01.csv")]
     matches_data = MatchesCaseBase()
-    Parallel(n_jobs=num_cpu)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
+    Parallel(n_jobs=1)(delayed(w.read_match_dataset)(dataset[i], matches_data) for i in range(len(dataset)))
 
     orig_data = copy.deepcopy(matches_data)
+    print orig_data.get_all_teams()
 
     print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
