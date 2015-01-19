@@ -388,11 +388,8 @@ class MatchesCaseBase(CaseBase):
         return ({m.name: m for m in home_matches.values() if m.get_away().name in away_opponent},
                 {m.name: m for m in away_matches.values() if m.get_home().name in home_opponent})
 
-method_team_correspondence = 2
-method_odds = 3
 
-
-def similarity_function(match1, match2, weighting_method=method_odds):
+def similarity_function(match1, match2, **kwargs):
     """
     Calculate the similarity between the two matches.
 
@@ -404,7 +401,9 @@ def similarity_function(match1, match2, weighting_method=method_odds):
                              distance with the betting odds to choose the similar matches)
     :return: Similarity between match1 and match2 (0 - 1)
     """
-    if weighting_method == method_team_correspondence:
+    weighting_method = kwargs['weighting_method'] if 'weighting_method' in kwargs else 2
+
+    if weighting_method == 2:
         # Weighting method 2:
         #
         # 1-. Location
@@ -423,7 +422,7 @@ def similarity_function(match1, match2, weighting_method=method_odds):
             same_local = 0.8
             sim = w_years * same_local
             return sim
-    if weighting_method == method_odds:
+    if weighting_method == 3:
         # Weighting method 3:
         #   With euclidean distance between the bet houses.
         #
@@ -441,9 +440,10 @@ def similarity_function(match1, match2, weighting_method=method_odds):
 
         euclidean_distance = np.linalg.norm(train_normalized - test_normalized)
 
-        sim = 1 / (euclidean_distance * w_years)
+        sim = 1 / euclidean_distance
 
         return sim
+
 
 def reuse_matches(actual_case, similar_cases, similarities):
 

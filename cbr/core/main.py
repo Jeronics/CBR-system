@@ -3,6 +3,12 @@ import sys
 import copy
 import os
 import pickle as pk
+<<<<<<< HEAD
+=======
+import glob.glob
+from joblib import Parallel, delayed
+import numpy as np
+>>>>>>> d42c1c418f9e9ccb567a341ce765e03aec407c7e
 
 import cbr.core.internal_repr.phases as cbr
 from cbr.core.wrapper import MatchesCaseBase, Match
@@ -21,21 +27,20 @@ num_cpu = multiprocessing.cpu_count()
 def main_CBR(actual_match, matches, **kwargs):
 
     # 1-. RETRIEVE SIMILAR MATCHES
-
+    weighting_method = kwargs['weighting_method'] if 'weighting_method' in kwargs else 2
     threshold = kwargs['retrieve_thr'] if 'retrieve_thr' in kwargs else 0.01
     max_matches = kwargs['max_matches'] if 'max_matches' in kwargs else 5
-    retrieved_matches, similarities = cbr.retrieve(matches, actual_match, w.similarity_function, threshold, max_matches)
-
-    # print similarities
-    # Print retrieved matches from the repository
-    # ut.printMatches(retrieved_matches, similarities)
+    retrieved_matches, similarities = cbr.retrieve(casebase=matches,
+                                                   case=actual_match,
+                                                   similarity_function=w.similarity_function,
+                                                   thr=threshold,
+                                                   max_cases=max_matches,
+                                                   **{'weighting_method': weighting_method})
 
     # 2-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
 
     predicted_result = cbr.reuse(retrieved_matches, actual_match, similarities, cbr.substitutional_adaptation, w.reuse_matches)
-    # print "predicted result = " + predicted_result
-    # print "real result = " + actual_match.get_solution()
 
     # 3-. REVISE
     confidence, actual_match = cbr.revise(actual_match, w.expert_function, predicted_result)
@@ -48,20 +53,29 @@ def main_CBR(actual_match, matches, **kwargs):
     cbr.retain(actual_match, matches, confidence, conf_thr, similarities, sim_thr)
     return confidence, predicted_result
 
+dataset_source_pickle = 'load_from_pkl'
+dataset_source_csv = 'load_from_csv'
 
-def get_matches():
-    #fix for pythonanywhere.com
-    my_dir = os.path.dirname(__file__)
-    f = open(os.path.join(my_dir,'../../data/Train/train.pkl'), 'rb')
-    matches_data = pk.load(f)
-    f.close()
+def get_matches(dataset_source):
+    if dataset_source == dataset_source_pickle:
+        f = open('../../data/Train/train.pkl', 'rb')
+        matches_data = pk.load(f)
+        f.close()
+    elif dataset_source == dataset_source_csv:
+        dataset = [files for files in glob.glob("../../data/Train/*.csv")]
+        matches_data = MatchesCaseBase()
+        for i in range(len(dataset)):
+            w.read_match_dataset(dataset[i], matches_data)
+    else:
+        raise NameError('input should be either "load_from_pkl" or "load_from_csv"')
     orig_data = copy.deepcopy(matches_data)
     return orig_data
+
 
 def run(input_match=None):
     # Load the
     print 'Loading data ...'
-    orig_data = get_matches()
+    orig_data = get_matches(dataset_source=dataset_source_pickle)
     print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
     # create a 'mock' match object with minimum information required and run the cbr for the given fixture
