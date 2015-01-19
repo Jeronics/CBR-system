@@ -3,7 +3,7 @@ import sys
 import copy
 import os
 import pickle as pk
-import glob.glob
+import glob
 
 import cbr.core.internal_repr.phases as cbr
 from cbr.core.wrapper import MatchesCaseBase, Match
