@@ -1,10 +1,8 @@
 from datetime import datetime
 import sys
 import copy
+import os
 import pickle as pk
-
-from joblib import Parallel, delayed
-import numpy as np
 
 import cbr.core.internal_repr.phases as cbr
 from cbr.core.wrapper import MatchesCaseBase, Match
@@ -52,7 +50,9 @@ def main_CBR(actual_match, matches, **kwargs):
 
 
 def get_matches():
-    f = open('../../data/Train/train.pkl', 'rb')
+    #fix for pythonanywhere.com
+    my_dir = os.path.dirname(__file__)
+    f = open(os.path.join(my_dir,'../../data/Train/train.pkl'), 'rb')
     matches_data = pk.load(f)
     f.close()
     orig_data = copy.deepcopy(matches_data)
@@ -77,6 +77,7 @@ def gen_input_match(team1, team2, odds={}):
     match_date = datetime.now()
     params = Match.gen_params(team1, team2, match_date, odds)
     input_match = w.Match(params)
+    print "params=%s" % params
     return input_match
 
 if __name__ == '__main__':

@@ -45,11 +45,10 @@ class Match(Case):
 
     @staticmethod
     def gen_params(team1, team2, match_date, odds={}):
-        params = {'FTR': 'N/A',
-          'HomeTeam': team1,
-          'AwayTeam': team2,
-          #todo optional date param
-          'Date': '%s/%s/%s' % (match_date.day, match_date.month, match_date.year)
+        params = {
+            'HomeTeam': team1,
+            'AwayTeam': team2,
+            'Date': '%s/%s/%s' % (match_date.day, match_date.month, match_date.year)
         }
         for key, value in odds.iteritems():
             params[key] = value
@@ -215,7 +214,9 @@ class Match(Case):
         self.problem.add_feature(name='date', values=ut.date_to_python_date(date))
         self.problem.add_class('home', home)
         self.problem.add_class('away', away)
-        self.set_solution(params['FTR'])
+        #in case of running it from the web interface / console, the solution is not available
+        if 'FTR' in params:
+            self.set_solution(params['FTR'])
         self.problem.add_feature(name='home_odd', values=home_odd)
         self.problem.add_feature(name='draw_odd', values=draw_odd)
         self.problem.add_feature(name='away_odd', values=away_odd)

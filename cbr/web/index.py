@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, g
 
 from cbr.core import main as core_main
 from cbr.core.wrapper import MatchesCaseBase, Match
@@ -6,16 +6,18 @@ from cbr.core.wrapper import MatchesCaseBase, Match
 app = Flask(__name__)
 app.secret_key = 'A0Zr98sdfgsdj/3yX R~XHH!jmN]LWX/,?RTasdf7808012342'
 
-
-def get_teams():
-    if 'teams' not in session:
-        session['teams'] = core_main.get_matches().get_all_teams()
-    return session['teams']
-
 home_team_form = "home_team"
 away_team_form = "away_team"
 odd_name_triples = [(Match.home_odds_params[idx], Match.draw_odds_params[idx], Match.away_odds_params[idx])
                     for idx, _ in enumerate(Match.home_odds_params)]
+
+#using app context
+#http://flask.pocoo.org/docs/0.10/appcontext/
+def get_teams():
+    teams = getattr(g, '_teams', None)
+    if teams is None:
+        teams = g._teams = core_main.get_matches().get_all_teams()
+    return teams
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -43,7 +45,8 @@ def index():
         prediction = core_main.run(input_match)
         prediction = Match.map_to_human_prediction(prediction)
 
-    return render_template('index.html', teams=teams, team_form=team_form, providers=providers, input_match=input_match, prediction=prediction)
+    return render_template('index.html', teams=teams, team_form=team_form, providers=providers,
+                           input_match=input_match, prediction=prediction)
 
 
 if __name__ == '__main__':
