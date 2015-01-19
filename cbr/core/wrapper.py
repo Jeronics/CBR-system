@@ -221,9 +221,8 @@ class Match(Case):
         self.problem.add_feature(name='draw_odd', values=draw_odd)
         self.problem.add_feature(name='away_odd', values=away_odd)
 
-
     def __str__(self):
-        return str(self.get_date()) + ': ' + self.get_home() + ' vs ' + self.get_away() + ' --> ' + self.get_solution()
+        return self.get_home() + ' vs ' + self.get_away()
 
     def get_date(self):
         """

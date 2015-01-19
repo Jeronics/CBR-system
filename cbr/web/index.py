@@ -16,7 +16,7 @@ odd_name_triples = [(Match.home_odds_params[idx], Match.draw_odds_params[idx], M
 def get_teams():
     teams = getattr(g, '_teams', None)
     if teams is None:
-        teams = g._teams = core_main.get_matches().get_all_teams()
+        teams = g._teams = core_main.get_matches(core_main.dataset_source_pickle).get_all_teams()
     return teams
 
 @app.route('/', methods=['GET', 'POST'])

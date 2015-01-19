@@ -77,9 +77,8 @@ def run(input_match=None):
     # if the main is called manually, this if/else-branch will be executed:
     # create a 'mock' match object with minimum information required and run the cbr for the given fixture
     conf, prediction_result = main_CBR(input_match, orig_data)
-    output = "checking for manual input: %s\n" % str(input_match)
-    output += "result: %s" % conf
-    output += "prediction_result: %s" % prediction_result
+    output = "Input Match: %s\n" % str(input_match)
+    output += "Prediction Result: %s" % prediction_result
     print output
     return prediction_result
 
@@ -88,7 +87,7 @@ def gen_input_match(team1, team2, odds={}):
     match_date = datetime.now()
     params = Match.gen_params(team1, team2, match_date, odds)
     input_match = w.Match(params)
-    print "params=%s" % params
+    #print "params=%s" % params
     return input_match
 
 if __name__ == '__main__':
