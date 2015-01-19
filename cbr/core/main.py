@@ -3,12 +3,7 @@ import sys
 import copy
 import os
 import pickle as pk
-<<<<<<< HEAD
-=======
 import glob.glob
-from joblib import Parallel, delayed
-import numpy as np
->>>>>>> d42c1c418f9e9ccb567a341ce765e03aec407c7e
 
 import cbr.core.internal_repr.phases as cbr
 from cbr.core.wrapper import MatchesCaseBase, Match
@@ -57,12 +52,14 @@ dataset_source_pickle = 'load_from_pkl'
 dataset_source_csv = 'load_from_csv'
 
 def get_matches(dataset_source):
+    #fix for pythonanywhere.com
+    my_dir = os.path.dirname(__file__)
     if dataset_source == dataset_source_pickle:
-        f = open('../../data/Train/train.pkl', 'rb')
+        f = open(os.path.join(my_dir,'../../data/Train/train.pkl'), 'rb')
         matches_data = pk.load(f)
         f.close()
     elif dataset_source == dataset_source_csv:
-        dataset = [files for files in glob.glob("../../data/Train/*.csv")]
+        dataset = [files for files in glob.glob(os.path.join(my_dir, "../../data/Train/*.csv"))]
         matches_data = MatchesCaseBase()
         for i in range(len(dataset)):
             w.read_match_dataset(dataset[i], matches_data)
