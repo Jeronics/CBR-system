@@ -23,21 +23,20 @@ num_cpu = multiprocessing.cpu_count()
 def main_CBR(actual_match, matches, **kwargs):
 
     # 1-. RETRIEVE SIMILAR MATCHES
-
+    weighting_method = kwargs['weighting_method'] if 'weighting_method' in kwargs else 2
     threshold = kwargs['retrieve_thr'] if 'retrieve_thr' in kwargs else 0.01
     max_matches = kwargs['max_matches'] if 'max_matches' in kwargs else 5
-    retrieved_matches, similarities = cbr.retrieve(matches, actual_match, w.similarity_function, threshold, max_matches)
-
-    # print similarities
-    # Print retrieved matches from the repository
-    # ut.printMatches(retrieved_matches, similarities)
+    retrieved_matches, similarities = cbr.retrieve(casebase=matches,
+                                                   case=actual_match,
+                                                   similarity_function=w.similarity_function,
+                                                   thr=threshold,
+                                                   max_cases=max_matches,
+                                                   **{'weighting_method': weighting_method})
 
     # 2-. REUSE
     # REUSE the information retrieved from the archieves and predict a result and a score
 
     predicted_result = cbr.reuse(retrieved_matches, actual_match, similarities, cbr.substitutional_adaptation, w.reuse_matches)
-    # print "predicted result = " + predicted_result
-    # print "real result = " + actual_match.get_solution()
 
     # 3-. REVISE
     confidence, actual_match = cbr.revise(actual_match, w.expert_function, predicted_result)
@@ -57,6 +56,7 @@ def get_matches():
     f.close()
     orig_data = copy.deepcopy(matches_data)
     return orig_data
+
 
 def run(input_match=None):
     # Load the

@@ -3,7 +3,7 @@ import numpy as np
 from cbr.core.internal_repr.model import CaseBase, Case
 
 
-def retrieve(casebase, case, similarity_function, thr, max_cases):
+def retrieve(casebase, case, similarity_function, thr, max_cases, **kwargs):
     """
     This function will retrieve the most similar cases
     stored in the 'casebase' to the 'case'.
@@ -34,7 +34,7 @@ def retrieve(casebase, case, similarity_function, thr, max_cases):
         similar_cases = []
         similarities = []
         for c in casebase.get_case_values():
-            similarity = similarity_function(c, case)
+            similarity = similarity_function(c, case, **kwargs)
             if similarity > thr:
                 if len(similar_cases) < max_cases:
                     similar_cases.append(c)
