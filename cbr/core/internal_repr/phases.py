@@ -212,8 +212,7 @@ def revise(case, expert_function, predicted_result):
         v = expert_function(case, predicted_result)
         confidence = v[0]
         if len(v) > 1:
-            improved_sol = v[1].get_solution()
-            case.set_solution(improved_sol)
+            case = v[1]
 
         return [confidence, case]
     else:
