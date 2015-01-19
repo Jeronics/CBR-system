@@ -2,7 +2,7 @@ from datetime import datetime
 import sys
 import copy
 import pickle as pk
-
+import glob.glob
 from joblib import Parallel, delayed
 import numpy as np
 
@@ -50,10 +50,18 @@ def main_CBR(actual_match, matches, **kwargs):
     return confidence, predicted_result
 
 
-def get_matches():
-    f = open('../../data/Train/train.pkl', 'rb')
-    matches_data = pk.load(f)
-    f.close()
+def get_matches(input):
+    if input == 'load_from_pkl':
+        f = open('../../data/Train/train.pkl', 'rb')
+        matches_data = pk.load(f)
+        f.close()
+    elif input == 'load_from_csv':
+        dataset = [files for files in glob.glob("../../data/Train/*.csv")]
+        matches_data = MatchesCaseBase()
+        for i in range(len(dataset)):
+            w.read_match_dataset(dataset[i], matches_data)
+    else:
+        raise NameError('input should be either "load_from_pkl" or "load_from_csv"')
     orig_data = copy.deepcopy(matches_data)
     return orig_data
 
@@ -61,7 +69,7 @@ def get_matches():
 def run(input_match=None):
     # Load the
     print 'Loading data ...'
-    orig_data = get_matches()
+    orig_data = get_matches(input='load_from_pkl')
     print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
     # create a 'mock' match object with minimum information required and run the cbr for the given fixture
