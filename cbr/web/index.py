@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, g
+from flask import Flask, render_template, request
 
 from cbr.core import main as core_main
 from cbr.core.wrapper import MatchesCaseBase, Match

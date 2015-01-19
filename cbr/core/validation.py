@@ -2,7 +2,7 @@ import copy
 import multiprocessing
 import numpy as np
 import matplotlib.pyplot as plt
-from main import main_CBR, get_matches
+from main import main_CBR, get_matches, dataset_source_pickle
 from wrapper import MatchesCaseBase, Match, read_match_dataset
 from joblib import Parallel, delayed
 
@@ -51,8 +51,7 @@ def run_validation():
     :return:
     """
     # Load the data
-    print 'Loading data ...'
-    orig_data = get_matches(input='load_from_pkl')
+    orig_data = get_matches(dataset_source=dataset_source_pickle)
     print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
     # create a 'mock' match object with minimum information required and run the cbr for the given fixture
