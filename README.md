@@ -83,7 +83,8 @@ called problem. This class is the base of our CBR system.
 class Case(object):
     """
     Case is the main class in the CBR.
-    Contains a problem (CBRclass) and a solution (default empty string).
+    Contains a problem (CBRclass), a solution (default empty string)
+    and the operation required to find the solution (CBRclass).
     """
     def __init__(self, name, problem, **kwargs):
 ```
@@ -94,6 +95,8 @@ class Case(object):
 | ```set_solution``` | Sets the current solution to a given one. |
 | ```get_problem``` | Gets the problem of the case. |
 | ```set_problem``` | Set the problem of the case to a given problem. |
+| ```get_operation``` | Gets the operation of the case. |
+| ```set_operation``` | Set the operation of the case to a given operation. |
 
 
 ### CaseBase:
@@ -122,7 +125,7 @@ The Retrieve phase is performed in the function retrieve from the ```internal_re
 It is defined as follows:
 
 ```python
-def retrieve(casebase, case, similarity_function, thr, max_cases):
+def retrieve(casebase, case, similarity_function, thr, max_cases, **kwargs):
     """
     This function will retrieve the most similar cases
     stored in the 'casebase' to the 'case'.
@@ -146,6 +149,8 @@ def retrieve(casebase, case, similarity_function, thr, max_cases):
 
     :type  max_cases: int
     :param max_cases: Maximum number of similar cases to be retrieved.
+    
+    :param kwargs: Optional parameters for the similarity function
 
     :return: List of similar cases.
     """
@@ -304,7 +309,8 @@ def revise(case, expert_function, predicted_result):
 ---------
 
 In the Retain Phase, the proposed solution will be considered to be saved in the repository of the case base or not.
-    
+   
+
 ```python
 def retain(case, casebase, confidence, conf_thr, retrieved_sim, sim_thr):
     """

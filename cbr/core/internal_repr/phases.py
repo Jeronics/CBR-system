@@ -27,6 +27,8 @@ def retrieve(casebase, case, similarity_function, thr, max_cases, **kwargs):
 
     :type  max_cases: int
     :param max_cases: Maximum number of similar cases to be retrieved.
+    
+    :param kwargs: Optional parameters for the similarity function
 
     :return: List of similar cases.
     """
