@@ -23,8 +23,8 @@ def main_CBR(actual_match, matches, **kwargs):
 
     # 1-. RETRIEVE SIMILAR MATCHES
     weighting_method = kwargs['weighting_method'] if 'weighting_method' in kwargs else 2
-    threshold = kwargs['retrieve_thr'] if 'retrieve_thr' in kwargs else 0.01
-    max_matches = kwargs['max_matches'] if 'max_matches' in kwargs else 5
+    threshold = kwargs['retrieve_thr'] if 'retrieve_thr' in kwargs else 0.02
+    max_matches = kwargs['max_matches'] if 'max_matches' in kwargs else 4
     retrieved_matches, similarities = cbr.retrieve(casebase=matches,
                                                    case=actual_match,
                                                    similarity_function=w.similarity_function,
