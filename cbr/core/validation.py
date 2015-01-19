@@ -52,7 +52,7 @@ def run_validation():
     """
     # Load the data
     print 'Loading data ...'
-    orig_data = get_matches()
+    orig_data = get_matches(input='load_from_pkl')
     print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
     # create a 'mock' match object with minimum information required and run the cbr for the given fixture

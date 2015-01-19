@@ -494,8 +494,7 @@ def expert_function(match, predicted_result):
     if match.get_solution() == predicted_result:
         return [1]
     else:
-        match.set_solution(predicted_result)
-        return [0, match]
+        return [0]
 
 
 def read_match_dataset(dataset, mcb):

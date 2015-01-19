@@ -2,7 +2,7 @@ from datetime import datetime
 import sys
 import copy
 import pickle as pk
-import glob.glob
+import glob
 from joblib import Parallel, delayed
 import numpy as np
 
