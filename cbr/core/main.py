@@ -93,6 +93,11 @@ def gen_input_match(team1, team2, odds={}):
     return input_match
 
 if __name__ == '__main__':
-    _, team1, team2 = sys.argv
-    input_match = gen_input_match(team1, team2)
+    team1, team2 = sys.argv[1], sys.argv[2]
+    odds = {}
+    for idx, arg in enumerate(sys.argv):
+        if idx > 2:
+            key, value = arg.split("=")
+            odds[key] = value
+    input_match = gen_input_match(team1, team2, odds)
     run(input_match)
