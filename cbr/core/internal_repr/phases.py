@@ -211,8 +211,8 @@ def revise(case, expert_function, predicted_result):
     if hasattr(expert_function, '__call__'):
         v = expert_function(case, predicted_result)
         confidence = v[0]
-        if len(v) > 1:
-            case = v[1]
+        # if len(v) > 1:
+        #     case = v[1]
 
         return [confidence, case]
     else:
