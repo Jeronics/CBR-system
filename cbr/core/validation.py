@@ -10,7 +10,7 @@ num_cpu = multiprocessing.cpu_count()
 
 
 def plot_lc(lc, name):
-    aux = np.array(range(len(lc[0])))*1.0
+    aux = np.array(range(1, len(lc[0])+1))*1.0
     x1 = np.array(lc[0])/aux
     x2 = np.array(lc[1])/aux
     plt.figure()
