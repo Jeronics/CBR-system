@@ -11,17 +11,16 @@ away_team_form = "away_team"
 odd_name_triples = [(Match.home_odds_params[idx], Match.draw_odds_params[idx], Match.away_odds_params[idx])
                     for idx, _ in enumerate(Match.home_odds_params)]
 
-#using app context
+#using app context does not work, that's why globals :(
 #http://flask.pocoo.org/docs/0.10/appcontext/
-def get_teams():
-    teams = getattr(g, '_teams', None)
-    if teams is None:
-        teams = g._teams = core_main.get_matches(core_main.dataset_source_pickle).get_all_teams()
-    return teams
+matches = None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    teams = get_teams()
+    global matches
+    if matches is None:
+        matches = core_main.get_matches(core_main.dataset_source_csv)
+    teams = matches.get_all_teams()
     team_form = [("Home Team", home_team_form), ("Away Team", away_team_form)]
     providers = [(Match.provider_names[idx],
                   (("1", odd_triple[0]),
@@ -42,7 +41,7 @@ def index():
                     if value:
                         odds[odd_key] = value
         input_match = core_main.gen_input_match(team1, team2, odds)
-        prediction = core_main.run(input_match)
+        prediction = core_main.run(input_match, matches)
         prediction = Match.map_to_human_prediction(prediction)
 
     return render_template('index.html', teams=teams, team_form=team_form, providers=providers,

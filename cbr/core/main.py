@@ -52,10 +52,11 @@ dataset_source_pickle = 'load_from_pkl'
 dataset_source_csv = 'load_from_csv'
 
 def get_matches(dataset_source):
+    print 'Loading data ...'
     #fix for pythonanywhere.com
     my_dir = os.path.dirname(__file__)
     if dataset_source == dataset_source_pickle:
-        f = open(os.path.join(my_dir,'../../data/Train/train.pkl'), 'rb')
+        f = open(os.path.join(my_dir, '../../data/Train/train.pkl'), 'rb')
         matches_data = pk.load(f)
         f.close()
     elif dataset_source == dataset_source_csv:
@@ -66,13 +67,14 @@ def get_matches(dataset_source):
     else:
         raise NameError('input should be either "load_from_pkl" or "load_from_csv"')
     orig_data = copy.deepcopy(matches_data)
+    print "Data loaded"
     return orig_data
 
 
-def run(input_match=None):
+def run(input_match=None, orig_data=None):
     # Load the
-    print 'Loading data ...'
-    orig_data = get_matches(dataset_source=dataset_source_pickle)
+    if not orig_data:
+        orig_data = get_matches(dataset_source=dataset_source_pickle)
     print 'Start CBR ...'
     # if the main is called manually, this if/else-branch will be executed:
     # create a 'mock' match object with minimum information required and run the cbr for the given fixture
